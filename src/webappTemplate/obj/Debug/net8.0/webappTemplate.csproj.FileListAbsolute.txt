@@ -1,0 +1,39 @@
+C:\Users\gande\OneDrive\Documents\VS Projects\callmehgav\webappTemplate\webappTemplate\webappTemplate\bin\Debug\net8.0\webappTemplate.exe
+C:\Users\gande\OneDrive\Documents\VS Projects\callmehgav\webappTemplate\webappTemplate\webappTemplate\bin\Debug\net8.0\webappTemplate.deps.json
+C:\Users\gande\OneDrive\Documents\VS Projects\callmehgav\webappTemplate\webappTemplate\webappTemplate\bin\Debug\net8.0\webappTemplate.runtimeconfig.json
+C:\Users\gande\OneDrive\Documents\VS Projects\callmehgav\webappTemplate\webappTemplate\webappTemplate\bin\Debug\net8.0\webappTemplate.dll
+C:\Users\gande\OneDrive\Documents\VS Projects\callmehgav\webappTemplate\webappTemplate\webappTemplate\bin\Debug\net8.0\webappTemplate.pdb
+C:\Users\gande\OneDrive\Documents\VS Projects\callmehgav\webappTemplate\webappTemplate\webappTemplate\obj\Debug\net8.0\webappTemplate.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\gande\OneDrive\Documents\VS Projects\callmehgav\webappTemplate\webappTemplate\webappTemplate\obj\Debug\net8.0\webappTemplate.AssemblyInfoInputs.cache
+C:\Users\gande\OneDrive\Documents\VS Projects\callmehgav\webappTemplate\webappTemplate\webappTemplate\obj\Debug\net8.0\webappTemplate.AssemblyInfo.cs
+C:\Users\gande\OneDrive\Documents\VS Projects\callmehgav\webappTemplate\webappTemplate\webappTemplate\obj\Debug\net8.0\webappTemplate.csproj.CoreCompileInputs.cache
+C:\Users\gande\OneDrive\Documents\VS Projects\callmehgav\webappTemplate\webappTemplate\webappTemplate\obj\Debug\net8.0\webappTemplate.sourcelink.json
+C:\Users\gande\OneDrive\Documents\VS Projects\callmehgav\webappTemplate\webappTemplate\webappTemplate\obj\Debug\net8.0\webappTemplate.dll
+C:\Users\gande\OneDrive\Documents\VS Projects\callmehgav\webappTemplate\webappTemplate\webappTemplate\obj\Debug\net8.0\refint\webappTemplate.dll
+C:\Users\gande\OneDrive\Documents\VS Projects\callmehgav\webappTemplate\webappTemplate\webappTemplate\obj\Debug\net8.0\webappTemplate.pdb
+C:\Users\gande\OneDrive\Documents\VS Projects\callmehgav\webappTemplate\webappTemplate\webappTemplate\obj\Debug\net8.0\webappTemplate.genruntimeconfig.cache
+C:\Users\gande\OneDrive\Documents\VS Projects\callmehgav\webappTemplate\webappTemplate\webappTemplate\obj\Debug\net8.0\ref\webappTemplate.dll
+C:\Users\gande\OneDrive\Documents\VsProjects\webappTemplate\src\webappTemplate\bin\Debug\net8.0\webappTemplate.exe
+C:\Users\gande\OneDrive\Documents\VsProjects\webappTemplate\src\webappTemplate\bin\Debug\net8.0\webappTemplate.deps.json
+C:\Users\gande\OneDrive\Documents\VsProjects\webappTemplate\src\webappTemplate\bin\Debug\net8.0\webappTemplate.runtimeconfig.json
+C:\Users\gande\OneDrive\Documents\VsProjects\webappTemplate\src\webappTemplate\bin\Debug\net8.0\webappTemplate.dll
+C:\Users\gande\OneDrive\Documents\VsProjects\webappTemplate\src\webappTemplate\bin\Debug\net8.0\webappTemplate.pdb
+C:\Users\gande\OneDrive\Documents\VsProjects\webappTemplate\src\webappTemplate\bin\Debug\net8.0\Microsoft.DotNet.PlatformAbstractions.dll
+C:\Users\gande\OneDrive\Documents\VsProjects\webappTemplate\src\webappTemplate\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\gande\OneDrive\Documents\VsProjects\webappTemplate\src\webappTemplate\bin\Debug\net8.0\Microsoft.OpenApi.dll
+C:\Users\gande\OneDrive\Documents\VsProjects\webappTemplate\src\webappTemplate\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\gande\OneDrive\Documents\VsProjects\webappTemplate\src\webappTemplate\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\gande\OneDrive\Documents\VsProjects\webappTemplate\src\webappTemplate\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\gande\OneDrive\Documents\VsProjects\webappTemplate\src\webappTemplate\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\gande\OneDrive\Documents\VsProjects\webappTemplate\src\webappTemplate\obj\Debug\net8.0\webappTemplate.csproj.AssemblyReference.cache
+C:\Users\gande\OneDrive\Documents\VsProjects\webappTemplate\src\webappTemplate\obj\Debug\net8.0\webappTemplate.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\gande\OneDrive\Documents\VsProjects\webappTemplate\src\webappTemplate\obj\Debug\net8.0\webappTemplate.AssemblyInfoInputs.cache
+C:\Users\gande\OneDrive\Documents\VsProjects\webappTemplate\src\webappTemplate\obj\Debug\net8.0\webappTemplate.AssemblyInfo.cs
+C:\Users\gande\OneDrive\Documents\VsProjects\webappTemplate\src\webappTemplate\obj\Debug\net8.0\webappTemplate.csproj.CoreCompileInputs.cache
+C:\Users\gande\OneDrive\Documents\VsProjects\webappTemplate\src\webappTemplate\obj\Debug\net8.0\webappTemplate.sourcelink.json
+C:\Users\gande\OneDrive\Documents\VsProjects\webappTemplate\src\webappTemplate\obj\Debug\net8.0\webappTe.A8FF7DF6.Up2Date
+C:\Users\gande\OneDrive\Documents\VsProjects\webappTemplate\src\webappTemplate\obj\Debug\net8.0\webappTemplate.dll
+C:\Users\gande\OneDrive\Documents\VsProjects\webappTemplate\src\webappTemplate\obj\Debug\net8.0\refint\webappTemplate.dll
+C:\Users\gande\OneDrive\Documents\VsProjects\webappTemplate\src\webappTemplate\obj\Debug\net8.0\webappTemplate.pdb
+C:\Users\gande\OneDrive\Documents\VsProjects\webappTemplate\src\webappTemplate\obj\Debug\net8.0\webappTemplate.genruntimeconfig.cache
+C:\Users\gande\OneDrive\Documents\VsProjects\webappTemplate\src\webappTemplate\obj\Debug\net8.0\ref\webappTemplate.dll
