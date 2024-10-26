@@ -1,24 +1,19 @@
-<div class="container">
-  <h1>WebSocket Chat</h1>
+<!-- Server Status Indicator in Top Right -->
+<div class="status-indicator" [ngClass]="isConnected ? 'connected' : 'disconnected'">
+  <span *ngIf="isConnected">🟢 Connected</span>
+  <span *ngIf="!isConnected">🔴 Disconnected</span>
+</div>
 
-  <!-- Connection Status Indicator -->
-  <div class="status" [ngClass]="isConnected ? 'connected' : 'disconnected'">
-    <span *ngIf="isConnected">🟢 Connected</span>
-    <span *ngIf="!isConnected">🔴 Disconnected</span>
+<!-- Minimal Message Log -->
+<div class="log">
+  <div *ngFor="let message of messageLog" class="message">
+    {{ message }}
   </div>
+</div>
 
-  <!-- Message Log -->
-  <div class="log">
-    <h3>Message Log</h3>
-    <div *ngFor="let message of messageLog" class="message">
-      {{ message }}
-    </div>
-  </div>
-
-  <!-- Message Input -->
-  <div class="input-section">
-    <input [(ngModel)]="message" placeholder="Enter your message" />
-    <button (click)="sendMessage()" [disabled]="!isConnected">Send</button>
-    <button (click)="closeConnection()">Close</button>
-  </div>
+<!-- Message Input Section -->
+<div class="input-section">
+  <input [(ngModel)]="message" placeholder="Enter your message" />
+  <button (click)="sendMessage()" [disabled]="!isConnected">Send</button>
+  <button (click)="closeConnection()">Close</button>
 </div>

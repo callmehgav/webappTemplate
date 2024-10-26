@@ -1,1 +1,28 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global Dark Grey Theme */
+body, html {
+    background-color: #2e2e2e; /* Softer dark grey background */
+    color: #e0e0e0;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Scrollbar Styling */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #555555 #2e2e2e;
+  }
+  
+  *::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  *::-webkit-scrollbar-track {
+    background: #2e2e2e;
+  }
+  
+  *::-webkit-scrollbar-thumb {
+    background-color: #555555;
+    border-radius: 10px;
+  }
+  
