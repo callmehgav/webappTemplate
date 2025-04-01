@@ -12,16 +12,21 @@ export class AppComponent implements OnInit {
   isConnected: boolean = false;  // Track if the connection is active
 
   constructor(private webSocketService: WebSocketService) {}
+  imageList: string[] = [];
 
   ngOnInit(): void {
-    // Connect to the WebSocket server on initialization
     this.webSocketService.connect();
-
-    // Subscribe to connection status changes
+  
     this.webSocketService.connectionStatus.subscribe(status => {
       this.isConnected = status;
     });
+  
+    // Add the image paths here (match file names in your ./data folder)
+    this.imageList = [
+      'http://localhost:5000/images/lemon.jpg'
+    ];
   }
+  
 
   sendMessage() {
     if (this.message.trim()) {

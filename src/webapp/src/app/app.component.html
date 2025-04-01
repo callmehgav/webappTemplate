@@ -2,8 +2,12 @@
 <div class="status-indicator" [ngClass]="isConnected ? 'connected' : 'disconnected'">
   <span *ngIf="isConnected">🟢 Connected</span>
   <span *ngIf="!isConnected">🔴 Disconnected</span>
+  
 </div>
 
+  <div *ngFor="let image of imageList" class="image-wrapper">
+    <img [src]="image" alt="Loaded image" />
+  </div>
 <!-- Minimal Message Log -->
 <div class="log">
   <div *ngFor="let message of messageLog" class="message">

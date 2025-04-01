@@ -51,7 +51,13 @@ public class Program
                 await next();
             }
         });
-
+        // Serve static files from ./data under /images route
+        app.UseStaticFiles(new StaticFileOptions
+        {
+            FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
+                Path.Combine(AppContext.BaseDirectory, "../../../data")),
+            RequestPath = "/images"
+        });
         app.UseCors("AllowAngularApp");
         app.UseHttpsRedirection();
         app.UseRouting();
