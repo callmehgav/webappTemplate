@@ -1,0 +1,153 @@
+@if (settings(); as config) {
+  <div class="scheduler-grid">
+    <section>
+      <div class="subheading">
+        <h3>Admin scheduler</h3>
+        <p>Click a date to add an event or an existing event to edit it.</p>
+      </div>
+      <app-calendar
+        [events]="events()"
+        [editable]="true"
+        (dateSelected)="chooseDate($event)"
+        (eventSelected)="editEvent($event)">
+      </app-calendar>
+    </section>
+
+    <section class="editor-card">
+      <h3>{{ editor.id ? 'Edit event' : 'Add event' }}</h3>
+      <form (ngSubmit)="saveEvent()">
+        <label>Event or customer name
+          <input name="title" [(ngModel)]="editor.title" required />
+        </label>
+
+        <label>Service or event type
+          <select name="eventType" [(ngModel)]="editor.eventType" (ngModelChange)="eventTypeChanged($event)">
+            @for (type of eventTypes(config); track type) {
+              <option [value]="type">{{ type }}</option>
+            }
+          </select>
+        </label>
+
+        @if (editor.eventType.toLowerCase() !== 'closed') {
+          <label>{{ config.labelFieldName }}
+            <select name="label" [(ngModel)]="editor.label" (ngModelChange)="labelChanged($event, config.labels)">
+              <option value="">None</option>
+              @for (label of config.labels; track label.name) {
+                <option [value]="label.name">{{ label.name }}</option>
+              }
+            </select>
+          </label>
+        }
+
+        <label class="all-day-option">
+          <input
+            type="checkbox"
+            name="isAllDay"
+            [(ngModel)]="editor.isAllDay"
+            [disabled]="editor.eventType.toLowerCase() === 'closed'"
+            (ngModelChange)="allDayChanged($event)" />
+          All-day event
+        </label>
+
+        <label>Starts
+          <input
+            [type]="editor.isAllDay ? 'date' : 'datetime-local'"
+            name="startsAt"
+            [(ngModel)]="editor.startsAt"
+            required />
+        </label>
+        <label>Ends
+          <input
+            [type]="editor.isAllDay ? 'date' : 'datetime-local'"
+            name="endsAt"
+            [(ngModel)]="editor.endsAt"
+            [min]="editor.isAllDay ? editor.startsAt : null"
+            required />
+        </label>
+
+        <label>Private notes
+          <textarea name="notes" [(ngModel)]="editor.notes" rows="3"></textarea>
+        </label>
+
+        <div class="actions">
+          <button class="primary" type="submit" [disabled]="saving()">Save event</button>
+          @if (editor.id) {
+            <button class="danger" type="button" (click)="requestDelete()">Delete</button>
+          }
+          <button type="button" (click)="cancelEdit()">Clear</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <section class="settings-card">
+    <div class="subheading">
+      <h3>Calendar settings</h3>
+      <p>These values control the public calendar and request form.</p>
+    </div>
+
+    <div class="toggle-row">
+      <label><input type="checkbox" [(ngModel)]="config.calendarEnabled" /> Show public calendar</label>
+      <label><input type="checkbox" [(ngModel)]="config.requestsEnabled" /> Allow booking requests</label>
+    </div>
+
+    <div class="settings-grid">
+      <label>Hero button label <input [(ngModel)]="config.bookingButtonLabel" /></label>
+      <label>Request heading <input [(ngModel)]="config.requestHeading" /></label>
+      <label>Label field name <input [(ngModel)]="config.labelFieldName" /></label>
+      <label>Details field label <input [(ngModel)]="config.detailsLabel" /></label>
+      <label>Time zone <input [(ngModel)]="config.timeZoneId" /></label>
+      <label>Buffer minutes <input type="number" min="0" [(ngModel)]="config.bufferMinutes" /></label>
+      <label>Time slot minutes <input type="number" min="5" [(ngModel)]="config.slotMinutes" /></label>
+    </div>
+
+    <h4>Business hours</h4>
+    <div class="hours-list">
+      @for (hours of config.businessHours; track hours.dayOfWeek) {
+        <div class="hours-row">
+          <strong>{{ dayNames[hours.dayOfWeek] }}</strong>
+          <label><input type="checkbox" [(ngModel)]="hours.isClosed" /> Closed</label>
+          <input type="time" [(ngModel)]="hours.start" [disabled]="hours.isClosed" aria-label="Opening time" />
+          <span>to</span>
+          <input type="time" [(ngModel)]="hours.end" [disabled]="hours.isClosed" aria-label="Closing time" />
+        </div>
+      }
+    </div>
+
+    <div class="labels-heading">
+      <div>
+        <h4>Calendar labels</h4>
+        <p>Labels identify personnel or event groups and control calendar colors.</p>
+      </div>
+      <button type="button" (click)="addLabel()">Add label</button>
+    </div>
+    <div class="label-list">
+      @for (label of config.labels; track $index) {
+        <div class="label-row">
+          <input [(ngModel)]="label.name" aria-label="Label name" placeholder="Label name" />
+          <input type="color" [(ngModel)]="label.color" aria-label="Label color" />
+          <button type="button" aria-label="Remove label" (click)="removeLabel($index)">Remove</button>
+        </div>
+      }
+    </div>
+
+    <label class="services-field">Services
+      <small>One service per line. These populate the event type list and public request form.</small>
+      <textarea [(ngModel)]="servicesText" rows="5"></textarea>
+    </label>
+
+    <button class="primary save-settings" type="button" [disabled]="saving()" (click)="saveSettings()">
+      Save settings
+    </button>
+  </section>
+}
+
+@if (deleteDialogOpen()) {
+  <app-confirm-dialog
+    title="Delete calendar event?"
+    [message]="'Delete “' + editor.title + '”? This event will be permanently removed.'"
+    confirmLabel="Delete event"
+    (confirmed)="deleteEvent()"
+    (cancelled)="deleteDialogOpen.set(false)">
+  </app-confirm-dialog>
+}

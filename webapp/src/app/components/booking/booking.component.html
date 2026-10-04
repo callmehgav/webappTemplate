@@ -1,0 +1,105 @@
+<main class="booking-page">
+  <header class="page-heading">
+    <p class="eyebrow">Schedule</p>
+    <h1>Find a time that works</h1>
+    <p>Scheduled times appear below. Requests are confirmed by the business after submission.</p>
+  </header>
+
+  @if (loading()) {
+    <p class="state-message">Loading schedule…</p>
+  } @else if (settings(); as config) {
+    @if (config.calendarEnabled) {
+      <app-calendar [events]="events()" (dateSelected)="chooseDate($event)"></app-calendar>
+
+      <div class="legend" aria-label="Calendar legend">
+        @for (label of config.labels; track label.name) {
+          <span><i [style.background]="label.color"></i>{{ label.name }}</span>
+        }
+        <span><i class="closed-color"></i>Unavailable or closed</span>
+      </div>
+    }
+
+    @if (config.requestsEnabled) {
+      <section class="request-card">
+        <div class="request-heading">
+          <p class="eyebrow">Booking request</p>
+          <h2>{{ config.requestHeading }}</h2>
+          <p>Choose a preferred time. Your appointment is not confirmed until the business contacts you.</p>
+        </div>
+
+        <form [formGroup]="form" (ngSubmit)="submit()">
+          <div class="form-grid">
+            <label>Name <input formControlName="name" autocomplete="name" /></label>
+            <label>Email <input type="email" formControlName="email" autocomplete="email" /></label>
+            <label>Phone <input type="tel" formControlName="phone" autocomplete="tel" /></label>
+            <label>Have you been here before?
+              <select formControlName="customerStatus">
+                <option value="new">First visit</option>
+                <option value="returning">Returning customer</option>
+                <option value="unknown">Not sure</option>
+              </select>
+            </label>
+            <label>Date
+              <input type="date" formControlName="date" [min]="todayKey" (change)="onDateInput($any($event.target).value)" />
+            </label>
+            <label>{{ config.labelFieldName }}
+              <select formControlName="label">
+                <option value="">No preference</option>
+                @for (label of config.labels; track label.name) {
+                  <option [value]="label.name">{{ label.name }}</option>
+                }
+              </select>
+            </label>
+          </div>
+
+          <fieldset class="time-slots">
+            <legend>Preferred time</legend>
+            @if (slots().length) {
+              <div class="slot-grid">
+                @for (slot of slots(); track slot.value) {
+                  <button
+                    type="button"
+                    [class.selected]="form.controls.time.value === slot.value"
+                    [class.conflict]="slot.conflict"
+                    (click)="chooseSlot(slot.value)">
+                    {{ slot.label }}
+                    @if (slot.conflict) { <small>May conflict</small> }
+                  </button>
+                }
+              </div>
+            } @else {
+              <p class="closed-message">No request times are configured for this day.</p>
+            }
+          </fieldset>
+
+          @if (config.services.length) {
+            <fieldset>
+              <legend>Services requested</legend>
+              <div class="check-grid">
+                @for (service of config.services; track service) {
+                  <label class="check-option">
+                    <input type="checkbox" [checked]="selectedServices().includes(service)" (change)="toggleService(service, $any($event.target).checked)" />
+                    {{ service }}
+                  </label>
+                }
+              </div>
+            </fieldset>
+          }
+
+          <label class="details-field">{{ config.detailsLabel }}
+            <textarea formControlName="additionalDetails" rows="5"></textarea>
+          </label>
+
+          <label class="consent">
+            <input type="checkbox" formControlName="consentAccepted" />
+            <span>I consent to the use of this information to respond to my request. See the <a routerLink="/privacy">privacy policy</a>.</span>
+          </label>
+
+          <button class="submit-button" type="submit" [disabled]="submitting()">
+            {{ submitting() ? 'Sending…' : 'Send request' }}
+          </button>
+        </form>
+      </section>
+    }
+  }
+</main>

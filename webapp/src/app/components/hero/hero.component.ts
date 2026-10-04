@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, HostListener, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { PublicApiService, PublicMediaItem } from '../../services/public-api.service';
+import { ScheduleApiService } from '../../services/schedule-api.service';
 
 @Component({
   selector: 'app-hero',
@@ -14,8 +15,12 @@ export class HeroComponent {
   showCTAs = false;
   readonly logoUrl = signal('/assets/logos/logo.png');
   readonly heroMedia = signal<PublicMediaItem | null>(null);
+  readonly bookingLabel = signal('Request an appointment');
 
-  constructor(private readonly publicApi: PublicApiService) {
+  constructor(
+    private readonly publicApi: PublicApiService,
+    scheduleApi: ScheduleApiService
+  ) {
     this.publicApi.getSiteLogo().subscribe({
       next: logo => {
         if (logo) {
@@ -36,6 +41,10 @@ export class HeroComponent {
         this.showCTAs = true;
         console.error('Hero media fetch failed:', error);
       }
+    });
+
+    scheduleApi.getSettings().subscribe({
+      next: settings => this.bookingLabel.set(settings.bookingButtonLabel)
     });
   }
 

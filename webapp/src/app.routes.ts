@@ -1,7 +1,18 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  
+  {
+    path: '',
+    title: 'Home',
+    loadComponent: () =>
+      import('./app/components/home/home.component').then(m => m.HomeComponent),
+  },
+  {
+    path: 'book',
+    title: 'Book',
+    loadComponent: () =>
+      import('./app/components/booking/booking.component').then(m => m.BookingComponent),
+  },
   {
     path: 'gallery',
     title: 'Gallery',

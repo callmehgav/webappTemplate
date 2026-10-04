@@ -1,0 +1,14 @@
+<div class="toast-stack" aria-live="polite" aria-atomic="false">
+  @for (notice of notices(); track notice.id) {
+    <div
+      class="toast"
+      [class.success]="notice.kind === 'success'"
+      [class.error]="notice.kind === 'error'"
+      [class.warning]="notice.kind === 'warning'"
+      [class.info]="notice.kind === 'info'"
+      role="status">
+      <span>{{ notice.message }}</span>
+      <button type="button" aria-label="Dismiss notification" (click)="toastService.dismiss(notice.id)">×</button>
+    </div>
+  }
+</div>

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using webappTemplate.Data;
 
@@ -10,9 +11,11 @@ using webappTemplate.Data;
 namespace webappTemplate.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20261004151204_AddScheduling")]
+    partial class AddScheduling
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.31");
@@ -169,7 +172,7 @@ namespace webappTemplate.Migrations
                     b.Property<DateTimeOffset>("CreatedUtc")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("EndsAt")
+                    b.Property<DateTimeOffset>("EndsAt")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("EventType")
@@ -183,15 +186,15 @@ namespace webappTemplate.Migrations
                     b.Property<bool>("IsBlocked")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Label")
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Notes")
                         .HasMaxLength(2000)
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("StartsAt")
+                    b.Property<string>("Resource")
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTimeOffset>("StartsAt")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
@@ -240,15 +243,6 @@ namespace webappTemplate.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("LabelFieldName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("LabelsJson")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("RequestHeading")
                         .IsRequired()
                         .HasMaxLength(150)
@@ -256,6 +250,15 @@ namespace webappTemplate.Migrations
 
                     b.Property<bool>("RequestsEnabled")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("ResourceLabel")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ResourcesJson")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ServicesJson")
                         .IsRequired()

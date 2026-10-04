@@ -258,6 +258,29 @@
   opacity: 1;
   transform: translateY(-50%) translateX(0);
 }
+.hero-actions {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: 10px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .35s ease, transform .35s ease;
+}
+.hero-actions.visible { opacity: 1; transform: none; }
+.hero-actions a,
+.hero-actions button {
+  min-height: 44px;
+  padding: 11px 18px;
+  border-radius: 999px;
+  font: 750 .88rem/1.2 inherit;
+  cursor: pointer;
+}
+.primary-action { border: 1px solid #fff; background: #fff; color: #172033; }
+.secondary-action { border: 1px solid rgba(255,255,255,.75); background: rgba(14,24,39,.2); color: #fff; backdrop-filter: blur(8px); }
+@media (max-width: 520px) {
+  .hero-actions { flex-direction: column; width: min(270px, 90%); }
+}
 
 .hero-background-placeholder {
   position: absolute;

@@ -6,11 +6,8 @@ import { PublicApiService } from './services/public-api.service';
 import { SiteBrandingService } from './services/site-branding.service';
 import { HeaderComponent } from './components/header/header.component';
 import { AdminPanelComponent } from './components/admin/admin-panel/admin-panel.component';
-import { HeroComponent } from './components/hero/hero.component';
-import { AboutSectionComponent } from './components/about/about-section.component';
-import { LinkTreeComponent } from './components/linkTree/link-tree.component';
-import { ContactMeComponent } from './components/contact-me/contact-me.component';
 import { FooterComponent } from './footer/footer.component';
+import { ToastComponent } from './components/ui/toast/toast.component';
 
 @Component({
   selector: 'app-root',
@@ -18,11 +15,8 @@ import { FooterComponent } from './footer/footer.component';
     RouterModule,
     HeaderComponent,
     AdminPanelComponent,
-    HeroComponent,
-    AboutSectionComponent,
-    LinkTreeComponent,
-    ContactMeComponent,
-    FooterComponent
+    FooterComponent,
+    ToastComponent
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],

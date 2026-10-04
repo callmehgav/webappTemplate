@@ -29,7 +29,7 @@ namespace webappTemplate.Services
         {
             await using var scope = _scopeFactory.CreateAsyncScope();
             var database = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-            var cutoff = DateTimeOffset.UtcNow.AddMonths(-3);
+            var cutoff = DateTime.UtcNow.AddMonths(-3);
             var removed = await database.ScheduleEvents
                 .Where(item => item.EndsAt < cutoff)
                 .ExecuteDeleteAsync(cancellationToken);

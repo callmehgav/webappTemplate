@@ -1,0 +1,49 @@
+<section class="calendar" aria-label="Schedule calendar">
+  <header class="calendar-header">
+    <button type="button" (click)="previousMonth()" [disabled]="visibleMonth() <= earliestMonth" aria-label="Previous month">‹</button>
+    <h2>{{ monthLabel() }}</h2>
+    <button type="button" (click)="nextMonth()" aria-label="Next month">›</button>
+  </header>
+
+  <div class="weekday-row" aria-hidden="true">
+    @for (name of weekdayNames; track name) {
+      <span>{{ name }}</span>
+    }
+  </div>
+
+  <div class="month-grid">
+    @for (week of weeks(); track week.days[0].key) {
+      <div class="calendar-week" [style.--event-lanes]="week.lanes">
+        @for (day of week.days; track day.key) {
+          <button
+            type="button"
+            class="day-cell"
+            [class.outside]="!day.inMonth"
+            [class.past]="day.isPast"
+            [class.selected]="selectedKey() === day.key"
+            (click)="selectDate(day)">
+            <span>{{ day.date.getDate() }}</span>
+          </button>
+        }
+
+        <div class="event-layer">
+          @for (segment of week.segments; track segment.event.id + '-' + segment.column) {
+            <button
+              type="button"
+              class="event-bar"
+              [class.start]="segment.startsHere"
+              [class.end]="segment.endsHere"
+              [class.editable]="editable()"
+              [style.grid-column]="segment.column + ' / span ' + segment.span"
+              [style.grid-row]="segment.lane + 1"
+              [style.background]="segment.event.color"
+              [title]="eventLabel(segment.event)"
+              (click)="selectEvent(segment.event, $event)">
+              {{ eventLabel(segment.event) }}
+            </button>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</section>

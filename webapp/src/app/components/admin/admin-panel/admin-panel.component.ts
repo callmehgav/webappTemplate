@@ -6,7 +6,8 @@ import { ContentSettingsComponent } from '../settings/content-settings/content-s
 import { SocialLinksSettingsComponent } from '../settings/social-links-settings/social-links-settings.component';
 import { EmailSettingsComponent } from '../settings/email-settings/email-settings.component';
 import { BrandingSettingsComponent } from '../settings/branding-settings/branding-settings.component';
-type AdminSectionId = 'insights' | 'content' | 'branding' | 'social-links' | 'email';
+import { ScheduleSettingsComponent } from '../settings/schedule-settings/schedule-settings.component';
+type AdminSectionId = 'insights' | 'schedule' | 'content' | 'branding' | 'social-links' | 'email';
 
 interface AdminSection {
   id: AdminSectionId;
@@ -33,6 +34,12 @@ export class AdminPanelComponent {
       label: 'Insights',
       description: 'Traffic and interaction metrics',
       component: InsightsComponent
+    },
+    {
+      id: 'schedule',
+      label: 'Scheduler',
+      description: 'Lock in events and booking hours',
+      component: ScheduleSettingsComponent
     },
     {
       id: 'content',

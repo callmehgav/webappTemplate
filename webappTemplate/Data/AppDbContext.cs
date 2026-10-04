@@ -58,11 +58,11 @@ namespace webappTemplate.Data
                 entity.HasKey(x => x.Id);
                 entity.Property(x => x.BookingButtonLabel).HasMaxLength(100).IsRequired();
                 entity.Property(x => x.RequestHeading).HasMaxLength(150).IsRequired();
-                entity.Property(x => x.ResourceLabel).HasMaxLength(100).IsRequired();
+                entity.Property(x => x.LabelFieldName).HasMaxLength(100).IsRequired();
                 entity.Property(x => x.DetailsLabel).HasMaxLength(100).IsRequired();
                 entity.Property(x => x.TimeZoneId).HasMaxLength(100).IsRequired();
                 entity.Property(x => x.BusinessHoursJson).IsRequired();
-                entity.Property(x => x.ResourcesJson).IsRequired();
+                entity.Property(x => x.LabelsJson).IsRequired();
                 entity.Property(x => x.ServicesJson).IsRequired();
             });
 
@@ -75,7 +75,7 @@ namespace webappTemplate.Data
                 entity.HasKey(x => x.Id);
                 entity.Property(x => x.Title).HasMaxLength(200).IsRequired();
                 entity.Property(x => x.EventType).HasMaxLength(100).IsRequired();
-                entity.Property(x => x.Resource).HasMaxLength(100);
+                entity.Property(x => x.Label).HasMaxLength(100);
                 entity.Property(x => x.Color).HasMaxLength(20).IsRequired();
                 entity.Property(x => x.Notes).HasMaxLength(2000);
                 entity.HasIndex(x => x.StartsAt);

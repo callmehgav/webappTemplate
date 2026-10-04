@@ -23,6 +23,11 @@
   <div class="logo-wrapper">
     <img [src]="logoUrl()" alt="Site logo" />
   </div>
+
+  <div class="hero-actions" [class.visible]="showCTAs">
+    <a routerLink="/book" class="primary-action">{{ bookingLabel() }}</a>
+    <button type="button" class="secondary-action" (click)="scrollToAbout()">About us</button>
+  </div>
   
   
   <div
@@ -30,7 +35,7 @@
   [class.visible]="showCTAs"
   (click)="scrollToAbout()"
 >
-  <span class="dev-inquiry-text">Website Development & Commercial Drone Inquiries</span>
+  <span class="dev-inquiry-text">Learn more</span>
 
   <div class="scroll-arrows">
     <span></span>
