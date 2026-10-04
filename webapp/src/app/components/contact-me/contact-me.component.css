@@ -1,0 +1,201 @@
+.contact-me {
+  position: relative;
+  overflow: hidden;
+  max-width: 450px;
+  margin: 2rem auto;
+  padding: 1rem;
+  border-radius: 20px;
+
+  background: transparent;
+
+  .contact-card {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    padding: 2rem;
+    color: #fff;
+    background: #0009;
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+
+    h2 {
+      margin: 0 0 0.75rem;
+      color: #fff;
+    }
+
+    .contact-intro {
+      margin: 0 0 1.25rem;
+      color: rgba(255, 255, 255, 0.88);
+      font-family: Arial, sans-serif;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    .contact-options {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+      font-family: Arial, sans-serif;
+
+      .email-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.65rem 1.1rem;
+        color: #fff;
+        font-size: 0.95rem;
+        font-weight: 600;
+        text-decoration: none;
+        white-space: nowrap;
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        border-radius: 999px;
+        backdrop-filter: blur(4px);
+        transition:
+          color 0.2s ease,
+          background 0.2s ease,
+          transform 0.2s ease;
+
+        &:hover {
+          color: #222;
+          background: #fff;
+          transform: translateY(-1px);
+        }
+      }
+
+      .contact-divider {
+        color: rgba(255, 255, 255, 0.55);
+        font-style: italic;
+      }
+
+      .form-instruction {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.9rem;
+      }
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      label {
+        margin-top: 0.5rem;
+        color: #fff;
+        font-size: 0.9rem;
+        text-align: left;
+      }
+
+      .name-fields {
+        display: flex;
+        gap: 0.5rem;
+
+        input {
+          flex: 1;
+          min-width: 0;
+          box-sizing: border-box;
+        }
+
+        @media (max-width: 500px) {
+          flex-direction: column;
+        }
+      }
+
+      input,
+      textarea {
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        background: #fff;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        transition:
+          border 0.2s ease,
+          box-shadow 0.2s ease;
+
+        &:focus {
+          border-color: #999;
+          outline: none;
+          box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+        }
+      }
+
+      textarea {
+        resize: vertical;
+      }
+
+      button {
+        margin-top: 1rem;
+        padding: 0.75rem 1rem;
+        color: #fff;
+        font-size: 1rem;
+        background: #222;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition:
+          background 0.3s ease,
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+
+        &:hover {
+          background: #444;
+          box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+          transform: translateY(-2px);
+        }
+
+        &:disabled {
+          background: #888;
+          cursor: not-allowed;
+          transform: none;
+        }
+      }
+
+      .success-message {
+        margin-top: 0.5rem;
+        color: rgb(0, 255, 0);
+        font-size: 0.9rem;
+      }
+
+      .error-message {
+        margin-top: 0.5rem;
+        color: #ff5252;
+        font-size: 0.9rem;
+      }
+    }
+  }
+}
+@media (max-width: 768px) {
+  .contact-me{
+    background-image: none;
+  }
+  .contact-options {
+    align-items: center;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    .email-button {
+      width: 100%;
+    }
+
+    .contact-divider {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      gap: 0.75rem;
+      color: rgba(255, 255, 255, 0.6);
+
+      &::before,
+      &::after {
+        flex: 1;
+        height: 1px;
+        content: "";
+        background: rgba(255, 255, 255, 0.25);
+      }
+    }
+
+    .form-instruction {
+      text-align: center;
+    }
+  }
+}

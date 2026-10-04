@@ -1,0 +1,107 @@
+body {
+  margin: 0;
+  font-family: 'Georgia', sans-serif;
+  background: #f3f8ff;
+  color: #333;
+}
+body {
+  margin: 0;
+  font-family: 'Georgia', sans-serif;
+  background: #f3f8ff;
+  color: #333;
+  height: 100%;
+  width: 100%;
+}
+
+html {
+  height: 100%;
+  width: 100%;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+#background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background:
+    radial-gradient(
+      circle at 12% 18%,
+      rgba(255, 190, 214, 0.72),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 88% 14%,
+      rgba(151, 231, 255, 0.72),
+      transparent 38%
+    ),
+    radial-gradient(
+      circle at 72% 82%,
+      rgba(196, 181, 253, 0.62),
+      transparent 38%
+    ),
+    linear-gradient(
+      135deg,
+      #fff8ec 0%,
+      #eef7ff 48%,
+      #f5efff 100%
+    );
+  z-index: -1;
+  pointer-events: none;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+h1 {
+  margin: 0;
+  font-size: 4rem;
+  font-weight: 70;
+  color: #ffffff;
+font-family: 'Courier New', Courier, monospace;
+}
+h2 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 30;
+  color: #ffffff;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+p {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 50;
+  color: #ffffff;
+  font-family: 'Courier New', Courier, monospace;
+}
+h1, h2, p {
+  color: #ffffff;
+  text-shadow:
+    0 0 5px rgba(255, 255, 255, 0.7),
+    0 0 10px rgba(255, 255, 255, 0.4),
+    0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+
+html {
+    overflow: scroll;
+    overflow-x: hidden;
+}
+::-webkit-scrollbar {
+    width: 0;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+/* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+    background: #FF0000;
+}
+/* === Global Rounded Scrollbar Styles === */
+
+

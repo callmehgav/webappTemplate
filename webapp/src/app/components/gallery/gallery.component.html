@@ -1,0 +1,98 @@
+<main class="gallery-page">
+  <div class="gallery-shell">
+    <header class="gallery-header">
+      <a routerLink="/" class="back-link">
+        <span aria-hidden="true">←</span>
+        Back 
+      </a>
+
+      <p class="eyebrow">FAA-Certified Commercial Drone Pilot</p>
+
+      <h1>Aerial Portfolio</h1>
+
+      <p class="gallery-introduction">
+        A collection of landscapes, destinations, and experiences
+        captured from a different perspective.
+      </p>
+    </header>
+
+    <nav class="gallery-filters" aria-label="Filter drone portfolio">
+      @for (filter of filters; track filter) {
+        <button
+          type="button"
+          [class.active]="activeFilter === filter.value"
+          [attr.aria-pressed]="activeFilter === filter.value"
+          (click)="setFilter(filter.value)"
+          >
+          {{ filter.label }}
+        </button>
+      }
+    </nav>
+
+    @if (visibleVideos.length > 0) {
+      <section
+        class="video-grid"
+        aria-label="Drone videos"
+        >
+        @for (
+          video of visibleVideos; track trackByVideoId($index,
+          video)) {
+          <article
+            class="video-card"
+            >
+            <div class="video-frame">
+              <video
+                #portfolioVideo
+                [attr.data-src]="video.source"
+                muted
+                loop
+                playsinline
+                controls
+                preload="none"
+                loading="lazy"
+                controlsList="nodownload"
+                [attr.aria-label]="video.title"
+                (loadedmetadata)="primeFirstFrame($event)"
+                (mouseenter)="previewVideo($event)"
+                (mouseleave)="pauseVideo($event)"
+                (play)="pauseOtherVideos($event)"
+                (error)="handleVideoError(video.id)"
+              >
+              </video>
+              <span class="preview-hint" aria-hidden="true">
+                Hover to preview
+              </span>
+            </div>
+            <div class="video-information">
+              <p>{{ video.collectionName }}</p>
+              <h2>{{ video.title }}</h2>
+            </div>
+          </article>
+        }
+      </section>
+    } @else {
+      <section class="empty-gallery">
+        <h2>More footage is on the way.</h2>
+        <p>
+          This collection is currently being prepared for the gallery.
+        </p>
+      </section>
+    }
+
+
+    <footer class="gallery-footer">
+      <div>
+        <p>Have a project in mind?</p>
+        <h2>Let’s capture it from a new perspective.</h2>
+      </div>
+      <a
+        href="#contact"
+        (click)="scrollToContact($event)"
+        class="contact-link"
+        >
+        Start a Drone Project
+        <span aria-hidden="true">↗</span>
+      </a>
+    </footer>
+  </div>
+</main>

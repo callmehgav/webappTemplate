@@ -1,0 +1,69 @@
+<section class="link-tree" aria-labelledby="connect-heading">
+  <div class="link-tree-content">
+    <header class="connect-header">
+      <h2>Our Links</h2>
+    </header>
+
+    @if (isLoading()) {
+      <p class="link-status">Loading links...</p>
+    } @else if (errorMessage()) {
+      <p class="link-status link-error" role="alert">
+        {{ errorMessage() }}
+      </p>
+    } @else {
+      @if (featuredLinks().length > 0) {
+        <div class="featured-links">
+          @for (link of featuredLinks(); track link.id) {
+            <a
+              [href]="link.url"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="featured-link"
+              [class]="'featured-link ' + getLinkClass(link)"
+              [style.--link-background-image]="getBackgroundImage(link)"
+              [style.--link-background-position]="getBackgroundPosition(link)"
+              [attr.aria-label]="getAriaLabel(link)"
+              (click)="trackButtonClick(link.label)">
+              <span class="featured-badge">
+                <img
+                  [src]="getIconPath(link)"
+                  alt=""
+                  aria-hidden="true" />
+
+                <span>
+                  <strong>{{ link.label }}</strong>
+                  @if (link.handle) {
+                    <small>{{ link.handle }}</small>
+                  }
+                </span>
+              </span>
+
+              <span class="featured-arrow" aria-hidden="true">↗</span>
+            </a>
+          }
+        </div>
+      }
+
+      @if (compactLinks().length > 0) {
+        <nav class="secondary-links" aria-label="More social links">
+          @for (link of compactLinks(); track link.id) {
+            <a
+              [href]="link.url"
+              target="_blank"
+              rel="noopener noreferrer"
+              [class]="'icon-link ' + getLinkClass(link)"
+              [attr.aria-label]="getAriaLabel(link)"
+              [title]="link.label"
+              (click)="trackButtonClick(link.label)">
+              <img [src]="getIconPath(link)" alt="" />
+            </a>
+          }
+        </nav>
+      }
+
+      @if (links().length === 0) {
+        <p class="link-status">No social links are available.</p>
+      }
+    }
+  </div>
+</section>

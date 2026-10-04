@@ -1,0 +1,26 @@
+<section class="about-section" id="app-about-section">
+  <div class="about-bg"></div>
+
+  <div class="about-container">
+    <img
+      [src]="profileImageUrl()"
+      alt="Site logo"
+      class="about-image"
+      loading="lazy" />
+
+    <div class="about-bio">
+      @if (isLoading()) {
+        <p>Loading…</p>
+      } @else if (loadError()) {
+        <p>About information is temporarily unavailable.</p>
+      } @else if (aboutContent(); as about) {
+        <h2>{{ about.title || 'About Me' }}</h2>
+
+        @for (paragraph of paragraphs(); track $index) {
+          <p>{{ paragraph }}</p>
+        }
+      }
+
+    </div>
+  </div>
+</section>

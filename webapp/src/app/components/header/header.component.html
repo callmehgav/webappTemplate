@@ -1,0 +1,39 @@
+<header class="app-header" [class.hidden]="!isVisible">
+  <div class="left">
+    <a routerLink="/" class="icon-button" title="Home">
+      <img [src]="logoUrl()" alt="Site home" />
+    </a>
+  </div>
+
+  <div class="right">
+
+    @if (showLoginPanel) {
+      <app-admin-login
+        (closed)="showLoginPanel = false"
+        (loginSuccess)="handleAdminLoginSuccess()">
+      </app-admin-login>
+    }
+
+    @if (!isLoggedIn()) {
+      <button
+        type="button"
+        class="admin-button"
+        title="Admin Login"
+        (click)="toggleLoginPanel()">
+        <img
+          src="/assets/assets/account.svg"
+          alt="Admin Login" />
+      </button>
+    } @else {
+      <button
+        type="button"
+        class="admin-button"
+        title="Open Admin Panel"
+        (click)="openAdminPanel()">
+        <img
+          src="/assets/assets/anal.svg"
+          alt="Open Admin Panel" />
+      </button>
+    }
+  </div>
+</header>

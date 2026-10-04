@@ -1,0 +1,170 @@
+<section class="content-settings">
+  <header class="content-toolbar">
+    <div>
+      <h3>Site Content</h3>
+      <p>Edit the reusable text content displayed across the website.</p>
+    </div>
+
+    <button
+      type="button"
+      class="secondary-button"
+      [disabled]="isLoading() || isSaving()"
+      (click)="loadContent()">
+      {{ isLoading() ? 'Loading…' : 'Reload' }}
+    </button>
+  </header>
+
+  @if (loadError()) {
+    <div class="status-message error-message" role="alert">
+      <p>{{ loadError() }}</p>
+
+      <button type="button" (click)="loadContent()">
+        Try again
+      </button>
+    </div>
+  } @else if (isLoading()) {
+    <div class="status-message" role="status">
+      Loading site content…
+    </div>
+  } @else if (contentItems().length === 0) {
+    <div class="status-message">
+      No editable site content exists yet.
+    </div>
+  } @else {
+    <div class="content-layout">
+      <nav class="content-list" aria-label="Editable site content">
+        @for (item of contentItems(); track item.id) {
+          <button
+            type="button"
+            class="content-list-item"
+            [class.active]="selectedContent()?.id === item.id"
+            [attr.aria-current]="selectedContent()?.id === item.id ? 'page' : null"
+            (click)="selectContent(item)">
+            <span class="content-list-title">
+              {{ item.title || item.contentKey }}
+            </span>
+
+            <span class="content-list-key">
+              {{ item.contentKey }}
+            </span>
+
+            <span
+              class="visibility-status"
+              [class.hidden-content]="!item.isVisible">
+              {{ item.isVisible ? 'Visible' : 'Hidden' }}
+            </span>
+          </button>
+        }
+      </nav>
+
+      @if (selectedContent(); as selected) {
+        <form
+          class="content-editor"
+          [formGroup]="contentForm"
+          (ngSubmit)="saveContent()">
+          <header class="editor-header">
+            <div>
+              <p class="content-key">{{ selected.contentKey }}</p>
+              <h3>{{ selected.title || 'Untitled content' }}</h3>
+            </div>
+
+            <p class="updated-time">
+              Updated
+              {{ selected.updatedUtc | date:'medium' }}
+            </p>
+          </header>
+
+          <div class="form-grid">
+            <label class="field">
+              <span>Title</span>
+
+              <input
+                type="text"
+                formControlName="title"
+                maxlength="250"
+                autocomplete="off"
+                placeholder="Optional display title" />
+            </label>
+
+            <label class="field">
+              <span>Format</span>
+
+              <select formControlName="format">
+                @for (option of formatOptions; track option.value) {
+                  <option [ngValue]="option.value">
+                    {{ option.label }}
+                  </option>
+                }
+              </select>
+            </label>
+          </div>
+
+          <label class="field content-field">
+            <span>Content</span>
+
+            <textarea
+              formControlName="content"
+              rows="16"
+              placeholder="Enter the content displayed on the website">
+            </textarea>
+
+            @if (
+              contentForm.controls.content.invalid &&
+              contentForm.controls.content.touched
+            ) {
+              <small class="validation-message">
+                Content is required.
+              </small>
+            }
+          </label>
+
+          <label class="visibility-control">
+            <input
+              type="checkbox"
+              formControlName="isVisible" />
+
+            <span>
+              <strong>Visible on the website</strong>
+              <small>
+                Hidden content remains saved but is excluded from the public API.
+              </small>
+            </span>
+          </label>
+
+          @if (saveError()) {
+            <p class="save-message error-message" role="alert">
+              {{ saveError() }}
+            </p>
+          }
+
+          @if (successMessage()) {
+            <p class="save-message success-message" role="status">
+              {{ successMessage() }}
+            </p>
+          }
+
+          <footer class="editor-actions">
+            <button
+              type="button"
+              class="secondary-button"
+              [disabled]="isSaving() || !contentForm.dirty"
+              (click)="resetChanges()">
+              Reset changes
+            </button>
+
+            <button
+              type="submit"
+              class="primary-button"
+              [disabled]="
+                isSaving() ||
+                contentForm.invalid ||
+                !contentForm.dirty
+              ">
+              {{ isSaving() ? 'Saving…' : 'Save content' }}
+            </button>
+          </footer>
+        </form>
+      }
+    </div>
+  }
+</section>

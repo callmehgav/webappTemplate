@@ -1,0 +1,331 @@
+<main class="legal-page">
+  <article class="legal-document">
+    <header class="legal-header">
+      <a routerLink="/" class="back-link">
+        <span aria-hidden="true">←</span>
+        Back to {{ siteName }}
+      </a>
+
+      <p class="legal-eyebrow">Legal</p>
+      <h1>Privacy Policy</h1>
+      <p class="last-updated">
+        Last updated: {{ lastUpdated }}
+      </p>
+    </header>
+
+    <section class="legal-introduction">
+      <p>
+        This Privacy Policy explains how {{ operatorName }} collects,
+        uses, discloses, and protects information when you visit or
+        interact with {{ siteName }}.
+      </p>
+
+      <p>
+        The privacy rules that apply to you may depend on where you
+        live and how you use the website.
+      </p>
+    </section>
+
+    <section>
+      <h2>1. Who is responsible for your information?</h2>
+      <p>
+        {{ operatorName }}, located in {{ operatorLocation }}, is
+        responsible for the personal information processed through
+        this website.
+      </p>
+
+      <p>
+        Privacy questions and requests may be sent to
+        <a [href]="'mailto:' + contactEmail">
+          {{ contactEmail }}
+        </a>.
+      </p>
+    </section>
+
+    <section>
+      <h2>2. Information we collect</h2>
+
+      @if (contactFormEnabled) {
+        <h3>Information submitted through contact forms</h3>
+        <p>
+          When you contact us, we may receive your first and last
+          name, email address, phone number, message, and any other
+          information you voluntarily include.
+        </p>
+      }
+
+      @if (schedulerEnabled) {
+        <h3>Scheduling information</h3>
+        <p>
+          When you request an appointment, we may collect your name,
+          contact details, requested date and time, timezone, service
+          selection, and information included in your booking note.
+        </p>
+      }
+
+      <h3>Basic usage information</h3>
+      <p>
+        The website may record aggregate events such as page views,
+        general referral source, and button interactions. The base
+        website template does not use these counters to create
+        individual visitor profiles.
+      </p>
+
+      <h3>Technical information</h3>
+      <p>
+        Our hosting, security, and network providers may
+        automatically process technical information such as an IP
+        address, browser type, device type, requested page, and
+        request time to deliver and protect the website.
+      </p>
+
+      <h3>Administrator information</h3>
+      <p>
+        Authorized website administrators may provide account,
+        authentication, email-delivery, and configuration
+        information. This information is used to operate and secure
+        the administrative features.
+      </p>
+    </section>
+
+    <section>
+      <h2>3. How we use information</h2>
+      <p>We may use information to:</p>
+
+      <ul>
+        <li>Respond to questions and service inquiries.</li>
+        <li>Review and manage appointment requests.</li>
+        <li>Deliver requested website functionality.</li>
+        <li>Send operational or appointment-related messages.</li>
+        <li>Understand aggregate website usage.</li>
+        <li>Maintain, troubleshoot, and secure the website.</li>
+        <li>Prevent fraud, spam, misuse, or unauthorized access.</li>
+        <li>Comply with legal obligations.</li>
+        <li>Establish or defend legal claims.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>4. Legal bases where applicable</h2>
+      <p>
+        Where applicable law requires a legal basis, we process
+        information based on one or more of the following:
+      </p>
+
+      <ul>
+        <li>Your consent.</li>
+        <li>Steps requested before entering into a contract.</li>
+        <li>Performance of a contract with you.</li>
+        <li>
+          Our legitimate interests in communicating, operating the
+          website, and protecting our services.
+        </li>
+        <li>Compliance with a legal obligation.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>5. How information is disclosed</h2>
+      <p>
+        We may disclose information to service providers that help
+        operate the website, including providers of:
+      </p>
+
+      <ul>
+        <li>Website and database hosting.</li>
+        <li>Email delivery.</li>
+        <li>Media and file storage.</li>
+        <li>Scheduling or calendar services, when enabled.</li>
+        <li>Security, maintenance, and technical support.</li>
+      </ul>
+
+      <p>
+        Information may also be disclosed when reasonably necessary
+        to comply with law, respond to lawful requests, protect
+        rights or safety, investigate misuse, or complete a business
+        transfer.
+      </p>
+
+      <p>
+        We do not allow service providers to use information for
+        purposes unrelated to the services they provide to us.
+      </p>
+    </section>
+
+    <section>
+      <h2>6. Sale and targeted advertising</h2>
+
+      @if (sellsOrSharesPersonalInformation) {
+        <p>
+          This deployment may sell, share, or use personal
+          information for targeted advertising as those terms are
+          defined by applicable law. The website operator must
+          identify the relevant categories and provide any required
+          opt-out mechanism here.
+        </p>
+      } @else {
+        <p>
+          We do not sell personal information for money or knowingly
+          share personal information for cross-context behavioral
+          advertising.
+        </p>
+      }
+    </section>
+
+    <section>
+      <h2>7. Cookies and similar technology</h2>
+      <p>
+        Essential technology may be used for website security and
+        administrator authentication. These functions are necessary
+        to operate protected portions of the website.
+      </p>
+
+      @if (optionalAnalyticsEnabled) {
+        <p>
+          Optional analytics or similar technologies may also be
+          used. Where required, visitors will be given an
+          appropriate consent or opt-out choice before optional
+          technology is activated.
+        </p>
+      } @else {
+        <p>
+          The base deployment does not use advertising cookies or
+          optional cookie-based visitor profiling. This section must
+          be updated if additional analytics, advertising, embedded
+          media, or tracking services are added.
+        </p>
+      }
+    </section>
+
+    <section>
+      <h2>8. Data retention</h2>
+      <p>
+        We retain personal information only for as long as reasonably
+        necessary for the purpose for which it was collected,
+        including communication, scheduling, recordkeeping,
+        security, dispute resolution, and legal compliance.
+      </p>
+
+      <p>
+        Retention periods may vary according to the type of
+        information, the relationship involved, legal requirements,
+        and whether the information is needed to establish or defend
+        a legal claim.
+      </p>
+    </section>
+
+    <section>
+      <h2>9. Data security</h2>
+      <p>
+        We use reasonable administrative, technical, and
+        organizational safeguards designed to protect information.
+        However, no website, transmission method, or storage system
+        can be guaranteed to be completely secure.
+      </p>
+    </section>
+
+    <section>
+      <h2>10. International processing</h2>
+      <p>
+        Website providers may process information in locations other
+        than your own. Where required, appropriate safeguards will be
+        used for international transfers of personal information.
+      </p>
+    </section>
+
+    <section>
+      <h2>11. Your privacy choices and rights</h2>
+      <p>
+        Depending on your location, you may have rights to:
+      </p>
+
+      <ul>
+        <li>Request access to personal information.</li>
+        <li>Request correction of inaccurate information.</li>
+        <li>Request deletion of certain information.</li>
+        <li>Receive a portable copy of certain information.</li>
+        <li>Object to or restrict certain processing.</li>
+        <li>Withdraw consent where processing relies on consent.</li>
+        <li>
+          Opt out of qualifying sales, sharing, or targeted
+          advertising.
+        </li>
+        <li>
+          Appeal a decision concerning a privacy request where
+          applicable.
+        </li>
+        <li>
+          Lodge a complaint with an appropriate privacy authority.
+        </li>
+      </ul>
+
+      <p>
+        To submit a request, contact
+        <a [href]="'mailto:' + contactEmail">
+          {{ contactEmail }}
+        </a>.
+        We may need to verify your identity before completing a
+        request.
+      </p>
+
+      <p>
+        We will not unlawfully discriminate against you for
+        exercising an applicable privacy right.
+      </p>
+    </section>
+
+    <section>
+      <h2>12. Children’s privacy</h2>
+      <p>
+        This website is not directed to children below the minimum
+        age established by applicable privacy law. We do not
+        knowingly collect personal information from children in
+        violation of those requirements.
+      </p>
+
+      <p>
+        If you believe a child submitted personal information
+        improperly, please contact us so the matter can be reviewed.
+      </p>
+    </section>
+
+    <section>
+      <h2>13. Third-party links and services</h2>
+      <p>
+        This website may contain links to or integrations with
+        third-party websites. Their privacy practices are governed by
+        their own policies, and we are not responsible for their
+        practices.
+      </p>
+    </section>
+
+    <section>
+      <h2>14. Changes to this policy</h2>
+      <p>
+        We may update this policy when our website, business
+        practices, providers, or legal obligations change. The
+        revised policy will be posted here with an updated date.
+      </p>
+    </section>
+
+    <section>
+      <h2>15. Contact us</h2>
+      <p>
+        Questions or privacy requests may be sent to:
+      </p>
+
+      <address>
+        <strong>{{ operatorName }}</strong><br />
+        {{ operatorLocation }}<br />
+        <a [href]="'mailto:' + contactEmail">
+          {{ contactEmail }}
+        </a>
+      </address>
+    </section>
+
+    <footer class="legal-footer">
+      <a routerLink="/terms">Read the Terms of Use</a>
+      <a routerLink="/" fragment="contact">Contact us</a>
+    </footer>
+  </article>
+</main>

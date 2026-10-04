@@ -1,0 +1,228 @@
+<main class="legal-page">
+  <article class="legal-document">
+    <header class="legal-header">
+      <a routerLink="/" class="back-link">
+        <span aria-hidden="true">←</span>
+        Back to {{ siteName }}
+      </a>
+
+      <p class="legal-eyebrow">Legal</p>
+      <h1>Terms of Use</h1>
+      <p class="last-updated">
+        Last updated: {{ lastUpdated }}
+      </p>
+    </header>
+
+    <section class="legal-introduction">
+      <p>
+        These Terms of Use govern your access to and use of
+        {{ siteName }}, including its pages, forms, media,
+        scheduling tools, and related services.
+      </p>
+
+      <p>
+        By using this website, you agree to these terms. If you do
+        not agree, please do not use the website.
+      </p>
+    </section>
+
+    <section>
+      <h2>1. Website operator</h2>
+      <p>
+        This website is operated by {{ operatorName }}. References
+        to “we,” “us,” and “our” mean the website operator.
+      </p>
+    </section>
+
+    <section>
+      <h2>2. Permitted use</h2>
+      <p>
+        You may use this website for lawful, personal, or legitimate
+        business purposes. You agree not to:
+      </p>
+
+      <ul>
+        <li>Use the website in violation of applicable law.</li>
+        <li>Attempt to gain unauthorized access to any system.</li>
+        <li>Interfere with the operation or security of the website.</li>
+        <li>Transmit malicious code, spam, or deceptive material.</li>
+        <li>
+          Scrape, copy, or republish website content without
+          authorization.
+        </li>
+        <li>
+          Impersonate another person or submit false information.
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>3. Informational content</h2>
+      <p>
+        Website content is provided for general informational
+        purposes. Although we try to keep it accurate and current,
+        we do not guarantee that every statement is complete,
+        current, or free from error.
+      </p>
+
+      <p>
+        Nothing on this website constitutes legal, financial,
+        medical, or other regulated professional advice unless
+        expressly stated otherwise.
+      </p>
+    </section>
+
+    <section>
+      <h2>4. Contact forms and submissions</h2>
+      <p>
+        When you submit a contact form, you represent that the
+        information you provide is accurate and that you are
+        authorized to provide it.
+      </p>
+
+      <p>
+        Submitting a form does not create a contractual,
+        professional, employment, or client relationship. Such a
+        relationship exists only after the parties enter into a
+        separate written agreement, when applicable.
+      </p>
+    </section>
+
+    @if (schedulerEnabled) {
+      <section>
+        <h2>5. Scheduling and appointments</h2>
+        <p>
+          Available appointment times are provided for convenience
+          and may change. Submitting a scheduling request does not
+          guarantee an appointment until it has been confirmed.
+        </p>
+
+        <p>
+          You are responsible for providing accurate contact and
+          scheduling information. Please provide reasonable notice
+          if you need to cancel or reschedule.
+        </p>
+
+        <p>
+          We may decline, cancel, or reschedule an appointment when
+          reasonably necessary. Any service-specific cancellation,
+          deposit, or refund terms will be disclosed separately.
+        </p>
+      </section>
+    }
+
+    <section>
+      <h2>6. Intellectual property</h2>
+      <p>
+        Unless otherwise stated, the website design, text,
+        photographs, videos, graphics, logos, and other original
+        content are owned by or licensed to {{ operatorName }} and
+        are protected by applicable intellectual-property laws.
+      </p>
+
+      <p>
+        You may view the content for ordinary website use. You may
+        not reproduce, distribute, sell, modify, or commercially
+        exploit it without prior written permission.
+      </p>
+    </section>
+
+    <section>
+      <h2>7. Third-party services and links</h2>
+      <p>
+        This website may link to social networks, scheduling
+        providers, maps, media hosts, payment providers, or other
+        third-party services. We do not control their content,
+        availability, security, or privacy practices.
+      </p>
+
+      <p>
+        Your use of a third-party service is governed by that
+        service’s own terms and policies.
+      </p>
+    </section>
+
+    <section>
+      <h2>8. Service availability</h2>
+      <p>
+        We may modify, suspend, or discontinue any portion of the
+        website without notice. We do not guarantee uninterrupted
+        or error-free availability.
+      </p>
+    </section>
+
+    <section>
+      <h2>9. Disclaimer of warranties</h2>
+      <p>
+        To the fullest extent permitted by law, this website is
+        provided “as is” and “as available,” without warranties of
+        any kind, whether express or implied.
+      </p>
+
+      <p>
+        Nothing in these terms excludes a warranty or consumer
+        protection that cannot legally be excluded.
+      </p>
+    </section>
+
+    <section>
+      <h2>10. Limitation of liability</h2>
+      <p>
+        To the fullest extent permitted by law, {{ operatorName }}
+        will not be liable for indirect, incidental, special,
+        consequential, or punitive damages arising from your use of,
+        or inability to use, this website.
+      </p>
+
+      <p>
+        These limitations do not apply where liability cannot be
+        limited under applicable law.
+      </p>
+    </section>
+
+    <section>
+      <h2>11. Privacy</h2>
+      <p>
+        Our collection and use of personal information are described
+        in our
+        <a routerLink="/privacy">Privacy Policy</a>.
+      </p>
+    </section>
+
+    <section>
+      <h2>12. Changes to these terms</h2>
+      <p>
+        We may update these terms when the website, our practices,
+        or applicable requirements change. The updated version will
+        be posted here with a revised “Last updated” date.
+      </p>
+    </section>
+
+    <section>
+      <h2>13. Governing law</h2>
+      <p>
+        These terms are governed by the applicable laws of
+        {{ governingLocation }}, without regard to conflict-of-law
+        principles, except where consumer law requires otherwise.
+      </p>
+    </section>
+
+    <section>
+      <h2>14. Severability</h2>
+      <p>
+        If any part of these terms is found unenforceable, the
+        remaining provisions will continue in effect.
+      </p>
+    </section>
+
+    <section>
+      <h2>15. Contact</h2>
+      <p>
+        Questions about these terms may be sent to
+        <a [href]="'mailto:' + contactEmail">
+          {{ contactEmail }}
+        </a>.
+      </p>
+    </section>
+  </article>
+</main>

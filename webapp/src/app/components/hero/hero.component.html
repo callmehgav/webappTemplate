@@ -1,0 +1,42 @@
+<section class="hero" [class.scrolled]="scrolled">
+  @if (heroMedia(); as media) {
+    @if (isVideo(media)) {
+      <video
+        class="bg-video"
+        [src]="media.contentUrl"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata">
+      </video>
+    } @else {
+      <img
+        class="bg-video"
+        [src]="media.contentUrl"
+        [alt]="media.altText || 'Hero background'" />
+    }
+  } @else {
+    <div class="hero-background-placeholder"></div>
+  }
+
+  <div class="logo-wrapper">
+    <img [src]="logoUrl()" alt="Site logo" />
+  </div>
+  
+  
+  <div
+  class="dev-inquiry-wrapper"
+  [class.visible]="showCTAs"
+  (click)="scrollToAbout()"
+>
+  <span class="dev-inquiry-text">Website Development & Commercial Drone Inquiries</span>
+
+  <div class="scroll-arrows">
+    <span></span>
+  </div>
+</div>
+
+
+
+</section>

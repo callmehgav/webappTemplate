@@ -1,0 +1,56 @@
+<section class="admin-panel" aria-label="Administrator control panel">
+  <header class="admin-header">
+    <div>
+      <p class="admin-eyebrow">Administration</p>
+      <h1>Control Panel</h1>
+
+      @if (username()) {
+        <p class="admin-user">Signed in as {{ username() }}</p>
+      }
+    </div>
+
+    <div class="admin-header-actions">
+      <button type="button" class="logout-button" (click)="logout()">
+        Log out
+      </button>
+
+      <button
+        type="button"
+        class="close-button"
+        aria-label="Close administrator panel"
+        title="Close"
+        (click)="close()">
+        &times;
+      </button>
+    </div>
+  </header>
+
+  <div class="admin-layout">
+    <nav class="admin-navigation" aria-label="Administrator settings">
+      @for (section of sections; track section.id) {
+        <button
+          type="button"
+          class="navigation-item"
+          [class.active]="activeSection().id === section.id"
+          [attr.aria-current]="activeSection().id === section.id ? 'page' : null"
+          (click)="selectSection(section)">
+          <span class="navigation-label">{{ section.label }}</span>
+          <span class="navigation-description">{{ section.description }}</span>
+        </button>
+      }
+    </nav>
+
+    <main class="admin-content">
+      <header class="section-header">
+        <h2>{{ activeSection().label }}</h2>
+        <p>{{ activeSection().description }}</p>
+      </header>
+
+      <div class="section-content">
+        <ng-container
+          [ngComponentOutlet]="activeSection().component">
+        </ng-container>
+      </div>
+    </main>
+  </div>
+</section>

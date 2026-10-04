@@ -1,0 +1,154 @@
+<section class="branding-settings">
+  <header class="settings-header">
+    <div>
+      <h3>Site logo</h3>
+      <p>
+        Set one logo for the hero, header, browser tab, and About image.
+      </p>
+    </div>
+  </header>
+
+  @if (isLoading()) {
+    <div class="state-panel" role="status">
+      Loading the current logo…
+    </div>
+  } @else {
+    <div class="logo-editor">
+      <div class="logo-preview" aria-label="Site logo preview">
+        @if (displayedLogoUrl; as logoUrl) {
+          <img [src]="logoUrl" alt="Site logo preview" />
+        } @else {
+          <p>No custom site logo has been uploaded.</p>
+        }
+      </div>
+
+      <div class="logo-controls">
+        <label class="file-field">
+          <span>Logo image</span>
+          <input
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/gif"
+            [disabled]="isSaving()"
+            (change)="onFileSelected($event)" />
+          <small>
+            PNG or WebP with a transparent background works best. Maximum 10 MB.
+          </small>
+        </label>
+
+        <div class="usage-list">
+          <strong>This image appears in:</strong>
+          <ul>
+            <li>Hero center</li>
+            <li>Header home icon</li>
+            <li>Browser tab favicon</li>
+            <li>About profile image</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    @if (errorMessage()) {
+      <p class="message error-message" role="alert">
+        {{ errorMessage() }}
+      </p>
+    }
+
+    @if (successMessage()) {
+      <p class="message success-message" role="status">
+        {{ successMessage() }}
+      </p>
+    }
+
+    <footer class="form-actions">
+      <button
+        type="button"
+        class="primary-button"
+        [disabled]="!selectedFile() || isSaving()"
+        (click)="saveLogo()">
+        {{ isSaving() ? 'Saving…' : 'Save site logo' }}
+      </button>
+    </footer>
+  }
+</section>
+
+<section class="branding-settings hero-settings">
+  <header class="settings-header">
+    <div>
+      <h3>Hero media</h3>
+      <p>
+        Upload one image or video for the full-screen hero background.
+      </p>
+    </div>
+  </header>
+
+  @if (isHeroLoading()) {
+    <div class="state-panel" role="status">
+      Loading the current hero media…
+    </div>
+  } @else {
+    <div class="logo-editor">
+      <div class="logo-preview media-preview" aria-label="Hero media preview">
+        @if (displayedHeroMediaUrl; as mediaUrl) {
+          @if (displayedHeroMediaIsVideo) {
+            <video
+              [src]="mediaUrl"
+              controls
+              muted
+              loop
+              playsinline>
+            </video>
+          } @else {
+            <img [src]="mediaUrl" alt="Hero media preview" />
+          }
+        } @else {
+          <p>No custom hero image or video has been uploaded.</p>
+        }
+      </div>
+
+      <div class="logo-controls">
+        <label class="file-field">
+          <span>Hero image or video</span>
+          <input
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm"
+            [disabled]="isHeroSaving()"
+            (change)="onHeroFileSelected($event)" />
+          <small>
+            JPEG, PNG, WebP, GIF, MP4, or WebM. Maximum 50 MB.
+          </small>
+        </label>
+
+        <div class="usage-list">
+          <strong>Display behavior</strong>
+          <ul>
+            <li>Images fill the hero while preserving their proportions.</li>
+            <li>Videos autoplay muted, loop, and support seeking.</li>
+            <li>Uploading a new file replaces the previous hero media.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    @if (heroErrorMessage()) {
+      <p class="message error-message" role="alert">
+        {{ heroErrorMessage() }}
+      </p>
+    }
+
+    @if (heroSuccessMessage()) {
+      <p class="message success-message" role="status">
+        {{ heroSuccessMessage() }}
+      </p>
+    }
+
+    <footer class="form-actions">
+      <button
+        type="button"
+        class="primary-button"
+        [disabled]="!selectedHeroFile() || isHeroSaving()"
+        (click)="saveHeroMedia()">
+        {{ isHeroSaving() ? 'Saving…' : 'Save hero media' }}
+      </button>
+    </footer>
+  }
+</section>

@@ -1,0 +1,181 @@
+<section class="social-settings">
+  <header class="section-header">
+    <div>
+      <h2>Social links</h2>
+      <p>Edit the links displayed on the website.</p>
+    </div>
+
+    <button
+      type="button"
+      class="primary-button"
+      [disabled]="isSaving() || isDeleting()"
+      (click)="newLink()">
+      Add link
+    </button>
+  </header>
+
+  @if (isLoading()) {
+    <p class="status-message">Loading social links...</p>
+  } @else {
+    <div class="settings-layout">
+      <nav class="link-list" aria-label="Social links">
+        @for (link of links(); track link.id) {
+          <button
+            type="button"
+            class="link-option"
+            [class.selected]="selectedId() === link.id"
+            (click)="selectLink(link)">
+            <strong>{{ link.label }}</strong>
+            <span>{{ link.handle || link.url }}</span>
+          </button>
+        }
+
+        @if (links().length === 0) {
+          <p class="empty-message">No links yet.</p>
+        }
+      </nav>
+
+      <form class="link-form" (ngSubmit)="saveLink()">
+        <h3>{{ selectedId() ? 'Edit link' : 'New link' }}</h3>
+
+        <div class="form-grid">
+          <label>
+            <span>Label</span>
+            <input
+              type="text"
+              name="label"
+              [(ngModel)]="draft.label"
+              required
+              placeholder="YouTube" />
+          </label>
+
+          <label>
+            <span>Handle</span>
+            <input
+              type="text"
+              name="handle"
+              [(ngModel)]="draft.handle"
+              placeholder="@callmehgav" />
+          </label>
+
+          <label class="full-width">
+            <span>URL</span>
+            <input
+              type="url"
+              name="url"
+              [(ngModel)]="draft.url"
+              required
+              placeholder="https://example.com/profile" />
+          </label>
+
+          <label>
+            <span>Platform</span>
+            <select
+              name="platform"
+              [(ngModel)]="draft.platform">
+              @for (option of platformOptions; track option.value) {
+                <option [ngValue]="option.value">
+                  {{ option.label }}
+                </option>
+              }
+            </select>
+          </label>
+
+          <label>
+            <span>Display style</span>
+            <select
+              name="displayStyle"
+              [(ngModel)]="draft.displayStyle">
+              @for (option of displayStyleOptions; track option.value) {
+                <option [ngValue]="option.value">
+                  {{ option.label }}
+                </option>
+              }
+            </select>
+          </label>
+
+          <label>
+            <span>Display order</span>
+            <input
+              type="number"
+              name="displayOrder"
+              [(ngModel)]="draft.displayOrder"
+              step="1" />
+          </label>
+        </div>
+
+        @if (draft.displayStyle === SocialLinkDisplayStyle.TitleCard) {
+          <section class="image-section">
+            <div class="image-heading">
+              <div>
+                <h4>Card image</h4>
+                <p>Choose an optional background image for this link.</p>
+              </div>
+
+              @if (currentImageUrl) {
+                <button
+                  type="button"
+                  class="text-button danger-text"
+                  (click)="clearImage(fileInput)">
+                  Remove image
+                </button>
+              }
+            </div>
+
+            @if (currentImageUrl) {
+              <img
+                class="image-preview"
+                [src]="currentImageUrl"
+                [alt]="draft.label || 'Social-link image preview'" />
+            }
+
+            <label class="file-picker">
+              <span>
+                {{ selectedFile() ? selectedFile()!.name : 'Choose image' }}
+              </span>
+
+              <input
+                #fileInput
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/gif"
+                (change)="chooseImage($event)" />
+            </label>
+          </section>
+        }
+
+        @if (errorMessage()) {
+          <p class="message error-message" role="alert">
+            {{ errorMessage() }}
+          </p>
+        }
+
+        @if (successMessage()) {
+          <p class="message success-message" role="status">
+            {{ successMessage() }}
+          </p>
+        }
+
+        <footer class="form-actions">
+          <div>
+            @if (selectedId()) {
+              <button
+                type="button"
+                class="danger-button"
+                [disabled]="isSaving() || isDeleting()"
+                (click)="deleteLink()">
+                {{ isDeleting() ? 'Deleting...' : 'Delete' }}
+              </button>
+            }
+          </div>
+
+          <button
+            type="submit"
+            class="primary-button"
+            [disabled]="isSaving() || isDeleting()">
+            {{ isSaving() ? 'Saving...' : 'Save link' }}
+          </button>
+        </footer>
+      </form>
+    </div>
+  }
+</section>

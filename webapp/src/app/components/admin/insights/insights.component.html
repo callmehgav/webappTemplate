@@ -1,0 +1,145 @@
+<section class="insights" aria-labelledby="insights-heading">
+  <header class="insights-toolbar">
+    <div>
+      <h3 id="insights-heading">Overview</h3>
+      <p>Website traffic and interaction totals stored in the database.</p>
+    </div>
+
+    <button
+      type="button"
+      class="refresh-button"
+      [disabled]="isLoading()"
+      (click)="loadInsights()">
+      {{ isLoading() ? 'Loading…' : 'Refresh' }}
+    </button>
+  </header>
+
+  @if (isLoading()) {
+    <div class="status-message" role="status">
+      Loading insights…
+    </div>
+  } @else if (errorMessage()) {
+    <div class="status-message error-message" role="alert">
+      <p>{{ errorMessage() }}</p>
+
+      <button type="button" (click)="loadInsights()">
+        Try again
+      </button>
+    </div>
+  } @else {
+    @if (insightCards().length > 0) {
+      <div class="insight-grid">
+        @for (insight of insightCards(); track insight.key) {
+          <article class="insight-card">
+            <span class="insight-title">
+              {{ insight.title }}
+            </span>
+
+            <strong class="insight-value">
+              {{ insight.value }}
+            </strong>
+          </article>
+        }
+      </div>
+    } @else {
+      <div class="empty-state">
+        No insight metrics have been recorded yet.
+      </div>
+    }
+
+    <div class="breakdown-grid">
+      <section class="breakdown-card">
+        <header class="breakdown-header">
+          <h3>Referrers</h3>
+          <span>{{ referrers().length }} sources</span>
+        </header>
+
+        @if (referrers().length > 0) {
+          <div class="breakdown-list">
+            @for (referrer of referrers(); track referrer.key) {
+              <div class="breakdown-item">
+                <div class="breakdown-values">
+                  <span>{{ referrer.label }}</span>
+                  <strong>{{ referrer.count }}</strong>
+                </div>
+
+                <div class="bar-track" aria-hidden="true">
+                  <div
+                    class="bar-value"
+                    [style.width.%]="getBarWidth(referrer.count, referrers())">
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        } @else {
+          <p class="empty-breakdown">
+            No referrer data has been recorded.
+          </p>
+        }
+      </section>
+
+      <section class="breakdown-card">
+        <header class="breakdown-header">
+          <h3>Button Clicks</h3>
+          <span>{{ clickLabels().length }} labels</span>
+        </header>
+
+        @if (clickLabels().length > 0) {
+          <div class="breakdown-list">
+            @for (click of clickLabels(); track click.key) {
+              <div class="breakdown-item">
+                <div class="breakdown-values">
+                  <span>{{ click.label }}</span>
+                  <strong>{{ click.count }}</strong>
+                </div>
+
+                <div class="bar-track" aria-hidden="true">
+                  <div
+                    class="bar-value"
+                    [style.width.%]="getBarWidth(click.count, clickLabels())">
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        } @else {
+          <p class="empty-breakdown">
+            No button clicks have been recorded.
+          </p>
+        }
+      </section>
+
+      <section class="breakdown-card">
+        <header class="breakdown-header">
+          <h3>Pages</h3>
+          <span>{{ pageViews().length }} routes</span>
+        </header>
+
+        @if (pageViews().length > 0) {
+          <div class="breakdown-list">
+            @for (page of pageViews(); track page.key) {
+              <div class="breakdown-item">
+                <div class="breakdown-values">
+                  <span>{{ page.label }}</span>
+                  <strong>{{ page.count }}</strong>
+                </div>
+
+                <div class="bar-track" aria-hidden="true">
+                  <div
+                    class="bar-value"
+                    [style.width.%]="getBarWidth(page.count, pageViews())">
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        } @else {
+          <p class="empty-breakdown">
+            No route-specific page views have been recorded.
+          </p>
+        }
+      </section>
+    </div>
+  }
+</section>
