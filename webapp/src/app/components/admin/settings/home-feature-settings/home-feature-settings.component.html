@@ -1,0 +1,65 @@
+@if (settings(); as config) {
+  <div class="feature-grid">
+    <section class="settings-card">
+      <div class="card-heading">
+        <div>
+          <span class="eyebrow">Video</span>
+          <h3>YouTube</h3>
+          <p>Embed a video on the home page, or link to a channel when the URL is not a specific video.</p>
+        </div>
+        <label class="switch-row">
+          <input type="checkbox" [(ngModel)]="config.youTubeEnabled" />
+          <span>Show on home page</span>
+        </label>
+      </div>
+
+      <label>YouTube URL
+        <input type="url" [(ngModel)]="config.youTubeUrl" maxlength="500" placeholder="https://www.youtube.com/watch?v=..." />
+        <small>Video, Short, Live, channel, and youtu.be links are supported.</small>
+      </label>
+    </section>
+
+    <section class="settings-card">
+      <div class="card-heading">
+        <div>
+          <span class="eyebrow">Visit</span>
+          <h3>Location map</h3>
+          <p>The current logo from Branding is automatically used as the map pin.</p>
+        </div>
+        <label class="switch-row">
+          <input type="checkbox" [(ngModel)]="config.mapEnabled" />
+          <span>Show on home page</span>
+        </label>
+      </div>
+
+      <div class="two-columns">
+        <label>Location name
+          <input [(ngModel)]="config.locationName" maxlength="150" placeholder="Find us" />
+        </label>
+        <label>Display address
+          <input [(ngModel)]="config.locationAddress" maxlength="500" placeholder="123 Main Street, City, State" />
+        </label>
+        <label>Latitude
+          <input type="number" [(ngModel)]="config.latitude" min="-90" max="90" step="0.000001" />
+        </label>
+        <label>Longitude
+          <input type="number" [(ngModel)]="config.longitude" min="-180" max="180" step="0.000001" />
+        </label>
+        <label>Map zoom
+          <input type="number" [(ngModel)]="config.mapZoom" min="1" max="19" />
+          <small>1 shows the world; 19 shows street-level detail.</small>
+        </label>
+      </div>
+    </section>
+  </div>
+
+  <button class="primary save" type="button" [disabled]="saving()" (click)="save()">
+    {{ saving() ? 'Saving…' : 'Save home features' }}
+  </button>
+
+  <div class="about-content-settings">
+    <app-content-settings></app-content-settings>
+  </div>
+} @else {
+  <p class="loading">Loading home features…</p>
+}

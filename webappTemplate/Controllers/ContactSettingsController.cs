@@ -19,14 +19,19 @@ namespace webappTemplate.Controllers
         public async Task<IActionResult> Get(
             CancellationToken cancellationToken)
         {
-            var email = await _database.EmailSettings
+            var settings = await _database.EmailSettings
                 .AsNoTracking()
-                .Select(settings => settings.RecipientEmail)
+                .Select(item => new
+                {
+                    item.RecipientEmail,
+                    item.PublicPhoneNumber
+                })
                 .SingleOrDefaultAsync(cancellationToken);
 
             return Ok(new
             {
-                email = email ?? string.Empty
+                email = settings?.RecipientEmail ?? string.Empty,
+                phone = settings?.PublicPhoneNumber ?? string.Empty
             });
         }
     }

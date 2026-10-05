@@ -9,6 +9,8 @@ namespace webappTemplate.Data.DTOs
 
         public MediaUsage Usage { get; set; }
 
+        public int DisplayOrder { get; set; }
+
         public string? AltText { get; set; }
 
         public double FocalPointX { get; set; } = 50;
@@ -19,6 +21,8 @@ namespace webappTemplate.Data.DTOs
     public sealed class UpdateMediaRequest
     {
         public string? AltText { get; set; }
+
+        public int DisplayOrder { get; set; }
 
         public double FocalPointX { get; set; } = 50;
 
@@ -39,6 +43,8 @@ namespace webappTemplate.Data.DTOs
 
         public long ByteLength { get; set; }
 
+        public int DisplayOrder { get; set; }
+
         public string? AltText { get; set; }
 
         public double FocalPointX { get; set; }
@@ -55,6 +61,8 @@ namespace webappTemplate.Data.DTOs
         public required string ContentUrl { get; set; }
 
         public required string ContentType { get; set; }
+
+        public int DisplayOrder { get; set; }
 
         public string? AltText { get; set; }
 

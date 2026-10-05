@@ -11,6 +11,8 @@ import { ContactRequest, PublicApiService } from '../../services/public-api.serv
 })
 export class ContactMeComponent implements OnInit {
   emailHref = '#contact';
+  phoneHref = '';
+  phoneNumber = '';
   formData: ContactRequest = this.createEmptyForm();
 
   loading = false;
@@ -25,6 +27,10 @@ export class ContactMeComponent implements OnInit {
       next: settings => {
         if (settings.email) {
           this.emailHref = this.createEmailHref(settings.email);
+        }
+        if (settings.phone) {
+          this.phoneNumber = settings.phone;
+          this.phoneHref = `tel:${settings.phone.replace(/[^+\d]/g, '')}`;
         }
       },
       error: error =>

@@ -12,7 +12,7 @@ import { ScheduleApiService } from '../../services/schedule-api.service';
 })
 export class HeroComponent {
   scrolled = false;
-  showCTAs = false;
+  readonly showCTAs = signal(false);
   readonly logoUrl = signal('/assets/logos/logo.png');
   readonly heroMedia = signal<PublicMediaItem | null>(null);
   readonly bookingLabel = signal('Request an appointment');
@@ -34,11 +34,11 @@ export class HeroComponent {
     this.publicApi.getHeroMedia().subscribe({
       next: media => {
         this.heroMedia.set(media);
-        this.showCTAs = true;
+        this.showCTAs.set(true);
       },
       error: error =>
       {
-        this.showCTAs = true;
+        this.showCTAs.set(true);
         console.error('Hero media fetch failed:', error);
       }
     });

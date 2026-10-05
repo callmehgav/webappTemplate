@@ -32,13 +32,15 @@ namespace webappTemplate.Controllers
             }
 
             var mediaItems = await query
-                .OrderBy(media => media.OriginalFileName)
+                .OrderBy(media => media.DisplayOrder)
+                .ThenBy(media => media.OriginalFileName)
                 .Select(media => new PublicMediaResponse
                 {
                     Id = media.Id,
                     Usage = media.Usage,
                     ContentUrl = string.Empty,
                     ContentType = media.ContentType,
+                    DisplayOrder = media.DisplayOrder,
                     AltText = media.AltText,
                     FocalPointX = media.FocalPointX,
                     FocalPointY = media.FocalPointY

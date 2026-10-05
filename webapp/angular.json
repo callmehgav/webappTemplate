@@ -26,6 +26,7 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/leaflet/dist/leaflet.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -91,6 +92,7 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/leaflet/dist/leaflet.css",
               "src/styles.css"
             ],
             "scripts": []

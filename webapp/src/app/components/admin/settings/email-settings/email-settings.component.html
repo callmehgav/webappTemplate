@@ -65,17 +65,31 @@
           </div>
         </div>
 
-        <label>
-          <span>Recipient email</span>
-          <input
-            type="email"
-            name="recipientEmail"
-            [(ngModel)]="recipientEmail"
-            maxlength="254"
-            autocomplete="email"
-            placeholder="owner@example.com"
-            required />
-        </label>
+        <div class="form-grid">
+          <label>
+            <span>Recipient email</span>
+            <input
+              type="email"
+              name="recipientEmail"
+              [(ngModel)]="recipientEmail"
+              maxlength="254"
+              autocomplete="email"
+              placeholder="owner@example.com"
+              required />
+          </label>
+
+          <label>
+            <span>Public phone number</span>
+            <input
+              type="tel"
+              name="publicPhoneNumber"
+              [(ngModel)]="publicPhoneNumber"
+              maxlength="50"
+              autocomplete="tel"
+              placeholder="(555) 555-0123" />
+            <small>Displayed as a call link in the Contact Us section.</small>
+          </label>
+        </div>
       </section>
 
       <section class="form-section">

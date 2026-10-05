@@ -1,98 +1,105 @@
 <main class="gallery-page">
-  <div class="gallery-shell">
-    <header class="gallery-header">
-      <a routerLink="/" class="back-link">
+  <header class="gallery-header">
+    <nav class="page-links" aria-label="Gallery links">
+      <a routerLink="/" class="back-link" aria-label="Back to home">
         <span aria-hidden="true">←</span>
-        Back 
+        Home
       </a>
-
-      <p class="eyebrow">FAA-Certified Commercial Drone Pilot</p>
-
-      <h1>Aerial Portfolio</h1>
-
-      <p class="gallery-introduction">
-        A collection of landscapes, destinations, and experiences
-        captured from a different perspective.
-      </p>
-    </header>
-
-    <nav class="gallery-filters" aria-label="Filter drone portfolio">
-      @for (filter of filters; track filter) {
-        <button
-          type="button"
-          [class.active]="activeFilter === filter.value"
-          [attr.aria-pressed]="activeFilter === filter.value"
-          (click)="setFilter(filter.value)"
-          >
-          {{ filter.label }}
-        </button>
-      }
+      <a routerLink="/" fragment="contact" class="contact-link">Contact us</a>
     </nav>
 
-    @if (visibleVideos.length > 0) {
-      <section
-        class="video-grid"
-        aria-label="Drone videos"
-        >
-        @for (
-          video of visibleVideos; track trackByVideoId($index,
-          video)) {
-          <article
-            class="video-card"
-            >
-            <div class="video-frame">
-              <video
-                #portfolioVideo
-                [attr.data-src]="video.source"
-                muted
-                loop
-                playsinline
-                controls
-                preload="none"
-                loading="lazy"
-                controlsList="nodownload"
-                [attr.aria-label]="video.title"
-                (loadedmetadata)="primeFirstFrame($event)"
-                (mouseenter)="previewVideo($event)"
-                (mouseleave)="pauseVideo($event)"
-                (play)="pauseOtherVideos($event)"
-                (error)="handleVideoError(video.id)"
-              >
-              </video>
-              <span class="preview-hint" aria-hidden="true">
-                Hover to preview
-              </span>
-            </div>
-            <div class="video-information">
-              <p>{{ video.collectionName }}</p>
-              <h2>{{ video.title }}</h2>
-            </div>
-          </article>
-        }
-      </section>
-    } @else {
-      <section class="empty-gallery">
-        <h2>More footage is on the way.</h2>
-        <p>
-          This collection is currently being prepared for the gallery.
-        </p>
-      </section>
+    <div class="header-copy">
+      <p class="eyebrow">Selected moments</p>
+      <h1>Gallery</h1>
+      <p class="introduction">
+        A visual collection of places, people, and moments worth remembering.
+      </p>
+    </div>
+
+    @if (images().length > 0) {
+      <p class="image-count">
+        {{ images().length }} {{ images().length === 1 ? 'image' : 'images' }}
+      </p>
+    }
+  </header>
+
+  @if (isLoading()) {
+    <section class="gallery-state" aria-live="polite">
+      <span class="loading-mark" aria-hidden="true"></span>
+      <p>Loading the collection…</p>
+    </section>
+  } @else if (errorMessage()) {
+    <section class="gallery-state error-state" role="alert">
+      <p>{{ errorMessage() }}</p>
+      <a routerLink="/">Return home</a>
+    </section>
+  } @else if (images().length === 0) {
+    <section class="gallery-state empty-state">
+      <p class="eyebrow">The collection is growing</p>
+      <h2>New images are coming soon.</h2>
+      <a routerLink="/">Return home</a>
+    </section>
+  } @else {
+    <section class="photo-grid" aria-label="Photo gallery">
+      @for (image of images(); track image.id; let index = $index) {
+        <button
+          type="button"
+          class="photo-tile"
+          [attr.aria-label]="'Open image ' + (index + 1)"
+          (click)="openImage(index)">
+          <img
+            [src]="image.contentUrl"
+            [alt]="image.altText || 'Gallery image ' + (index + 1)"
+            [style.object-position]="image.focalPointX + '% ' + image.focalPointY + '%'"
+            loading="lazy"
+            decoding="async" />
+          <span class="tile-index" aria-hidden="true">
+            {{ (index + 1).toString().padStart(2, '0') }}
+          </span>
+          <span class="view-label" aria-hidden="true">View</span>
+        </button>
+      }
+    </section>
+  }
+</main>
+
+@if (activeImage(); as image) {
+  <section
+    class="lightbox"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Full-screen gallery image"
+    (click)="handleBackdropClick($event)"
+    (touchstart)="beginTouch($event)"
+    (touchend)="endTouch($event)">
+    <header class="lightbox-header">
+      <p>
+        {{ (activeIndex()! + 1).toString().padStart(2, '0') }}
+        <span>/</span>
+        {{ images().length.toString().padStart(2, '0') }}
+      </p>
+      <button type="button" class="close-button" aria-label="Close image" (click)="closeImage()">
+        <span aria-hidden="true">×</span>
+      </button>
+    </header>
+
+    @if (images().length > 1) {
+      <button type="button" class="nav-button previous" aria-label="Previous image" (click)="showPrevious()">
+        <span aria-hidden="true">←</span>
+      </button>
     }
 
+    <figure class="lightbox-figure">
+      <img [src]="image.contentUrl" [alt]="image.altText || 'Full-screen gallery image'" />
+      @if (image.altText) {
+        <figcaption>{{ image.altText }}</figcaption>
+      }
+    </figure>
 
-    <footer class="gallery-footer">
-      <div>
-        <p>Have a project in mind?</p>
-        <h2>Let’s capture it from a new perspective.</h2>
-      </div>
-      <a
-        href="#contact"
-        (click)="scrollToContact($event)"
-        class="contact-link"
-        >
-        Start a Drone Project
-        <span aria-hidden="true">↗</span>
-      </a>
-    </footer>
-  </div>
-</main>
+    @if (images().length > 1) {
+      <button type="button" class="nav-button next" aria-label="Next image" (click)="showNext()">
+        <span aria-hidden="true">→</span>
+      </button>
+    }
+  </section>
+}

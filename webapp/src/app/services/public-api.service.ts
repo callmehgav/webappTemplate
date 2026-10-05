@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { map, Observable, shareReplay } from 'rxjs';
+import { map, merge, Observable, of, shareReplay, Subject } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export enum MediaUsage {
@@ -11,7 +11,9 @@ export enum MediaUsage {
   ContactBackground = 4,
   WebsiteThumbnail = 5,
   SiteLogo = 6,
-  HeroMedia = 7
+  HeroMedia = 7,
+  Gallery = 8,
+  PageBackground = 9
 }
 
 export enum SocialPlatform {
@@ -43,6 +45,7 @@ export interface PublicMediaItem {
   usage: MediaUsage;
   contentUrl: string;
   contentType: string;
+  displayOrder: number;
   altText: string | null;
   focalPointX: number;
   focalPointY: number;
@@ -89,6 +92,26 @@ export interface ContactResponse {
 
 export interface PublicContactSettings {
   email: string;
+  phone: string;
+}
+
+export interface HomeFeatureSettings {
+  youTubeEnabled: boolean;
+  youTubeUrl: string;
+  youTubeHeading: string;
+  mapEnabled: boolean;
+  locationName: string;
+  locationAddress: string;
+  latitude: number;
+  longitude: number;
+  mapZoom: number;
+}
+
+export interface SiteBrandingSettings {
+  backgroundColor: string;
+  useBackgroundImage: boolean;
+  useAmbientBackground: boolean;
+  backgroundImage: PublicMediaItem | null;
 }
 
 export interface InstagramMediaItem {
@@ -127,8 +150,13 @@ interface SuccessResponse {
 })
 export class PublicApiService {
   private contactSettingsRequest?: Observable<PublicContactSettings>;
+  private readonly contactSettingsUpdates = new Subject<PublicContactSettings>();
   private siteLogoRequest?: Observable<PublicMediaItem | null>;
   private heroMediaRequest?: Observable<PublicMediaItem | null>;
+  private homeFeatureSettingsRequest?: Observable<HomeFeatureSettings>;
+  private readonly homeFeatureSettingsUpdates = new Subject<HomeFeatureSettings>();
+  private brandingSettingsRequest?: Observable<SiteBrandingSettings>;
+  private readonly brandingSettingsUpdates = new Subject<SiteBrandingSettings>();
 
   constructor(private readonly http: HttpClient) {}
 
@@ -260,7 +288,61 @@ export class PublicApiService {
         shareReplay({ bufferSize: 1, refCount: false })
       );
 
-    return this.contactSettingsRequest;
+    return merge(
+      this.contactSettingsRequest,
+      this.contactSettingsUpdates
+    );
+  }
+
+  clearContactSettingsCache(): void {
+    this.contactSettingsRequest = undefined;
+  }
+
+  updateContactSettingsCache(settings: PublicContactSettings): void {
+    this.contactSettingsRequest = of(settings).pipe(
+      shareReplay({ bufferSize: 1, refCount: false })
+    );
+    this.contactSettingsUpdates.next(settings);
+  }
+
+  getHomeFeatureSettings(): Observable<HomeFeatureSettings> {
+    this.homeFeatureSettingsRequest ??= this.http
+      .get<HomeFeatureSettings>(this.createUrl('/home-features'))
+      .pipe(shareReplay({ bufferSize: 1, refCount: false }));
+
+    return merge(
+      this.homeFeatureSettingsRequest,
+      this.homeFeatureSettingsUpdates
+    );
+  }
+
+  updateHomeFeatureSettingsCache(settings: HomeFeatureSettings): void {
+    this.homeFeatureSettingsRequest = of(settings).pipe(
+      shareReplay({ bufferSize: 1, refCount: false })
+    );
+    this.homeFeatureSettingsUpdates.next(settings);
+  }
+
+  getBrandingSettings(): Observable<SiteBrandingSettings> {
+    this.brandingSettingsRequest ??= this.http
+      .get<SiteBrandingSettings>(this.createUrl('/branding'))
+      .pipe(
+        map(settings => this.resolveBrandingSettings(settings)),
+        shareReplay({ bufferSize: 1, refCount: false })
+      );
+
+    return merge(
+      this.brandingSettingsRequest,
+      this.brandingSettingsUpdates
+    );
+  }
+
+  updateBrandingSettingsCache(settings: SiteBrandingSettings): void {
+    const resolved = this.resolveBrandingSettings(settings);
+    this.brandingSettingsRequest = of(resolved).pipe(
+      shareReplay({ bufferSize: 1, refCount: false })
+    );
+    this.brandingSettingsUpdates.next(resolved);
   }
 
   getInstagramFeed(): Observable<InstagramMediaItem[]> {
@@ -290,6 +372,18 @@ export class PublicApiService {
       path,
       apiUrl.origin
     ).toString();
+  }
+
+  private resolveBrandingSettings(settings: SiteBrandingSettings): SiteBrandingSettings {
+    return {
+      ...settings,
+      backgroundImage: settings.backgroundImage
+        ? {
+            ...settings.backgroundImage,
+            contentUrl: this.resolveContentUrl(settings.backgroundImage.contentUrl)
+          }
+        : null
+    };
   }
 
   getWebsiteProjects(): Observable<PublicWebsiteProject[]> {

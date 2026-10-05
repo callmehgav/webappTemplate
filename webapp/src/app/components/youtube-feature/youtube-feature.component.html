@@ -1,0 +1,23 @@
+@if (settings(); as config) {
+  @if (config.youTubeEnabled && config.youTubeUrl) {
+    <section class="feature-section" [attr.aria-label]="config.youTubeHeading">
+      @if (embedUrl(); as source) {
+        <div class="video-shell">
+          <iframe
+            [src]="source"
+            [title]="config.youTubeHeading"
+            loading="lazy"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen></iframe>
+        </div>
+      } @else {
+        <a class="youtube-link" [href]="config.youTubeUrl" target="_blank" rel="noopener noreferrer">
+          <span class="play" aria-hidden="true">▶</span>
+          <span>Visit our YouTube channel</span>
+          <span aria-hidden="true">↗</span>
+        </a>
+      }
+    </section>
+  }
+}

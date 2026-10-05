@@ -7,17 +7,21 @@ import {
 import { FormsModule } from '@angular/forms';
 
 import { AdminApiService } from '../../../../services/admin-api.service';
+import { PublicApiService } from '../../../../services/public-api.service';
 
 interface EmailSettingsResponse {
   senderName: string;
   senderEmail: string;
   recipientEmail: string;
+  publicPhoneNumber: string;
   hasAppPassword: boolean;
 }
 
 interface UpdateEmailSettingsResponse {
   success: boolean;
   hasAppPassword: boolean;
+  email: string;
+  phone: string;
 }
 
 @Component({
@@ -37,9 +41,13 @@ export class EmailSettingsComponent implements OnInit {
   senderName = 'Website Contact';
   senderEmail = '';
   recipientEmail = '';
+  publicPhoneNumber = '';
   appPassword = '';
 
-  constructor(private readonly adminApi: AdminApiService) {}
+  constructor(
+    private readonly adminApi: AdminApiService,
+    private readonly publicApi: PublicApiService
+  ) {}
 
   ngOnInit(): void {
     this.loadSettings();
@@ -56,6 +64,7 @@ export class EmailSettingsComponent implements OnInit {
           this.senderName = settings.senderName;
           this.senderEmail = settings.senderEmail;
           this.recipientEmail = settings.recipientEmail;
+          this.publicPhoneNumber = settings.publicPhoneNumber;
           this.hasAppPassword.set(settings.hasAppPassword);
           this.appPassword = '';
           this.isLoading.set(false);
@@ -95,11 +104,16 @@ export class EmailSettingsComponent implements OnInit {
           senderName: this.senderName.trim(),
           senderEmail: this.senderEmail.trim(),
           recipientEmail: this.recipientEmail.trim(),
+          publicPhoneNumber: this.publicPhoneNumber.trim(),
           appPassword: this.appPassword.trim() || null
         }
       )
       .subscribe({
         next: response => {
+          this.publicApi.updateContactSettingsCache({
+            email: response.email,
+            phone: response.phone
+          });
           this.hasAppPassword.set(response.hasAppPassword);
           this.appPassword = '';
           this.isSaving.set(false);

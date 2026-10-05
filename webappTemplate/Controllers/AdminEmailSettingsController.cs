@@ -40,6 +40,8 @@ namespace webappTemplate.Controllers
                     ?? string.Empty,
                 RecipientEmail = settings?.RecipientEmail
                     ?? string.Empty,
+                PublicPhoneNumber = settings?.PublicPhoneNumber
+                    ?? string.Empty,
                 HasAppPassword =
                     !string.IsNullOrWhiteSpace(
                         settings?.EncryptedPassword)
@@ -91,6 +93,8 @@ namespace webappTemplate.Controllers
             settings.SenderName = senderName;
             settings.SenderEmail = senderEmail!;
             settings.RecipientEmail = recipientEmail!;
+            settings.PublicPhoneNumber =
+                request.PublicPhoneNumber?.Trim() ?? string.Empty;
             settings.UpdatedUtc = DateTimeOffset.UtcNow;
 
             if (hasNewPassword)
@@ -106,7 +110,9 @@ namespace webappTemplate.Controllers
             return Ok(new
             {
                 success = true,
-                hasAppPassword = true
+                hasAppPassword = true,
+                email = settings.RecipientEmail,
+                phone = settings.PublicPhoneNumber
             });
         }
 
@@ -134,6 +140,7 @@ namespace webappTemplate.Controllers
         public string? SenderName { get; set; }
         public string? SenderEmail { get; set; }
         public string? RecipientEmail { get; set; }
+        public string? PublicPhoneNumber { get; set; }
         public string? AppPassword { get; set; }
     }
 
@@ -142,6 +149,7 @@ namespace webappTemplate.Controllers
         public string SenderName { get; set; } = string.Empty;
         public string SenderEmail { get; set; } = string.Empty;
         public string RecipientEmail { get; set; } = string.Empty;
+        public string PublicPhoneNumber { get; set; } = string.Empty;
         public bool HasAppPassword { get; set; }
     }
 }

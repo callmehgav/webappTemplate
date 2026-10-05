@@ -1,0 +1,18 @@
+app-location-map { display: block; }
+app-location-map .map-section { width: min(1120px, calc(100% - 32px)); margin: clamp(70px, 10vw, 140px) auto; }
+app-location-map .map-card { display: grid; grid-template-columns: minmax(240px,.65fr) minmax(0,1.5fr); gap: clamp(20px,4vw,48px); align-items: center; padding: clamp(20px,4vw,42px); border: 1px solid var(--stroke); border-radius: var(--radius-lg); background: var(--glass); box-shadow: var(--shadow-lg), inset 0 1px rgba(255,255,255,.5); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); }
+app-location-map .eyebrow { color:  #1519214a; font-size: .74rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+app-location-map h2 { margin: 9px 0 14px; font-size: clamp(2.1rem,5vw,4.2rem); line-height: .96; }
+app-location-map p { margin-bottom: 24px; font-size: 1rem; line-height: 1.65; }
+app-location-map .location-copy a { display: inline-flex; gap: 9px; align-items: center; padding: 11px 17px; border-radius: 999px; background:#1519214a; color: #fff; font-size: .84rem; font-weight: 750; box-shadow: 0 10px 24px rgba(40,89,188,.2); }
+app-location-map .map-shell { position: relative; height: 420px; overflow: hidden; border: 1px solid var(--stroke); border-radius: var(--radius-md); background: #dce5ed; box-shadow: 0 20px 50px rgba(38,49,66,.18); }
+app-location-map .map-canvas { width: 100%; height: 100%; filter: saturate(.75) contrast(.94); }
+app-location-map .brand-map-marker { overflow: visible; border: 0; background: transparent; }
+app-location-map .brand-map-pin { position: relative; display: grid; width: 66px; height: 66px; place-items: center; border: 2px solid rgba(255,255,255,.82); border-radius: 50%; background: linear-gradient(145deg, #151b25, #080b10); box-shadow: 0 12px 30px rgba(25,36,52,.35); }
+app-location-map .brand-map-pin::after { content: ""; position: absolute; z-index: -1; bottom: -7px; left: 50%; width: 18px; height: 18px; border-right: 2px solid rgba(255,255,255,.82); border-bottom: 2px solid rgba(255,255,255,.82); background: #080b10; transform: translateX(-50%) rotate(45deg); }
+app-location-map .brand-map-pin-logo, app-location-map .brand-map-pin-fallback { position: relative; z-index: 1; display: block; width: 42px; height: 42px; }
+app-location-map .brand-map-pin-logo { max-width: none; object-fit: contain; }
+app-location-map .brand-map-pin-fallback { display: grid; place-items: center; color: #fff; }
+app-location-map .map-shell .leaflet-control-zoom { overflow: hidden; border: 1px solid rgba(255,255,255,.8); border-radius: 12px; box-shadow: 0 8px 24px rgba(30,42,58,.18); }
+app-location-map .map-shell .leaflet-control-zoom a { border: 0; background: rgba(255,255,255,.9); color: #172033; }
+@media (max-width: 760px) { app-location-map .map-card { grid-template-columns: 1fr; } app-location-map .map-shell { height: 340px; } }

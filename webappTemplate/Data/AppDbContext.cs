@@ -36,6 +36,12 @@ namespace webappTemplate.Data
         public DbSet<ScheduleEvent> ScheduleEvents =>
             Set<ScheduleEvent>();
 
+        public DbSet<HomeFeatureSettings> HomeFeatureSettings =>
+            Set<HomeFeatureSettings>();
+
+        public DbSet<SiteBrandingSettings> SiteBrandingSettings =>
+            Set<SiteBrandingSettings>();
+
         protected override void OnModelCreating(
             ModelBuilder modelBuilder)
         {
@@ -48,6 +54,33 @@ namespace webappTemplate.Data
             ConfigureSocialLinks(modelBuilder);
             ConfigureSiteContent(modelBuilder);
             ConfigureSchedule(modelBuilder);
+            ConfigureHomeFeatures(modelBuilder);
+            ConfigureSiteBranding(modelBuilder);
+        }
+
+        private static void ConfigureSiteBranding(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<SiteBrandingSettings>(entity =>
+            {
+                entity.ToTable("SiteBrandingSettings");
+                entity.HasKey(x => x.Id);
+                entity.Property(x => x.BackgroundColor)
+                    .HasMaxLength(7)
+                    .IsRequired();
+            });
+        }
+
+        private static void ConfigureHomeFeatures(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<HomeFeatureSettings>(entity =>
+            {
+                entity.ToTable("HomeFeatureSettings");
+                entity.HasKey(x => x.Id);
+                entity.Property(x => x.YouTubeUrl).HasMaxLength(500).IsRequired();
+                entity.Property(x => x.YouTubeHeading).HasMaxLength(150).IsRequired();
+                entity.Property(x => x.LocationName).HasMaxLength(150).IsRequired();
+                entity.Property(x => x.LocationAddress).HasMaxLength(500).IsRequired();
+            });
         }
 
         private static void ConfigureSchedule(ModelBuilder modelBuilder)
@@ -101,6 +134,10 @@ namespace webappTemplate.Data
 
                 entity.Property(x => x.RecipientEmail)
                     .HasMaxLength(254)
+                    .IsRequired();
+
+                entity.Property(x => x.PublicPhoneNumber)
+                    .HasMaxLength(50)
                     .IsRequired();
 
                 entity.Property(x => x.EncryptedPassword)
@@ -169,7 +206,7 @@ namespace webappTemplate.Data
 
                     table.HasCheckConstraint(
                         "CK_MediaItems_Usage",
-                        "\"Usage\" >= 0 AND \"Usage\" <= 7");
+                        "\"Usage\" >= 0 AND \"Usage\" <= 9");
 
                     table.HasCheckConstraint(
                         "CK_MediaItems_FocalPointX",
@@ -195,6 +232,12 @@ namespace webappTemplate.Data
                     .IsRequired();
 
                 entity.HasIndex(x => x.Usage);
+
+                entity.HasIndex(x => new
+                {
+                    x.Usage,
+                    x.DisplayOrder
+                });
             });
         }
         private static void ConfigureSocialLinks(

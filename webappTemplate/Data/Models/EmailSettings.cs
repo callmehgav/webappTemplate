@@ -13,6 +13,9 @@ namespace webappTemplate.Data.Models
         public string RecipientEmail { get; set; } =
             string.Empty;
 
+        public string PublicPhoneNumber { get; set; } =
+            string.Empty;
+
         public string EncryptedPassword { get; set; } =
             string.Empty;
 

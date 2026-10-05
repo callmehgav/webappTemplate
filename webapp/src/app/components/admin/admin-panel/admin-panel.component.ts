@@ -2,12 +2,13 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Output, signal, Type 
 import { NgComponentOutlet } from '@angular/common';
 import { AdminAuthService } from '../../../services/admin-auth.service';
 import { InsightsComponent } from '../insights/insights.component';
-import { ContentSettingsComponent } from '../settings/content-settings/content-settings.component';
 import { SocialLinksSettingsComponent } from '../settings/social-links-settings/social-links-settings.component';
 import { EmailSettingsComponent } from '../settings/email-settings/email-settings.component';
 import { BrandingSettingsComponent } from '../settings/branding-settings/branding-settings.component';
 import { ScheduleSettingsComponent } from '../settings/schedule-settings/schedule-settings.component';
-type AdminSectionId = 'insights' | 'schedule' | 'content' | 'branding' | 'social-links' | 'email';
+import { GallerySettingsComponent } from '../settings/gallery-settings/gallery-settings.component';
+import { HomeFeatureSettingsComponent } from '../settings/home-feature-settings/home-feature-settings.component';
+type AdminSectionId = 'insights' | 'schedule' | 'branding' | 'gallery' | 'home-features' | 'social-links' | 'email';
 
 interface AdminSection {
   id: AdminSectionId;
@@ -42,16 +43,22 @@ export class AdminPanelComponent {
       component: ScheduleSettingsComponent
     },
     {
-      id: 'content',
-      label: 'Content',
-      description: 'Edit reusable website text',
-      component: ContentSettingsComponent
-    },
-    {
       id: 'branding',
       label: 'Branding',
       description: 'Set the shared site logo and icon',
       component: BrandingSettingsComponent
+    },
+    {
+      id: 'gallery',
+      label: 'Gallery',
+      description: 'Upload, caption, and arrange gallery images',
+      component: GallerySettingsComponent
+    },
+    {
+      id: 'home-features',
+      label: 'Home Features',
+      description: 'Configure the YouTube feature and location map',
+      component: HomeFeatureSettingsComponent
     },
     {
       id: 'social-links',

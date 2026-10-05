@@ -1,0 +1,18 @@
+@if (settings(); as config) {
+  @if (config.mapEnabled) {
+    <section class="map-section" aria-labelledby="location-heading">
+      <div class="map-card">
+        <div class="location-copy">
+          <span class="eyebrow">Location</span>
+          <h2 id="location-heading">{{ config.locationName }}</h2>
+          @if (config.locationAddress) { <p>{{ config.locationAddress }}</p> }
+          <a [href]="openMapUrl()" target="_blank" rel="noopener noreferrer">Open in Google Maps <span aria-hidden="true">↗</span></a>
+        </div>
+
+        <div class="map-shell">
+          <div class="map-canvas" [attr.aria-label]="'Interactive map showing ' + config.locationName"></div>
+        </div>
+      </div>
+    </section>
+  }
+}

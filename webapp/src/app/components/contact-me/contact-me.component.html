@@ -8,8 +8,14 @@
         class="email-button"
         [href]="emailHref"
         >
-        Email Me Directly
+        Email Us Directly
       </a>
+
+      @if (phoneNumber) {
+        <a class="email-button" [href]="phoneHref">
+          {{ phoneNumber }}
+        </a>
+      }
 
       <span class="contact-divider">or</span>
 

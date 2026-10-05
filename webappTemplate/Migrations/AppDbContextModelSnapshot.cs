@@ -70,6 +70,11 @@ namespace webappTemplate.Migrations
                         .HasMaxLength(254)
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("PublicPhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("SenderEmail")
                         .IsRequired()
                         .HasMaxLength(254)
@@ -86,6 +91,55 @@ namespace webappTemplate.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("EmailSettings", (string)null);
+                });
+
+            modelBuilder.Entity("webappTemplate.Data.Models.HomeFeatureSettings", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<double>("Latitude")
+                        .HasColumnType("REAL");
+
+                    b.Property<string>("LocationAddress")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LocationName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("MapEnabled")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("MapZoom")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("REAL");
+
+                    b.Property<DateTimeOffset>("UpdatedUtc")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("YouTubeEnabled")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("YouTubeHeading")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("YouTubeUrl")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("HomeFeatureSettings", (string)null);
                 });
 
             modelBuilder.Entity("webappTemplate.Data.Models.InsightMetric", b =>
@@ -119,6 +173,9 @@ namespace webappTemplate.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("INTEGER");
+
                     b.Property<double>("FocalPointX")
                         .HasColumnType("REAL");
 
@@ -141,6 +198,8 @@ namespace webappTemplate.Migrations
 
                     b.HasIndex("Usage");
 
+                    b.HasIndex("Usage", "DisplayOrder");
+
                     b.ToTable("MediaItems", null, t =>
                         {
                             t.HasCheckConstraint("CK_MediaItems_ContentType", "\"ContentType\" LIKE 'image/%' OR \"ContentType\" LIKE 'video/%'");
@@ -151,7 +210,7 @@ namespace webappTemplate.Migrations
 
                             t.HasCheckConstraint("CK_MediaItems_ImageData", "\"ByteLength\" > 0 AND length(\"ImageData\") = \"ByteLength\"");
 
-                            t.HasCheckConstraint("CK_MediaItems_Usage", "\"Usage\" >= 0 AND \"Usage\" <= 7");
+                            t.HasCheckConstraint("CK_MediaItems_Usage", "\"Usage\" >= 0 AND \"Usage\" <= 9");
                         });
                 });
 
@@ -275,6 +334,34 @@ namespace webappTemplate.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ScheduleSettings", (string)null);
+                });
+
+            modelBuilder.Entity("webappTemplate.Data.Models.SiteBrandingSettings", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("BackgroundColor")
+                        .IsRequired()
+                        .HasMaxLength(7)
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("BackgroundMediaItemId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTimeOffset>("UpdatedUtc")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("UseBackgroundImage")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("UseAmbientBackground")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SiteBrandingSettings", (string)null);
                 });
 
             modelBuilder.Entity("webappTemplate.Data.Models.SiteContent", b =>

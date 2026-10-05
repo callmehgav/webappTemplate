@@ -39,6 +39,7 @@ namespace webappTemplate.Controllers
 
             var mediaItems = await query
                 .OrderBy(media => media.Usage)
+                .ThenBy(media => media.DisplayOrder)
                 .ThenBy(media => media.OriginalFileName)
                 .Select(media => new AdminMediaResponse
                 {
@@ -48,6 +49,7 @@ namespace webappTemplate.Controllers
                     ContentType = media.ContentType,
                     ContentUrl = string.Empty,
                     ByteLength = media.ByteLength,
+                    DisplayOrder = media.DisplayOrder,
                     AltText = media.AltText,
                     FocalPointX = media.FocalPointX,
                     FocalPointY = media.FocalPointY
@@ -214,6 +216,20 @@ namespace webappTemplate.Controllers
             return Ok(CreateResponse(heroMedia));
         }
 
+        [HttpDelete("hero-media")]
+        public async Task<IActionResult> RemoveHeroMedia(
+            CancellationToken cancellationToken)
+        {
+            var existingHeroMedia = await _database.MediaItems
+                .Where(media => media.Usage == MediaUsage.HeroMedia)
+                .ToListAsync(cancellationToken);
+
+            _database.MediaItems.RemoveRange(existingHeroMedia);
+            await _database.SaveChangesAsync(cancellationToken);
+
+            return Ok(new { success = true });
+        }
+
         
         [RequestSizeLimit(MaximumRequestBytes)]
         [HttpPost]
@@ -249,12 +265,12 @@ namespace webappTemplate.Controllers
                 });
             }
 
-            if (request.Usage is MediaUsage.SiteLogo or MediaUsage.HeroMedia)
+            if (request.Usage is MediaUsage.SiteLogo or MediaUsage.HeroMedia or MediaUsage.PageBackground)
             {
                 return BadRequest(new
                 {
                     success = false,
-                    message = "Use the Branding settings for site logo and hero media uploads."
+                    message = "Use the Branding settings for site logo, hero media, and page background uploads."
                 });
             }
 
@@ -292,6 +308,7 @@ namespace webappTemplate.Controllers
                 ContentType = contentType,
                 ByteLength = imageData.LongLength,
                 Usage = request.Usage,
+                DisplayOrder = request.DisplayOrder,
                 AltText = NormalizeOptional(request.AltText),
                 FocalPointX = request.FocalPointX,
                 FocalPointY = request.FocalPointY
@@ -326,6 +343,7 @@ namespace webappTemplate.Controllers
             }
 
             media.AltText = NormalizeOptional(request.AltText);
+            media.DisplayOrder = request.DisplayOrder;
             media.FocalPointX = request.FocalPointX;
             media.FocalPointY = request.FocalPointY;
 
@@ -370,6 +388,7 @@ namespace webappTemplate.Controllers
                 ContentType = media.ContentType,
                 ContentUrl = CreateContentUrl(media.Id),
                 ByteLength = media.ByteLength,
+                DisplayOrder = media.DisplayOrder,
                 AltText = media.AltText,
                 FocalPointX = media.FocalPointX,
                 FocalPointY = media.FocalPointY

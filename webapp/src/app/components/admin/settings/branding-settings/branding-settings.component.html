@@ -71,6 +71,106 @@
   }
 </section>
 
+<section class="branding-settings background-settings">
+  <header class="settings-header">
+    <div>
+      <h3>Site background</h3>
+      <p>
+        Choose one color or image for the main page, gallery, calendar, footer, and control panel.
+      </p>
+    </div>
+  </header>
+
+  @if (isBackgroundLoading()) {
+    <div class="state-panel" role="status">Loading the current background…</div>
+  } @else {
+    <div class="background-editor">
+      <div
+        class="background-preview"
+        [class.ambient]="selectedBackgroundMode === 'ambient'"
+        [style.--preview-base]="backgroundColor()"
+        [style.background-color]="backgroundColor()">
+        @if (useBackgroundImage() && displayedBackgroundImageUrl; as backgroundUrl) {
+          <img [src]="backgroundUrl" alt="Selected site background preview" />
+        }
+        <div class="preview-glass">Glass preview</div>
+      </div>
+
+      <div class="background-controls">
+        <div class="mode-picker" aria-label="Background type">
+          <button
+            type="button"
+            [class.selected]="selectedBackgroundMode === 'ambient'"
+            (click)="setBackgroundMode('ambient')">
+            Ambient
+          </button>
+          <button
+            type="button"
+            [class.selected]="selectedBackgroundMode === 'solid'"
+            (click)="setBackgroundMode('solid')">
+            Solid color
+          </button>
+          <button
+            type="button"
+            [class.selected]="selectedBackgroundMode === 'image'"
+            (click)="setBackgroundMode('image')">
+            Image
+          </button>
+        </div>
+
+        <label class="color-field">
+          <span>Background color</span>
+          <span class="color-control">
+            <input
+              type="color"
+              [value]="backgroundColor()"
+              [disabled]="isBackgroundSaving()"
+              (input)="onBackgroundColorChanged($event)" />
+            <code>{{ backgroundColor() }}</code>
+          </span>
+          <small>This color is also used while an image loads.</small>
+        </label>
+
+        <label class="file-field">
+          <span>Background image</span>
+          <input
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/gif"
+            [disabled]="isBackgroundSaving()"
+            (change)="onBackgroundFileSelected($event)" />
+          <small>JPEG, PNG, WebP, or GIF. The image fills the viewport. Maximum 10 MB.</small>
+        </label>
+      </div>
+    </div>
+
+    @if (backgroundErrorMessage()) {
+      <p class="message error-message" role="alert">{{ backgroundErrorMessage() }}</p>
+    }
+    @if (backgroundSuccessMessage()) {
+      <p class="message success-message" role="status">{{ backgroundSuccessMessage() }}</p>
+    }
+
+    <footer class="form-actions">
+      @if (currentBackgroundImage()) {
+        <button
+          type="button"
+          class="danger-button"
+          [disabled]="isBackgroundSaving()"
+          (click)="removeBackgroundImage()">
+          Remove image
+        </button>
+      }
+      <button
+        type="button"
+        class="primary-button"
+        [disabled]="isBackgroundSaving()"
+        (click)="saveBackground()">
+        {{ isBackgroundSaving() ? 'Saving…' : 'Save background' }}
+      </button>
+    </footer>
+  }
+</section>
+
 <section class="branding-settings hero-settings">
   <header class="settings-header">
     <div>
@@ -142,6 +242,15 @@
     }
 
     <footer class="form-actions">
+      @if (currentHeroMedia()) {
+        <button
+          type="button"
+          class="danger-button"
+          [disabled]="isHeroSaving()"
+          (click)="removeHeroMedia()">
+          Remove hero media
+        </button>
+      }
       <button
         type="button"
         class="primary-button"

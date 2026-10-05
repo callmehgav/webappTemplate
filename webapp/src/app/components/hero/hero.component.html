@@ -24,24 +24,19 @@
     <img [src]="logoUrl()" alt="Site logo" />
   </div>
 
-  <div class="hero-actions" [class.visible]="showCTAs">
-    <a routerLink="/book" class="primary-action">{{ bookingLabel() }}</a>
-    <button type="button" class="secondary-action" (click)="scrollToAbout()">About us</button>
+  <div class="hero-actions" [class.visible]="showCTAs()">
+    <a routerLink="/book" class="primary-action">
+      <span class="action-icon" aria-hidden="true">◷</span>
+      View calendar · {{ bookingLabel() }}
+    </a>
+    <a routerLink="/gallery" class="secondary-action">
+      <span class="action-icon" aria-hidden="true">▧</span>
+      Gallery
+    </a>
+    <button type="button" class="tertiary-action" (click)="scrollToAbout()">
+      <span class="action-icon" aria-hidden="true">✦</span>
+      Learn more
+      <span class="down-arrow" aria-hidden="true">↓</span>
+    </button>
   </div>
-  
-  
-  <div
-  class="dev-inquiry-wrapper"
-  [class.visible]="showCTAs"
-  (click)="scrollToAbout()"
->
-  <span class="dev-inquiry-text">Learn more</span>
-
-  <div class="scroll-arrows">
-    <span></span>
-  </div>
-</div>
-
-
-
 </section>

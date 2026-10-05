@@ -1,107 +1,221 @@
-body {
-  margin: 0;
-  font-family: 'Georgia', sans-serif;
-  background: #f3f8ff;
-  color: #333;
-}
-body {
-  margin: 0;
-  font-family: 'Georgia', sans-serif;
-  background: #f3f8ff;
-  color: #333;
-  height: 100%;
-  width: 100%;
-}
-
-html {
-  height: 100%;
-  width: 100%;
-  overflow: scroll;
-  overflow-x: hidden;
-}
-#background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background:
-    radial-gradient(
-      circle at 12% 18%,
-      rgba(255, 190, 214, 0.72),
-      transparent 34%
-    ),
-    radial-gradient(
-      circle at 88% 14%,
-      rgba(151, 231, 255, 0.72),
-      transparent 38%
-    ),
-    radial-gradient(
-      circle at 72% 82%,
-      rgba(196, 181, 253, 0.62),
-      transparent 38%
-    ),
-    linear-gradient(
-      135deg,
-      #fff8ec 0%,
-      #eef7ff 48%,
-      #f5efff 100%
-    );
-  z-index: -1;
-  pointer-events: none;
-}
-a {
-  text-decoration: none;
-  color: inherit;
+:root {
+  color-scheme: dark;
+  --site-background-color: #e9eef5;
+  --site-background-image: none;
+  --site-ambient-first: hsla(190, 44%, 82%, 0.22);
+  --site-ambient-second: hsla(250, 38%, 84%, 0.16);
+  --site-ambient-light: rgba(255, 255, 255, 0.2);
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Inter, Helvetica, Arial, sans-serif;
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Inter, Helvetica, Arial, sans-serif;
+  --page: #090b0f;
+  --page-soft: #10141b;
+  --text: #f6f7f9;
+  --text-soft: rgba(246, 247, 249, 0.7);
+  --text-muted: rgba(246, 247, 249, 0.48);
+  --glass: rgba(28, 32, 39, 0.58);
+  --glass-strong: rgba(25, 29, 35, 0.78);
+  --glass-light: rgba(255, 255, 255, 0.08);
+  --glass-hover: rgba(255, 255, 255, 0.13);
+  --public-glass-smoke: linear-gradient(145deg, rgba(255, 255, 255, 0.3), rgba(236, 241, 247, 0.14));
+  --public-glass-smoke-strong: linear-gradient(145deg, rgba(255, 255, 255, 0.4), rgba(232, 237, 244, 0.22));
+  --public-glass-smoke-light: rgba(255, 255, 255, 0.18);
+  --public-glass-smoke-hover: rgba(255, 255, 255, 0.34);
+  --public-glass-stroke: rgba(255, 255, 255, 0.64);
+  --public-glass-shadow: 0 24px 68px rgba(48, 60, 78, 0.14);
+  --public-glass-shadow-soft: 0 10px 32px rgba(48, 60, 78, 0.1);
+  --stroke: rgba(255, 255, 255, 0.16);
+  --stroke-soft: rgba(255, 255, 255, 0.09);
+  --accent: #9cc7ff;
+  --accent-strong: #69a9ff;
+  --danger: #ff8585;
+  --success: #71d99a;
+  --shadow-sm: 0 8px 26px rgba(0, 0, 0, 0.18);
+  --shadow-lg: 0 28px 80px rgba(0, 0, 0, 0.34);
+  --radius-sm: 14px;
+  --radius-md: 22px;
+  --radius-lg: 30px;
+  --blur: blur(20px) saturate(135%);
 }
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-h1 {
-  margin: 0;
-  font-size: 4rem;
-  font-weight: 70;
-  color: #ffffff;
-font-family: 'Courier New', Courier, monospace;
+html {
+  min-width: 320px;
+  min-height: 100%;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
 }
-h2 {
+
+body {
+  min-width: 320px;
+  min-height: 100%;
   margin: 0;
-  font-size: 2rem;
-  font-weight: 30;
-  color: #ffffff;
-  font-family: 'Courier New', Courier, monospace;
+  background-color: var(--site-background-color);
+  background-image:
+    radial-gradient(circle at 8% 36%, var(--site-ambient-first), transparent 52%),
+    radial-gradient(circle at 92% 78%, var(--site-ambient-second), transparent 56%),
+    radial-gradient(circle at 50% 24%, var(--site-ambient-light), transparent 44%),
+    var(--site-background-image);
+  background-position: center;
+  background-size: auto, auto, auto, cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+app-home {
+  --text: #172033;
+  --text-soft: rgba(39, 50, 67, 0.72);
+  --text-muted: rgba(55, 68, 88, 0.52);
+  --glass: var(--public-glass-smoke);
+  --glass-strong: var(--public-glass-smoke-strong);
+  --glass-light: var(--public-glass-smoke-light);
+  --glass-hover: var(--public-glass-smoke-hover);
+  --stroke: var(--public-glass-stroke);
+  --stroke-soft: rgba(60, 75, 96, 0.12);
+  --shadow-sm: var(--public-glass-shadow-soft);
+  --shadow-lg: var(--public-glass-shadow);
+  --blur: blur(24px) saturate(145%);
+  display: block;
+  overflow: hidden;
+  background-color: var(--site-background-color);
+  background-image:
+    radial-gradient(circle at 8% 36%, var(--site-ambient-first), transparent 52%),
+    radial-gradient(circle at 92% 78%, var(--site-ambient-second), transparent 56%),
+    radial-gradient(circle at 50% 24%, var(--site-ambient-light), transparent 44%),
+    var(--site-background-image);
+  background-position: center;
+  background-size: auto, auto, auto, cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+app-admin-panel h1,
+app-admin-panel h2,
+app-admin-panel h3,
+app-admin-panel h4 {
+  color: #172033;
+  text-shadow: none;
+}
+
+#background {
+  position: fixed;
+  z-index: -2;
+  inset: 0;
+  background: transparent;
+  pointer-events: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img,
+video {
+  max-width: 100%;
+}
+
+app-about-section,
+app-link-tree,
+app-youtube-feature,
+app-location-map,
+app-contact-me {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 720px;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin-top: 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--text);
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
 }
 
 p {
-  margin: 0;
-  font-size: 1.8rem;
-  font-weight: 50;
-  color: #ffffff;
-  font-family: 'Courier New', Courier, monospace;
-}
-h1, h2, p {
-  color: #ffffff;
-  text-shadow:
-    0 0 5px rgba(255, 255, 255, 0.7),
-    0 0 10px rgba(255, 255, 255, 0.4),
-    0 0 20px rgba(255, 255, 255, 0.2);
+  color: var(--text-soft);
+  font-family: var(--font-sans);
+  text-shadow: none;
 }
 
-
-html {
-    overflow: scroll;
-    overflow-x: hidden;
+::selection {
+  background: rgba(126, 181, 255, 0.35);
+  color: #fff;
 }
+
 ::-webkit-scrollbar {
-    width: 0;  /* Remove scrollbar space */
-    background: transparent;  /* Optional: just make scrollbar invisible */
+  display: none;
+  width: 0;
+  height: 0;
 }
-/* Optional: show position indicator in red */
-::-webkit-scrollbar-thumb {
-    background: #FF0000;
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
-/* === Global Rounded Scrollbar Styles === */
 
+@media (max-width: 640px) {
+  :root {
+    --radius-md: 18px;
+    --radius-lg: 24px;
+  }
+}
 
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --glass: rgba(25, 29, 35, 0.96);
+    --glass-strong: rgba(20, 24, 30, 0.98);
+    --blur: none;
+  }
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  :root {
+    --glass: rgba(22, 26, 32, 0.94);
+    --glass-strong: rgba(18, 22, 28, 0.98);
+  }
+}

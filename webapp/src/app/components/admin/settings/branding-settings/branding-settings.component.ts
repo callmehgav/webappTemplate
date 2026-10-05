@@ -8,7 +8,10 @@ import {
 import { HttpErrorResponse, HttpParams } from '@angular/common/http';
 
 import { AdminApiService } from '../../../../services/admin-api.service';
-import { PublicApiService } from '../../../../services/public-api.service';
+import {
+  PublicApiService,
+  SiteBrandingSettings
+} from '../../../../services/public-api.service';
 import { SiteBrandingService } from '../../../../services/site-branding.service';
 
 interface AdminMediaItem {
@@ -41,6 +44,16 @@ export class BrandingSettingsComponent implements OnInit, OnDestroy {
   readonly heroPreviewUrl = signal<string | null>(null);
   readonly heroErrorMessage = signal('');
   readonly heroSuccessMessage = signal('');
+  readonly isBackgroundLoading = signal(true);
+  readonly isBackgroundSaving = signal(false);
+  readonly backgroundColor = signal('#e9eef5');
+  readonly useBackgroundImage = signal(false);
+  readonly useAmbientBackground = signal(true);
+  readonly currentBackgroundImage = signal<AdminMediaItem | null>(null);
+  readonly selectedBackgroundFile = signal<File | null>(null);
+  readonly backgroundPreviewUrl = signal<string | null>(null);
+  readonly backgroundErrorMessage = signal('');
+  readonly backgroundSuccessMessage = signal('');
 
   constructor(
     private readonly adminApi: AdminApiService,
@@ -51,11 +64,13 @@ export class BrandingSettingsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadLogo();
     this.loadHeroMedia();
+    this.loadBackgroundSettings();
   }
 
   ngOnDestroy(): void {
     this.clearPreviewUrl();
     this.clearHeroPreviewUrl();
+    this.clearBackgroundPreviewUrl();
   }
 
   get displayedLogoUrl(): string | null {
@@ -93,6 +108,13 @@ export class BrandingSettingsComponent implements OnInit, OnDestroy {
       '';
 
     return contentType.startsWith('video/');
+  }
+
+  get displayedBackgroundImageUrl(): string | null {
+    return this.backgroundPreviewUrl() ||
+      (this.currentBackgroundImage()
+        ? this.adminApi.resolveContentUrl(this.currentBackgroundImage()!.contentUrl)
+        : null);
   }
 
   onFileSelected(event: Event): void {
@@ -209,6 +231,112 @@ export class BrandingSettingsComponent implements OnInit, OnDestroy {
     });
   }
 
+  removeHeroMedia(): void {
+    if (!this.currentHeroMedia() ||
+        !window.confirm('Remove the current hero image or video?')) {
+      return;
+    }
+
+    this.isHeroSaving.set(true);
+    this.heroErrorMessage.set('');
+    this.heroSuccessMessage.set('');
+
+    this.adminApi.delete<{ success: boolean }>('/admin/media/hero-media')
+      .subscribe({
+        next: () => {
+          this.currentHeroMedia.set(null);
+          this.selectedHeroFile.set(null);
+          this.clearHeroPreviewUrl();
+          this.publicApi.clearHeroMediaCache();
+          this.isHeroSaving.set(false);
+          this.heroSuccessMessage.set('Hero media removed. The default hero background is now active.');
+        },
+        error: (error: HttpErrorResponse) => {
+          this.isHeroSaving.set(false);
+          this.heroErrorMessage.set(
+            this.getErrorMessage(error, 'The hero media could not be removed.')
+          );
+        }
+      });
+  }
+
+  get selectedBackgroundMode(): 'ambient' | 'solid' | 'image' {
+    if (this.useBackgroundImage()) return 'image';
+    return this.useAmbientBackground() ? 'ambient' : 'solid';
+  }
+
+  setBackgroundMode(mode: 'ambient' | 'solid' | 'image'): void {
+    this.useBackgroundImage.set(mode === 'image');
+    this.useAmbientBackground.set(mode === 'ambient');
+    this.backgroundErrorMessage.set('');
+    this.backgroundSuccessMessage.set('');
+  }
+
+  onBackgroundColorChanged(event: Event): void {
+    this.backgroundColor.set((event.target as HTMLInputElement).value);
+    if (this.useBackgroundImage()) {
+      this.useAmbientBackground.set(true);
+    }
+    this.useBackgroundImage.set(false);
+  }
+
+  onBackgroundFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0] ?? null;
+
+    this.clearBackgroundPreviewUrl();
+    this.selectedBackgroundFile.set(file);
+    this.backgroundErrorMessage.set('');
+    this.backgroundSuccessMessage.set('');
+
+    if (file) {
+      this.backgroundPreviewUrl.set(URL.createObjectURL(file));
+      this.useBackgroundImage.set(true);
+      this.useAmbientBackground.set(false);
+    }
+  }
+
+  saveBackground(): void {
+    const selectedImage = this.selectedBackgroundFile();
+    if (this.useBackgroundImage() && selectedImage) {
+      const formData = new FormData();
+      formData.append('File', selectedImage);
+      this.saveBackgroundRequest('/branding/admin/background-image', formData);
+      return;
+    }
+
+    this.saveBackgroundRequest('/branding/admin/settings', {
+      backgroundColor: this.backgroundColor(),
+      useBackgroundImage: this.useBackgroundImage(),
+      useAmbientBackground: this.useAmbientBackground()
+    });
+  }
+
+  removeBackgroundImage(): void {
+    if (!this.currentBackgroundImage() ||
+        !window.confirm('Remove the uploaded site background image?')) {
+      return;
+    }
+
+    this.isBackgroundSaving.set(true);
+    this.backgroundErrorMessage.set('');
+    this.backgroundSuccessMessage.set('');
+    this.adminApi.delete<SiteBrandingSettings>('/branding/admin/background-image')
+      .subscribe({
+        next: settings => {
+          this.applyBackgroundSettings(settings);
+          this.backgroundSuccessMessage.set('Background image removed. The ambient color is now active.');
+          this.isBackgroundSaving.set(false);
+        },
+        error: (error: HttpErrorResponse) => {
+          this.isBackgroundSaving.set(false);
+          this.backgroundErrorMessage.set(
+            this.getErrorMessage(error, 'The background image could not be removed.')
+          );
+        }
+      });
+  }
+
   private loadLogo(): void {
     const params = new HttpParams().set('usage', '6');
 
@@ -261,6 +389,72 @@ export class BrandingSettingsComponent implements OnInit, OnDestroy {
     });
   }
 
+  private loadBackgroundSettings(): void {
+    this.isBackgroundLoading.set(true);
+    this.publicApi.getBrandingSettings().subscribe({
+      next: settings => {
+        this.backgroundColor.set(settings.backgroundColor);
+        this.useBackgroundImage.set(settings.useBackgroundImage);
+        this.useAmbientBackground.set(settings.useAmbientBackground);
+        this.currentBackgroundImage.set(settings.backgroundImage as AdminMediaItem | null);
+        this.isBackgroundLoading.set(false);
+      },
+      error: (error: HttpErrorResponse) => {
+        this.isBackgroundLoading.set(false);
+        this.backgroundErrorMessage.set(
+          this.getErrorMessage(error, 'The current page background could not be loaded.')
+        );
+      }
+    });
+  }
+
+  private saveBackgroundRequest(path: string, body: unknown): void {
+    this.isBackgroundSaving.set(true);
+    this.backgroundErrorMessage.set('');
+    this.backgroundSuccessMessage.set('');
+
+    this.adminApi.put<SiteBrandingSettings>(path, body).subscribe({
+      next: settings => {
+        this.applyBackgroundSettings(settings);
+        this.isBackgroundSaving.set(false);
+        this.backgroundSuccessMessage.set('Site background updated everywhere.');
+      },
+      error: (error: HttpErrorResponse) => {
+        this.isBackgroundSaving.set(false);
+        this.backgroundErrorMessage.set(
+          this.getErrorMessage(error, 'The site background could not be saved.')
+        );
+      }
+    });
+  }
+
+  private applyBackgroundSettings(settings: SiteBrandingSettings): void {
+    const normalized: SiteBrandingSettings = {
+      ...settings,
+      backgroundImage: settings.backgroundImage
+        ? {
+            ...settings.backgroundImage,
+            contentUrl: this.adminApi.resolveContentUrl(settings.backgroundImage.contentUrl)
+          }
+        : null
+    };
+
+    this.backgroundColor.set(normalized.backgroundColor);
+    this.useBackgroundImage.set(normalized.useBackgroundImage);
+    this.useAmbientBackground.set(normalized.useAmbientBackground);
+    this.currentBackgroundImage.set(normalized.backgroundImage as AdminMediaItem | null);
+    this.selectedBackgroundFile.set(null);
+    this.clearBackgroundPreviewUrl();
+    this.publicApi.updateBrandingSettingsCache(normalized);
+    this.siteBranding.applyBackground(
+      normalized.backgroundColor,
+      normalized.useBackgroundImage
+        ? normalized.backgroundImage?.contentUrl ?? null
+        : null,
+      normalized.useAmbientBackground
+    );
+  }
+
   private clearPreviewUrl(): void {
     const preview = this.previewUrl();
 
@@ -276,6 +470,15 @@ export class BrandingSettingsComponent implements OnInit, OnDestroy {
     if (preview) {
       URL.revokeObjectURL(preview);
       this.heroPreviewUrl.set(null);
+    }
+  }
+
+  private clearBackgroundPreviewUrl(): void {
+    const preview = this.backgroundPreviewUrl();
+
+    if (preview) {
+      URL.revokeObjectURL(preview);
+      this.backgroundPreviewUrl.set(null);
     }
   }
 

@@ -9,7 +9,9 @@
         ContactBackground = 4,
         WebsiteThumbnail = 5,
         SiteLogo = 6,
-        HeroMedia = 7
+        HeroMedia = 7,
+        Gallery = 8,
+        PageBackground = 9
     }
 
     public sealed class MediaItem
@@ -29,6 +31,9 @@
 
         // Determines where the image can be used on the website.
         public MediaUsage Usage { get; set; }
+
+        // Used by ordered media collections such as the public gallery.
+        public int DisplayOrder { get; set; }
 
         public string? AltText { get; set; }
 

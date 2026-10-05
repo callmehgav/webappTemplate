@@ -17,4 +17,68 @@ export class SiteBrandingService {
     currentIcon?.remove();
     document.head.appendChild(favicon);
   }
+
+  applyBackground(
+    backgroundColor: string,
+    imageUrl: string | null,
+    useAmbientBackground = true
+  ): void {
+    const root = document.documentElement;
+    root.style.setProperty('--site-background-color', backgroundColor);
+    root.style.setProperty(
+      '--site-background-image',
+      imageUrl ? `url("${this.escapeCssUrl(imageUrl)}")` : 'none'
+    );
+
+    const [firstBloom, secondBloom] = useAmbientBackground
+      ? [
+          this.createAmbientColor(backgroundColor, -22, 14, 9, 0.22),
+          this.createAmbientColor(backgroundColor, 34, 18, 5, 0.16)
+        ]
+      : ['transparent', 'transparent'];
+
+    root.style.setProperty('--site-ambient-first', firstBloom);
+    root.style.setProperty('--site-ambient-second', secondBloom);
+    root.style.setProperty(
+      '--site-ambient-light',
+      useAmbientBackground ? 'rgba(255, 255, 255, 0.2)' : 'transparent'
+    );
+  }
+
+  private escapeCssUrl(value: string): string {
+    return value.replace(/["\\\n\r\f]/g, character => `\\${character}`);
+  }
+
+  private createAmbientColor(
+    hex: string,
+    hueShift: number,
+    saturationShift: number,
+    lightnessShift: number,
+    alpha: number
+  ): string {
+    const normalized = /^#[0-9a-f]{6}$/i.test(hex) ? hex.slice(1) : 'e9eef5';
+    const red = parseInt(normalized.slice(0, 2), 16) / 255;
+    const green = parseInt(normalized.slice(2, 4), 16) / 255;
+    const blue = parseInt(normalized.slice(4, 6), 16) / 255;
+    const maximum = Math.max(red, green, blue);
+    const minimum = Math.min(red, green, blue);
+    const delta = maximum - minimum;
+    let hue = 0;
+
+    if (delta !== 0) {
+      if (maximum === red) hue = 60 * (((green - blue) / delta) % 6);
+      else if (maximum === green) hue = 60 * ((blue - red) / delta + 2);
+      else hue = 60 * ((red - green) / delta + 4);
+    }
+
+    const lightness = (maximum + minimum) / 2;
+    const saturation = delta === 0
+      ? 0
+      : delta / (1 - Math.abs(2 * lightness - 1));
+    const shiftedHue = (hue + hueShift + 360) % 360;
+    const shiftedSaturation = Math.min(88, Math.max(22, saturation * 100 + saturationShift));
+    const shiftedLightness = Math.min(88, Math.max(24, lightness * 100 + lightnessShift));
+
+    return `hsla(${shiftedHue.toFixed(1)}, ${shiftedSaturation.toFixed(1)}%, ${shiftedLightness.toFixed(1)}%, ${alpha})`;
+  }
 }

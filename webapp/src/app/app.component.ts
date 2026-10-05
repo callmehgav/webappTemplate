@@ -56,6 +56,18 @@ export class AppComponent implements OnInit {
         console.error('Site favicon fetch failed:', error)
     });
 
+    this.publicApi.getBrandingSettings().subscribe({
+      next: settings => this.siteBranding.applyBackground(
+        settings.backgroundColor,
+        settings.useBackgroundImage
+          ? settings.backgroundImage?.contentUrl ?? null
+          : null,
+        settings.useAmbientBackground
+      ),
+      error: error =>
+        console.error('Site background fetch failed:', error)
+    });
+
     this.trackVisit();
 
     this.router.events
@@ -66,6 +78,18 @@ export class AppComponent implements OnInit {
         )
       )
       .subscribe(event => {
+        const fragment = this.router.parseUrl(event.urlAfterRedirects).fragment;
+        if (fragment) {
+          window.setTimeout(() => {
+            document.getElementById(fragment)?.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          });
+          this.trackPageView(event.urlAfterRedirects);
+          return;
+        }
+
         window.scrollTo({
           top: 0,
           left: 0,
