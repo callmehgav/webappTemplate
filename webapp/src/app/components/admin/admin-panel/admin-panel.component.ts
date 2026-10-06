@@ -8,7 +8,8 @@ import { BrandingSettingsComponent } from '../settings/branding-settings/brandin
 import { ScheduleSettingsComponent } from '../settings/schedule-settings/schedule-settings.component';
 import { GallerySettingsComponent } from '../settings/gallery-settings/gallery-settings.component';
 import { HomeFeatureSettingsComponent } from '../settings/home-feature-settings/home-feature-settings.component';
-type AdminSectionId = 'insights' | 'schedule' | 'branding' | 'gallery' | 'home-features' | 'social-links' | 'email';
+import { ServicesSettingsComponent } from '../settings/services-settings/services-settings.component';
+type AdminSectionId = 'insights' | 'schedule' | 'branding' | 'gallery' | 'services' | 'home-features' | 'social-links' | 'email';
 
 interface AdminSection {
   id: AdminSectionId;
@@ -55,9 +56,15 @@ export class AdminPanelComponent {
       component: GallerySettingsComponent
     },
     {
+      id: 'services',
+      label: 'Services',
+      description: 'Add service photos and short descriptions',
+      component: ServicesSettingsComponent
+    },
+    {
       id: 'home-features',
       label: 'Home Features',
-      description: 'Configure the YouTube feature and location map',
+      description: 'Choose homepage sections, photos, video, and map',
       component: HomeFeatureSettingsComponent
     },
     {

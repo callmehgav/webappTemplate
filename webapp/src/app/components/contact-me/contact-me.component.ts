@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ContactRequest, PublicApiService } from '../../services/public-api.service';
+import { ContactRequest, MediaUsage, PublicApiService } from '../../services/public-api.service';
 
 @Component({
   selector: 'app-contact-me',
@@ -13,6 +13,7 @@ export class ContactMeComponent implements OnInit {
   emailHref = '#contact';
   phoneHref = '';
   phoneNumber = '';
+  contactImage = 'none';
   formData: ContactRequest = this.createEmptyForm();
 
   loading = false;
@@ -23,6 +24,12 @@ export class ContactMeComponent implements OnInit {
   constructor(private readonly publicApi: PublicApiService) {}
 
   ngOnInit(): void {
+    this.publicApi.getMedia(MediaUsage.ContactBackground).subscribe({
+      next: images => {
+        if (images[0]) this.contactImage = `url("${images[0].contentUrl}")`;
+      },
+      error: error => console.error('Contact background could not be loaded:', error)
+    });
     this.publicApi.getContactSettings().subscribe({
       next: settings => {
         if (settings.email) {

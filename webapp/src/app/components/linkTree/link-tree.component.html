@@ -1,7 +1,10 @@
 <section class="link-tree" aria-labelledby="connect-heading">
   <div class="link-tree-content">
     <header class="connect-header">
-      <h2>Our Links</h2>
+      <div>
+        <p>Stay connected</p>
+        <h2>Follow along</h2>
+      </div>
     </header>
 
     @if (isLoading()) {
@@ -53,6 +56,7 @@
               rel="noopener noreferrer"
               [class]="'icon-link ' + getLinkClass(link)"
               [attr.aria-label]="getAriaLabel(link)"
+              [attr.data-label]="link.label"
               [title]="link.label"
               (click)="trackButtonClick(link.label)">
               <img [src]="getIconPath(link)" alt="" />

@@ -45,6 +45,28 @@ export class SiteBrandingService {
     );
   }
 
+  applyTypography(settings: {
+    h1FontFamily: string; h1FontSize: number; h1Color: string;
+    h2FontFamily: string; h2FontSize: number; h2Color: string;
+    h3FontFamily: string; h3FontSize: number; h3Color: string;
+  }): void {
+    const root = document.documentElement;
+    root.style.setProperty('--h1-font-family', this.fontStack(settings.h1FontFamily));
+    root.style.setProperty('--h1-font-size', `${settings.h1FontSize}px`);
+    root.style.setProperty('--h1-color', settings.h1Color);
+    root.style.setProperty('--h2-font-family', this.fontStack(settings.h2FontFamily));
+    root.style.setProperty('--h2-font-size', `${settings.h2FontSize}px`);
+    root.style.setProperty('--h2-color', settings.h2Color);
+    root.style.setProperty('--h3-font-family', this.fontStack(settings.h3FontFamily));
+    root.style.setProperty('--h3-font-size', `${settings.h3FontSize}px`);
+    root.style.setProperty('--h3-color', settings.h3Color);
+  }
+
+  private fontStack(font: string): string {
+    const safe = font.replace(/["'\\]/g, '');
+    return `"${safe}", Georgia, serif`;
+  }
+
   private escapeCssUrl(value: string): string {
     return value.replace(/["\\\n\r\f]/g, character => `\\${character}`);
   }

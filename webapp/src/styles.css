@@ -7,6 +7,15 @@
   --site-ambient-light: rgba(255, 255, 255, 0.2);
   --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Inter, Helvetica, Arial, sans-serif;
   --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Inter, Helvetica, Arial, sans-serif;
+  --h1-font-family: Georgia, serif;
+  --h1-font-size: 88px;
+  --h1-color: #2b2430;
+  --h2-font-family: Georgia, serif;
+  --h2-font-size: 58px;
+  --h2-color: #2b2430;
+  --h3-font-family: Georgia, serif;
+  --h3-font-size: 30px;
+  --h3-color: #514252;
   --page: #090b0f;
   --page-soft: #10141b;
   --text: #f6f7f9;
@@ -139,6 +148,9 @@ video {
 }
 
 app-about-section,
+app-services-showcase,
+app-home-gallery-preview,
+app-home-calendar-preview,
 app-link-tree,
 app-youtube-feature,
 app-location-map,
@@ -155,15 +167,42 @@ p {
   margin-top: 0;
 }
 
+h1 {
+  color: var(--h1-color);
+  font-family: var(--h1-font-family);
+  font-size: var(--h1-font-size);
+}
+
+h2 {
+  color: var(--h2-color);
+  font-family: var(--h2-font-family);
+  font-size: var(--h2-font-size);
+}
+
+h3 {
+  color: var(--h3-color);
+  font-family: var(--h3-font-family);
+  font-size: var(--h3-font-size);
+}
+
 h1,
 h2,
 h3,
 h4 {
-  color: var(--text);
-  font-family: var(--font-display);
   font-weight: 600;
   letter-spacing: -0.035em;
   text-wrap: balance;
+}
+
+h4 {
+  color: var(--text);
+  font-family: var(--font-display);
+}
+
+@media (max-width: 640px) {
+  h1 { font-size: min(var(--h1-font-size), 3.75rem); }
+  h2 { font-size: min(var(--h2-font-size), 3rem); }
+  h3 { font-size: min(var(--h3-font-size), 2rem); }
 }
 
 p {

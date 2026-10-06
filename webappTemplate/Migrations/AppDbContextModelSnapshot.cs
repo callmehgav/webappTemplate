@@ -99,6 +99,12 @@ namespace webappTemplate.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("CalendarPreviewEnabled")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("GalleryPreviewEnabled")
+                        .HasColumnType("INTEGER");
+
                     b.Property<double>("Latitude")
                         .HasColumnType("REAL");
 
@@ -113,6 +119,9 @@ namespace webappTemplate.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("MapEnabled")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("ServicesEnabled")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("MapZoom")
@@ -336,6 +345,46 @@ namespace webappTemplate.Migrations
                     b.ToTable("ScheduleSettings", (string)null);
                 });
 
+            modelBuilder.Entity("webappTemplate.Data.Models.ServiceOffering", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTimeOffset>("CreatedUtc")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsVisible")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid?>("MediaItemId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Summary")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTimeOffset>("UpdatedUtc")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DisplayOrder");
+
+                    b.HasIndex("MediaItemId");
+
+                    b.ToTable("ServiceOfferings", (string)null);
+                });
+
             modelBuilder.Entity("webappTemplate.Data.Models.SiteBrandingSettings", b =>
                 {
                     b.Property<int>("Id")
@@ -349,6 +398,45 @@ namespace webappTemplate.Migrations
 
                     b.Property<Guid?>("BackgroundMediaItemId")
                         .HasColumnType("TEXT");
+
+                    b.Property<string>("H1Color")
+                        .IsRequired()
+                        .HasMaxLength(7)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("H1FontFamily")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("H1FontSize")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("H2Color")
+                        .IsRequired()
+                        .HasMaxLength(7)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("H2FontFamily")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("H2FontSize")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("H3Color")
+                        .IsRequired()
+                        .HasMaxLength(7)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("H3FontFamily")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("H3FontSize")
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTimeOffset>("UpdatedUtc")
                         .HasColumnType("TEXT");
@@ -412,6 +500,16 @@ namespace webappTemplate.Migrations
                     b.HasIndex("UpdatedByAdminUserId");
 
                     b.ToTable("SiteContent", (string)null);
+                });
+
+            modelBuilder.Entity("webappTemplate.Data.Models.ServiceOffering", b =>
+                {
+                    b.HasOne("webappTemplate.Data.Models.MediaItem", "MediaItem")
+                        .WithMany()
+                        .HasForeignKey("MediaItemId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("MediaItem");
                 });
 
             modelBuilder.Entity("webappTemplate.Data.Models.SocialLink", b =>

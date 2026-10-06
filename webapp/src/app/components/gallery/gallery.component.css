@@ -75,8 +75,11 @@
 
 .gallery-header h1 {
   margin: 12px 0 0;
-  color: var(--text);
-  font: 600 clamp(4rem, 10vw, 9rem)/0.82 var(--font-display);
+  color: var(--h1-color);
+  font-family: var(--h1-font-family);
+  font-size: var(--h1-font-size);
+  font-weight: 600;
+  line-height: 0.9;
   letter-spacing: -0.075em;
   text-shadow: none;
 }
@@ -343,7 +346,7 @@ a:focus-visible {
   }
 
   .gallery-header h1 {
-    font-size: clamp(4.3rem, 24vw, 7rem);
+    font-size: min(var(--h1-font-size), 4.3rem);
   }
 
   .photo-grid {

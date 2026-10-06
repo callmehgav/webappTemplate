@@ -46,6 +46,9 @@ namespace webappTemplate.Controllers
             settings.YouTubeEnabled = request.YouTubeEnabled;
             settings.YouTubeUrl = Limit(youtubeUrl, 500);
             settings.YouTubeHeading = Limit(Clean(request.YouTubeHeading, "Latest on YouTube"), 150);
+            settings.ServicesEnabled = request.ServicesEnabled;
+            settings.GalleryPreviewEnabled = request.GalleryPreviewEnabled;
+            settings.CalendarPreviewEnabled = request.CalendarPreviewEnabled;
             settings.MapEnabled = request.MapEnabled;
             settings.LocationName = Limit(Clean(request.LocationName, "Find us"), 150);
             settings.LocationAddress = Limit(request.LocationAddress?.Trim() ?? string.Empty, 500);
@@ -74,6 +77,9 @@ namespace webappTemplate.Controllers
             settings.YouTubeEnabled,
             settings.YouTubeUrl,
             settings.YouTubeHeading,
+            settings.ServicesEnabled,
+            settings.GalleryPreviewEnabled,
+            settings.CalendarPreviewEnabled,
             settings.MapEnabled,
             settings.LocationName,
             settings.LocationAddress,
@@ -107,6 +113,9 @@ namespace webappTemplate.Controllers
         bool YouTubeEnabled,
         string? YouTubeUrl,
         string? YouTubeHeading,
+        bool ServicesEnabled,
+        bool GalleryPreviewEnabled,
+        bool CalendarPreviewEnabled,
         bool MapEnabled,
         string? LocationName,
         string? LocationAddress,

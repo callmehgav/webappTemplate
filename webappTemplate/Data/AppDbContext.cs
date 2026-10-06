@@ -42,6 +42,9 @@ namespace webappTemplate.Data
         public DbSet<SiteBrandingSettings> SiteBrandingSettings =>
             Set<SiteBrandingSettings>();
 
+        public DbSet<ServiceOffering> ServiceOfferings =>
+            Set<ServiceOffering>();
+
         protected override void OnModelCreating(
             ModelBuilder modelBuilder)
         {
@@ -56,6 +59,23 @@ namespace webappTemplate.Data
             ConfigureSchedule(modelBuilder);
             ConfigureHomeFeatures(modelBuilder);
             ConfigureSiteBranding(modelBuilder);
+            ConfigureServiceOfferings(modelBuilder);
+        }
+
+        private static void ConfigureServiceOfferings(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ServiceOffering>(entity =>
+            {
+                entity.ToTable("ServiceOfferings");
+                entity.HasKey(x => x.Id);
+                entity.Property(x => x.Title).HasMaxLength(150).IsRequired();
+                entity.Property(x => x.Summary).HasMaxLength(1000).IsRequired();
+                entity.HasIndex(x => x.DisplayOrder);
+                entity.HasOne(x => x.MediaItem)
+                    .WithMany()
+                    .HasForeignKey(x => x.MediaItemId)
+                    .OnDelete(DeleteBehavior.SetNull);
+            });
         }
 
         private static void ConfigureSiteBranding(ModelBuilder modelBuilder)
@@ -67,6 +87,12 @@ namespace webappTemplate.Data
                 entity.Property(x => x.BackgroundColor)
                     .HasMaxLength(7)
                     .IsRequired();
+                entity.Property(x => x.H1FontFamily).HasMaxLength(100).IsRequired();
+                entity.Property(x => x.H1Color).HasMaxLength(7).IsRequired();
+                entity.Property(x => x.H2FontFamily).HasMaxLength(100).IsRequired();
+                entity.Property(x => x.H2Color).HasMaxLength(7).IsRequired();
+                entity.Property(x => x.H3FontFamily).HasMaxLength(100).IsRequired();
+                entity.Property(x => x.H3Color).HasMaxLength(7).IsRequired();
             });
         }
 

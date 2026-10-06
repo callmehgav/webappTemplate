@@ -230,6 +230,72 @@ namespace webappTemplate.Controllers
             return Ok(new { success = true });
         }
 
+        [RequestSizeLimit(MaximumRequestBytes)]
+        [HttpPut("section-image/{usage:int}")]
+        public async Task<IActionResult> ReplaceSectionImage(
+            MediaUsage usage,
+            [FromForm] ReplaceMediaRequest request,
+            CancellationToken cancellationToken)
+        {
+            if (usage is not (MediaUsage.AboutProfilePicture or MediaUsage.ContactBackground))
+                return BadRequest(new { message = "That section image type is not supported." });
+            if (request.File is null || request.File.Length == 0)
+                return BadRequest(new { message = "Choose an image first." });
+            if (request.File.Length > MaximumImageBytes)
+                return BadRequest(new { message = "The image cannot exceed 10 MB." });
+
+            var contentType = request.File.ContentType.Trim().ToLowerInvariant();
+            if (contentType is not ("image/jpeg" or "image/png" or "image/webp" or "image/gif"))
+                return BadRequest(new { message = "Use a JPEG, PNG, WebP, or GIF image." });
+
+            byte[] imageData;
+            await using (var stream = request.File.OpenReadStream())
+            {
+                using var memory = new MemoryStream();
+                await stream.CopyToAsync(memory, cancellationToken);
+                imageData = memory.ToArray();
+            }
+
+            var existing = await _database.MediaItems
+                .Where(media => media.Usage == usage)
+                .ToListAsync(cancellationToken);
+            _database.MediaItems.RemoveRange(existing);
+
+            var image = new MediaItem
+            {
+                Id = Guid.NewGuid(),
+                ImageData = imageData,
+                OriginalFileName = Path.GetFileName(request.File.FileName),
+                ContentType = contentType,
+                ByteLength = imageData.LongLength,
+                Usage = usage,
+                AltText = usage == MediaUsage.AboutProfilePicture
+                    ? "About Tin Roof Events"
+                    : "Contact Tin Roof Events",
+                FocalPointX = 50,
+                FocalPointY = 50
+            };
+            _database.MediaItems.Add(image);
+            await _database.SaveChangesAsync(cancellationToken);
+            return Ok(CreateResponse(image));
+        }
+
+        [HttpDelete("section-image/{usage:int}")]
+        public async Task<IActionResult> RemoveSectionImage(
+            MediaUsage usage,
+            CancellationToken cancellationToken)
+        {
+            if (usage is not (MediaUsage.AboutProfilePicture or MediaUsage.ContactBackground))
+                return BadRequest(new { message = "That section image type is not supported." });
+
+            var existing = await _database.MediaItems
+                .Where(media => media.Usage == usage)
+                .ToListAsync(cancellationToken);
+            _database.MediaItems.RemoveRange(existing);
+            await _database.SaveChangesAsync(cancellationToken);
+            return Ok(new { success = true });
+        }
+
         
         [RequestSizeLimit(MaximumRequestBytes)]
         [HttpPost]

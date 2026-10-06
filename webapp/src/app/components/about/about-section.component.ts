@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, OnInit, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { PublicApiService, SiteContent } from '../../services/public-api.service';
+import { MediaUsage, PublicApiService, SiteContent } from '../../services/public-api.service';
 
 @Component({
   selector: 'app-about-section',
@@ -32,18 +32,18 @@ export class AboutSectionComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadAboutContent();
-    this.loadSiteLogo();
+    this.loadAboutImage();
   }
 
-  private loadSiteLogo(): void {
-    this.publicApi.getSiteLogo().subscribe({
-      next: logo => {
-        if (logo) {
-          this.profileImageUrl.set(logo.contentUrl);
+  private loadAboutImage(): void {
+    this.publicApi.getMedia(MediaUsage.AboutProfilePicture).subscribe({
+      next: images => {
+        if (images[0]) {
+          this.profileImageUrl.set(images[0].contentUrl);
         }
       },
       error: error =>
-        console.error('Site logo fetch failed:', error)
+        console.error('About image fetch failed:', error)
     });
   }
 

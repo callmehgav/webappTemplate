@@ -1,0 +1,75 @@
+<div class="services-settings">
+  <section class="new-service" aria-labelledby="new-service-heading">
+    <div>
+      <p class="section-kicker">New offering</p>
+      <h3 id="new-service-heading">Add a service</h3>
+    </div>
+    <label>
+      <span>Title</span>
+      <input [(ngModel)]="newTitle" maxlength="150" placeholder="Weddings" />
+    </label>
+    <label>
+      <span>Brief bio</span>
+      <textarea [(ngModel)]="newSummary" maxlength="1000" rows="3" placeholder="Describe what makes this service special."></textarea>
+    </label>
+    <button type="button" class="primary" [disabled]="isCreating()" (click)="create()">
+      {{ isCreating() ? 'Adding…' : 'Add service' }}
+    </button>
+  </section>
+
+  @if (errorMessage()) { <p class="message error" role="alert">{{ errorMessage() }}</p> }
+  @if (successMessage()) { <p class="message success">{{ successMessage() }}</p> }
+
+  @if (isLoading()) {
+    <p class="empty">Loading services…</p>
+  } @else if (services().length === 0) {
+    <p class="empty">No services yet. Add the first one above.</p>
+  } @else {
+    <div class="service-list">
+      @for (service of services(); track service.id) {
+        <article class="service-editor">
+          <div class="photo-slot">
+            @if (service.image; as image) {
+              <img [src]="image.contentUrl" [alt]="service.title" />
+            } @else {
+              <span>No photo</span>
+            }
+          </div>
+
+          <div class="editor-fields">
+            <label>
+              <span>Title</span>
+              <input [(ngModel)]="service.title" maxlength="150" />
+            </label>
+            <label>
+              <span>Brief bio</span>
+              <textarea [(ngModel)]="service.summary" maxlength="1000" rows="4"></textarea>
+            </label>
+            <div class="inline-fields">
+              <label>
+                <span>Order</span>
+                <input type="number" [(ngModel)]="service.displayOrder" />
+              </label>
+              <label class="visibility">
+                <input type="checkbox" [(ngModel)]="service.isVisible" />
+                <span>Show on site</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="editor-actions">
+            <label class="file-button">
+              {{ service.image ? 'Replace photo' : 'Upload photo' }}
+              <input type="file" accept="image/jpeg,image/png,image/webp,image/gif" (change)="chooseImage(service, $event)" />
+            </label>
+            @if (service.image) {
+              <button type="button" class="quiet" [disabled]="busyId() === service.id" (click)="removeImage(service)">Remove photo</button>
+            }
+            <button type="button" class="primary" [disabled]="busyId() === service.id" (click)="save(service)">Save</button>
+            <button type="button" class="danger" [disabled]="busyId() === service.id" (click)="remove(service)">Delete</button>
+          </div>
+        </article>
+      }
+    </div>
+  }
+</div>

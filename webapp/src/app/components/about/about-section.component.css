@@ -1,7 +1,7 @@
 .about-section {
   position: relative;
   width: min(1040px, calc(100% - 32px));
-  margin: clamp(70px, 10vw, 140px) auto;
+  margin: clamp(64px, 8vw, 104px) auto;
 }
 
 .about-bg {
@@ -14,7 +14,7 @@
 .about-container {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(180px, 0.7fr) minmax(0, 1.6fr);
+  grid-template-columns: minmax(260px, 0.9fr) minmax(0, 1.35fr);
   align-items: center;
   gap: clamp(28px, 6vw, 78px);
   overflow: hidden;
@@ -42,15 +42,15 @@
 
 .about-image {
   position: relative;
-  width: min(240px, 100%);
-  aspect-ratio: 1;
+  width: 100%;
+  min-height: 520px;
+  height: 100%;
   margin: auto;
-  padding: clamp(14px, 2.5vw, 26px);
-  object-fit: contain;
+  object-fit: cover;
   border: 1px solid rgba(255, 255, 255, 0.24);
-  border-radius: 32%;
-  background: linear-gradient(145deg, #151b25, #080b10);
-  box-shadow: 0 22px 55px rgba(0, 0, 0, 0.3), inset 0 1px rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 22px 55px rgba(37, 48, 65, 0.16);
 }
 
 .about-bio {
@@ -60,7 +60,6 @@
 
 .about-bio h2 {
   margin: 0 0 20px;
-  font-size: clamp(2rem, 5vw, 4.2rem);
   line-height: 0.96;
 }
 
@@ -83,6 +82,6 @@
     text-align: center;
   }
 
-  .about-image { width: 150px; border-radius: 50%; }
+  .about-image { width: 100%; min-height: 320px; max-height: 460px; border-radius: var(--radius-md); }
   .about-bio p { margin-inline: auto; }
 }

@@ -54,6 +54,17 @@ export class BrandingSettingsComponent implements OnInit, OnDestroy {
   readonly backgroundPreviewUrl = signal<string | null>(null);
   readonly backgroundErrorMessage = signal('');
   readonly backgroundSuccessMessage = signal('');
+  readonly h1FontFamily = signal('Georgia');
+  readonly h1FontSize = signal(88);
+  readonly h1Color = signal('#2b2430');
+  readonly h2FontFamily = signal('Georgia');
+  readonly h2FontSize = signal(58);
+  readonly h2Color = signal('#2b2430');
+  readonly h3FontFamily = signal('Georgia');
+  readonly h3FontSize = signal(30);
+  readonly h3Color = signal('#514252');
+  readonly typographySample = signal('Celebrate beautifully');
+  readonly fontOptions = ['Georgia', 'Times New Roman', 'Trebuchet MS', 'Arial', 'Verdana', 'system-ui'];
 
   constructor(
     private readonly adminApi: AdminApiService,
@@ -308,7 +319,8 @@ export class BrandingSettingsComponent implements OnInit, OnDestroy {
     this.saveBackgroundRequest('/branding/admin/settings', {
       backgroundColor: this.backgroundColor(),
       useBackgroundImage: this.useBackgroundImage(),
-      useAmbientBackground: this.useAmbientBackground()
+      useAmbientBackground: this.useAmbientBackground(),
+      ...this.typographyPayload()
     });
   }
 
@@ -397,6 +409,7 @@ export class BrandingSettingsComponent implements OnInit, OnDestroy {
         this.useBackgroundImage.set(settings.useBackgroundImage);
         this.useAmbientBackground.set(settings.useAmbientBackground);
         this.currentBackgroundImage.set(settings.backgroundImage as AdminMediaItem | null);
+        this.applyTypographySignals(settings);
         this.isBackgroundLoading.set(false);
       },
       error: (error: HttpErrorResponse) => {
@@ -453,6 +466,37 @@ export class BrandingSettingsComponent implements OnInit, OnDestroy {
         : null,
       normalized.useAmbientBackground
     );
+    this.applyTypographySignals(normalized);
+    this.siteBranding.applyTypography(normalized);
+  }
+
+  saveTypography(): void {
+    this.saveBackgroundRequest('/branding/admin/settings', {
+      backgroundColor: this.backgroundColor(),
+      useBackgroundImage: this.useBackgroundImage(),
+      useAmbientBackground: this.useAmbientBackground(),
+      ...this.typographyPayload()
+    });
+  }
+
+  private typographyPayload() {
+    return {
+      h1FontFamily: this.h1FontFamily(), h1FontSize: this.h1FontSize(), h1Color: this.h1Color(),
+      h2FontFamily: this.h2FontFamily(), h2FontSize: this.h2FontSize(), h2Color: this.h2Color(),
+      h3FontFamily: this.h3FontFamily(), h3FontSize: this.h3FontSize(), h3Color: this.h3Color()
+    };
+  }
+
+  private applyTypographySignals(settings: SiteBrandingSettings): void {
+    this.h1FontFamily.set(settings.h1FontFamily);
+    this.h1FontSize.set(settings.h1FontSize);
+    this.h1Color.set(settings.h1Color);
+    this.h2FontFamily.set(settings.h2FontFamily);
+    this.h2FontSize.set(settings.h2FontSize);
+    this.h2Color.set(settings.h2Color);
+    this.h3FontFamily.set(settings.h3FontFamily);
+    this.h3FontSize.set(settings.h3FontSize);
+    this.h3Color.set(settings.h3Color);
   }
 
   private clearPreviewUrl(): void {

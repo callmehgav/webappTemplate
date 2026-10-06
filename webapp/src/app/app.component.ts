@@ -57,13 +57,16 @@ export class AppComponent implements OnInit {
     });
 
     this.publicApi.getBrandingSettings().subscribe({
-      next: settings => this.siteBranding.applyBackground(
-        settings.backgroundColor,
-        settings.useBackgroundImage
-          ? settings.backgroundImage?.contentUrl ?? null
-          : null,
-        settings.useAmbientBackground
-      ),
+      next: settings => {
+        this.siteBranding.applyBackground(
+          settings.backgroundColor,
+          settings.useBackgroundImage
+            ? settings.backgroundImage?.contentUrl ?? null
+            : null,
+          settings.useAmbientBackground
+        );
+        this.siteBranding.applyTypography(settings);
+      },
       error: error =>
         console.error('Site background fetch failed:', error)
     });

@@ -2,6 +2,27 @@
   <div class="feature-grid">
     <section class="settings-card">
       <div class="card-heading">
+        <div><span class="eyebrow">Offerings</span><h3>Services</h3><p>Show editable service cards on the home page.</p></div>
+        <label class="switch-row"><input type="checkbox" [(ngModel)]="config.servicesEnabled" /><span>Show on home page</span></label>
+      </div>
+    </section>
+
+    <section class="settings-card">
+      <div class="card-heading">
+        <div><span class="eyebrow">Preview</span><h3>Gallery</h3><p>Show a compact selection from the full gallery.</p></div>
+        <label class="switch-row"><input type="checkbox" [(ngModel)]="config.galleryPreviewEnabled" /><span>Show on home page</span></label>
+      </div>
+    </section>
+
+    <section class="settings-card">
+      <div class="card-heading">
+        <div><span class="eyebrow">Availability</span><h3>Calendar</h3><p>Show the public schedule calendar on the home page.</p></div>
+        <label class="switch-row"><input type="checkbox" [(ngModel)]="config.calendarPreviewEnabled" /><span>Show on home page</span></label>
+      </div>
+    </section>
+
+    <section class="settings-card">
+      <div class="card-heading">
         <div>
           <span class="eyebrow">Video</span>
           <h3>YouTube</h3>
@@ -49,6 +70,26 @@
           <input type="number" [(ngModel)]="config.mapZoom" min="1" max="19" />
           <small>1 shows the world; 19 shows street-level detail.</small>
         </label>
+      </div>
+    </section>
+
+    <section class="settings-card media-card">
+      <div class="card-heading"><div><span class="eyebrow">About</span><h3>About photo</h3><p>Use a dedicated venue or team photo instead of the site logo.</p></div></div>
+      @if (imageUrl(aboutImage()); as url) { <img class="section-image-preview" [src]="url" alt="Current About photo" /> }
+      <label>Choose image<input type="file" accept="image/jpeg,image/png,image/webp,image/gif" (change)="chooseImage($event, 'about')" /></label>
+      <div class="media-actions">
+        @if (aboutImage()) { <button type="button" class="secondary" [disabled]="imageSaving()" (click)="removeSectionImage(3)">Remove</button> }
+        <button type="button" [disabled]="!aboutFile() || imageSaving()" (click)="saveSectionImage(3)">Save About photo</button>
+      </div>
+    </section>
+
+    <section class="settings-card media-card">
+      <div class="card-heading"><div><span class="eyebrow">Contact</span><h3>Contact background</h3><p>Add atmosphere behind the contact form while retaining readability.</p></div></div>
+      @if (imageUrl(contactImage()); as url) { <img class="section-image-preview" [src]="url" alt="Current Contact background" /> }
+      <label>Choose image<input type="file" accept="image/jpeg,image/png,image/webp,image/gif" (change)="chooseImage($event, 'contact')" /></label>
+      <div class="media-actions">
+        @if (contactImage()) { <button type="button" class="secondary" [disabled]="imageSaving()" (click)="removeSectionImage(4)">Remove</button> }
+        <button type="button" [disabled]="!contactFile() || imageSaving()" (click)="saveSectionImage(4)">Save contact image</button>
       </div>
     </section>
   </div>

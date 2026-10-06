@@ -171,6 +171,64 @@
   }
 </section>
 
+<section class="branding-settings typography-settings">
+  <header class="settings-header">
+    <div>
+      <h3>Heading typography</h3>
+      <p>Set the shared font, size, and color for public H1, H2, and H3 headings.</p>
+    </div>
+  </header>
+
+  <label class="sample-text-field">
+    <span>Preview text</span>
+    <input type="text" [value]="typographySample()" (input)="typographySample.set($any($event.target).value)" maxlength="80" />
+  </label>
+
+  <div class="type-grid">
+    <section class="type-control">
+      <span class="eyebrow">H1</span>
+      <label>Font
+        <select [value]="h1FontFamily()" (change)="h1FontFamily.set($any($event.target).value)">
+          @for (font of fontOptions; track font) { <option [value]="font">{{ font }}</option> }
+        </select>
+      </label>
+      <label>Size <input type="number" min="36" max="140" [value]="h1FontSize()" (input)="h1FontSize.set(+$any($event.target).value)" /></label>
+      <label>Color <input type="color" [value]="h1Color()" (input)="h1Color.set($any($event.target).value)" /></label>
+      <div class="type-sample" [style.font-family]="h1FontFamily()" [style.font-size.px]="h1FontSize()" [style.color]="h1Color()">{{ typographySample() }}</div>
+    </section>
+
+    <section class="type-control">
+      <span class="eyebrow">H2</span>
+      <label>Font
+        <select [value]="h2FontFamily()" (change)="h2FontFamily.set($any($event.target).value)">
+          @for (font of fontOptions; track font) { <option [value]="font">{{ font }}</option> }
+        </select>
+      </label>
+      <label>Size <input type="number" min="28" max="96" [value]="h2FontSize()" (input)="h2FontSize.set(+$any($event.target).value)" /></label>
+      <label>Color <input type="color" [value]="h2Color()" (input)="h2Color.set($any($event.target).value)" /></label>
+      <div class="type-sample" [style.font-family]="h2FontFamily()" [style.font-size.px]="h2FontSize()" [style.color]="h2Color()">{{ typographySample() }}</div>
+    </section>
+
+    <section class="type-control">
+      <span class="eyebrow">H3</span>
+      <label>Font
+        <select [value]="h3FontFamily()" (change)="h3FontFamily.set($any($event.target).value)">
+          @for (font of fontOptions; track font) { <option [value]="font">{{ font }}</option> }
+        </select>
+      </label>
+      <label>Size <input type="number" min="20" max="64" [value]="h3FontSize()" (input)="h3FontSize.set(+$any($event.target).value)" /></label>
+      <label>Color <input type="color" [value]="h3Color()" (input)="h3Color.set($any($event.target).value)" /></label>
+      <div class="type-sample" [style.font-family]="h3FontFamily()" [style.font-size.px]="h3FontSize()" [style.color]="h3Color()">{{ typographySample() }}</div>
+    </section>
+  </div>
+
+  <footer class="form-actions">
+    <button type="button" class="primary-button" [disabled]="isBackgroundSaving()" (click)="saveTypography()">
+      {{ isBackgroundSaving() ? 'Saving…' : 'Save typography' }}
+    </button>
+  </footer>
+</section>
+
 <section class="branding-settings hero-settings">
   <header class="settings-header">
     <div>

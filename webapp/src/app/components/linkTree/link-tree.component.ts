@@ -133,6 +133,8 @@ export class LinkTreeComponent implements OnInit {
 
   private getSpecialIcon(label: string): string | null {
     switch (this.normalizeMetricKey(label)) {
+      case 'snapchat':
+        return 'snapchat.svg';
       case 'wilson':
       case 'willy':
         return 'pet.svg';
@@ -146,6 +148,8 @@ export class LinkTreeComponent implements OnInit {
 
   private getSpecialClass(label: string): string | null {
     switch (this.normalizeMetricKey(label)) {
+      case 'snapchat':
+        return 'snapchat';
       case 'wilson':
       case 'willy':
         return 'willy';

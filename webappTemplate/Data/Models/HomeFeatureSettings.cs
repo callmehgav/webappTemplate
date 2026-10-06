@@ -6,6 +6,9 @@ namespace webappTemplate.Data.Models
         public bool YouTubeEnabled { get; set; }
         public string YouTubeUrl { get; set; } = string.Empty;
         public string YouTubeHeading { get; set; } = "Latest on YouTube";
+        public bool ServicesEnabled { get; set; } = true;
+        public bool GalleryPreviewEnabled { get; set; } = true;
+        public bool CalendarPreviewEnabled { get; set; } = true;
         public bool MapEnabled { get; set; }
         public string LocationName { get; set; } = "Find us";
         public string LocationAddress { get; set; } = string.Empty;

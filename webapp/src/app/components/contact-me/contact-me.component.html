@@ -1,9 +1,10 @@
 <section class="contact-me" id="contact">
   <div class="contact-card">
-    <h2>Contact Us</h2>
+    <div class="contact-content">
+      <h2>Contact Us</h2>
 
 
-    <div class="contact-options">
+      <div class="contact-options">
       <a
         class="email-button"
         [href]="emailHref"
@@ -22,8 +23,8 @@
       <span class="form-instruction">
         complete the form below
       </span>
-    </div>
-    <form (ngSubmit)="submitForm()" #contactForm="ngForm">
+      </div>
+      <form (ngSubmit)="submitForm()" #contactForm="ngForm">
       <label>Name *</label>
       <div class="name-fields">
         <input type="text" name="firstName" [(ngModel)]="formData.firstName" placeholder="First" required />
@@ -63,6 +64,14 @@
           Message sent successfully!
         </div>
       }
-    </form>
+      </form>
+    </div>
+
+    <div
+      class="contact-image"
+      [style.--contact-image]="contactImage"
+      role="img"
+      aria-label="Tin Roof Events venue">
+    </div>
   </div>
 </section>

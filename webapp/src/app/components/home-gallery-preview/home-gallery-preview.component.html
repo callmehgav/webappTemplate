@@ -1,0 +1,23 @@
+@if (isEnabled() && images().length > 0) {
+  <section class="gallery-preview" aria-labelledby="gallery-preview-heading">
+    <header>
+      <div>
+        <p class="eyebrow">A glimpse of the venue</p>
+        <h2 id="gallery-preview-heading">Picture your day here</h2>
+      </div>
+      <a routerLink="/gallery">Explore the gallery <span aria-hidden="true">↗</span></a>
+    </header>
+
+    <div class="preview-grid">
+      @for (image of images(); track image.id; let index = $index) {
+        <figure [class]="'preview-image image-' + index">
+          <img
+            [src]="image.contentUrl"
+            [alt]="image.altText || 'Venue gallery image'"
+            [style.object-position]="image.focalPointX + '% ' + image.focalPointY + '%'"
+            loading="lazy" />
+        </figure>
+      }
+    </div>
+  </section>
+}

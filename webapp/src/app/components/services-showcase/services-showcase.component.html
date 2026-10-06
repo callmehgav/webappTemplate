@@ -1,0 +1,27 @@
+@if (isEnabled() && services().length > 0) {
+  <section class="services" aria-labelledby="services-heading">
+    <header class="services-heading">
+      <p class="eyebrow">What we offer</p>
+      <h2 id="services-heading">Made for memorable gatherings</h2>
+      <p>Flexible spaces and thoughtful details for celebrations of every size.</p>
+    </header>
+
+    <div class="service-grid">
+      @for (service of services(); track service.id; let index = $index) {
+        <article class="service-card" [class.service-card-featured]="index % 3 === 0">
+          @if (service.image; as image) {
+            <img [src]="image.contentUrl" [alt]="image.altText || service.title" loading="lazy" />
+          } @else {
+            <div class="service-placeholder" aria-hidden="true"></div>
+          }
+
+          <div class="service-copy">
+            <span class="service-number">{{ (index + 1).toString().padStart(2, '0') }}</span>
+            <h3>{{ service.title }}</h3>
+            <p>{{ service.summary }}</p>
+          </div>
+        </article>
+      }
+    </div>
+  </section>
+}

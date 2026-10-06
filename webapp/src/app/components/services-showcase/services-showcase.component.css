@@ -1,0 +1,115 @@
+.services {
+  width: min(1180px, calc(100% - 32px));
+  margin: clamp(72px, 9vw, 112px) auto;
+}
+
+.services-heading {
+  width: min(720px, 100%);
+  margin-bottom: 32px;
+}
+
+.eyebrow {
+  margin: 0 0 10px;
+  color: var(--accent-strong, #8d607c);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.services-heading h2 { margin: 0; }
+
+.services-heading > p:last-child {
+  max-width: 580px;
+  margin: 16px 0 0;
+  color: var(--text-soft);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.service-card {
+  position: relative;
+  grid-column: span 4;
+  min-height: 430px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.48);
+  border-radius: 28px;
+  background: #d9ced5;
+  box-shadow: 0 22px 55px rgba(58, 42, 53, 0.16);
+  isolation: isolate;
+}
+
+.service-card-featured { grid-column: span 5; }
+.service-card-featured + .service-card { grid-column: span 7; }
+
+.service-card img,
+.service-placeholder {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 600ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.service-placeholder {
+  background:
+    radial-gradient(circle at 75% 20%, rgba(255, 255, 255, 0.8), transparent 24%),
+    linear-gradient(135deg, #c9a7b8, #80748e);
+}
+
+.service-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(180deg, transparent 28%, rgba(31, 22, 29, 0.82) 100%);
+}
+
+.service-card:hover img { transform: scale(1.035); }
+
+.service-copy {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  padding: 26px;
+  color: #fff;
+}
+
+.service-number {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  opacity: 0.72;
+}
+
+.service-copy h3 {
+  margin: 0;
+  color: #fff;
+  font-family: var(--h3-font-family);
+  font-size: clamp(1.35rem, var(--h3-font-size), 2.25rem);
+}
+
+.service-copy p {
+  max-width: 46rem;
+  margin: 10px 0 0;
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.55;
+}
+
+@media (max-width: 780px) {
+  .service-card,
+  .service-card-featured,
+  .service-card-featured + .service-card { grid-column: span 12; }
+  .service-card { min-height: 360px; }
+}

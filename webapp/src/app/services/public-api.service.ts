@@ -99,6 +99,9 @@ export interface HomeFeatureSettings {
   youTubeEnabled: boolean;
   youTubeUrl: string;
   youTubeHeading: string;
+  servicesEnabled: boolean;
+  galleryPreviewEnabled: boolean;
+  calendarPreviewEnabled: boolean;
   mapEnabled: boolean;
   locationName: string;
   locationAddress: string;
@@ -112,6 +115,24 @@ export interface SiteBrandingSettings {
   useBackgroundImage: boolean;
   useAmbientBackground: boolean;
   backgroundImage: PublicMediaItem | null;
+  h1FontFamily: string;
+  h1FontSize: number;
+  h1Color: string;
+  h2FontFamily: string;
+  h2FontSize: number;
+  h2Color: string;
+  h3FontFamily: string;
+  h3FontSize: number;
+  h3Color: string;
+}
+
+export interface ServiceOffering {
+  id: string;
+  title: string;
+  summary: string;
+  displayOrder: number;
+  isVisible: boolean;
+  image: BackgroundMedia | null;
 }
 
 export interface InstagramMediaItem {
@@ -277,6 +298,19 @@ export class PublicApiService {
       this.createUrl('/contact'),
       request
     );
+  }
+
+  getServices(): Observable<ServiceOffering[]> {
+    return this.http
+      .get<ServiceOffering[]>(this.createUrl('/services'))
+      .pipe(
+        map(items => items.map(item => ({
+          ...item,
+          image: item.image
+            ? { ...item.image, contentUrl: this.resolveContentUrl(item.image.contentUrl) }
+            : null
+        })))
+      );
   }
 
   getContactSettings(): Observable<PublicContactSettings> {
