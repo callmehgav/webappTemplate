@@ -22,6 +22,11 @@ namespace webappTemplate.Data.Models
         public int H3FontSize { get; set; } = 30;
         public string H3Color { get; set; } = "#514252";
 
+        public string ButtonColor { get; set; } = "#356bd6";
+        public string ButtonTextColor { get; set; } = "#ffffff";
+        public string PFontFamily { get; set; } = "Arial";
+        public int PFontSize { get; set; } = 16;
+        public string PColor { get; set; } = "#514252";
         public DateTimeOffset UpdatedUtc { get; set; } = DateTimeOffset.UtcNow;
     }
 }

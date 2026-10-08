@@ -10,6 +10,7 @@ import { ContactRequest, MediaUsage, PublicApiService } from '../../services/pub
   changeDetection: ChangeDetectionStrategy.Eager
 })
 export class ContactMeComponent implements OnInit {
+  contactHeading = 'Contact Us';
   emailHref = '#contact';
   phoneHref = '';
   phoneNumber = '';
@@ -24,6 +25,7 @@ export class ContactMeComponent implements OnInit {
   constructor(private readonly publicApi: PublicApiService) {}
 
   ngOnInit(): void {
+    this.publicApi.getHomeFeatureSettings().subscribe({ next: settings => this.contactHeading = settings.contactHeading ?? 'Contact Us' });
     this.publicApi.getMedia(MediaUsage.ContactBackground).subscribe({
       next: images => {
         if (images[0]) this.contactImage = `url("${images[0].contentUrl}")`;

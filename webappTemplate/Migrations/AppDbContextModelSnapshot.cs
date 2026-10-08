@@ -146,6 +146,58 @@ namespace webappTemplate.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("ServicesEyebrow")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ServicesHeading")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ServicesDescription")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("GalleryEyebrow")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("GalleryHeading")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CalendarEyebrow")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CalendarHeading")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CalendarDescription")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SocialEyebrow")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SocialHeading")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ContactHeading")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MapEyebrow")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LocationsJson")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.ToTable("HomeFeatureSettings", (string)null);
@@ -446,6 +498,25 @@ namespace webappTemplate.Migrations
 
                     b.Property<bool>("UseAmbientBackground")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("ButtonColor")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ButtonTextColor")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PFontFamily")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("PFontSize")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("PColor")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 

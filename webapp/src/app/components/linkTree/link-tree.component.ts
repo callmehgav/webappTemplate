@@ -38,7 +38,10 @@ export class LinkTreeComponent implements OnInit {
 
   constructor(private readonly publicApi: PublicApiService) {}
 
+  readonly sectionText = signal({"socialEyebrow":"Stay connected","socialHeading":"Follow along"});
+
   ngOnInit(): void {
+    this.publicApi.getHomeFeatureSettings().subscribe(settings => this.sectionText.set({socialEyebrow: settings.socialEyebrow,socialHeading: settings.socialHeading}));
     this.publicApi.getSocialLinks().subscribe({
       next: links => {
         this.links.set(links);

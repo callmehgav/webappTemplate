@@ -1,3 +1,5 @@
+import { inject } from '@angular/core';
+import { ConfirmationService } from '../../../../services/confirmation.service';
 import { ChangeDetectionStrategy, Component, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -13,6 +15,7 @@ import { ServiceOffering } from '../../../../services/public-api.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ServicesSettingsComponent implements OnInit {
+  private readonly confirmation = inject(ConfirmationService);
   readonly services = signal<ServiceOffering[]>([]);
   readonly isLoading = signal(true);
   readonly busyId = signal<string | null>(null);
@@ -98,7 +101,8 @@ export class ServicesSettingsComponent implements OnInit {
     });
   }
 
-  removeImage(item: ServiceOffering): void {
+  async removeImage(item: ServiceOffering): Promise<void> {
+    if (!await this.confirmation.confirm("Remove this service photo?")) return;
     this.clearMessages();
     this.busyId.set(item.id);
     this.adminApi.delete<{ success: boolean }>(`/services/admin/${item.id}/image`).subscribe({
@@ -111,8 +115,8 @@ export class ServicesSettingsComponent implements OnInit {
     });
   }
 
-  remove(item: ServiceOffering): void {
-    if (!window.confirm(`Delete “${item.title}”?`)) return;
+  async remove(item: ServiceOffering): Promise<void> {
+    if (!await this.confirmation.confirm(`Delete “${item.title}”?`)) return;
     this.clearMessages();
     this.busyId.set(item.id);
     this.adminApi.delete<{ success: boolean }>(`/services/admin/${item.id}`).subscribe({

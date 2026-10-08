@@ -29,6 +29,7 @@ export class AdminLoginComponent {
   ) {}
 
   login(): void {
+    if (this.isSubmitting) return;
     if (
       !this.username.trim() ||
       !this.password

@@ -39,17 +39,18 @@ namespace webappTemplate.Controllers
                 return BadRequest(new { message = "Choose a valid six-digit background color." });
             }
 
-            var headingColors = new[] { request.H1Color, request.H2Color, request.H3Color };
+            var headingColors = new[] { request.H1Color, request.H2Color, request.H3Color, request.PColor, request.ButtonColor, request.ButtonTextColor };
             if (headingColors.Any(value => !HexColorPattern().IsMatch(value?.Trim() ?? string.Empty)))
                 return BadRequest(new { message = "Choose valid six-digit heading colors." });
 
             var allowedFonts = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
             {
-                "Georgia", "Arial", "Trebuchet MS", "Times New Roman", "Verdana", "system-ui"
+                "Georgia", "Times New Roman", "Trebuchet MS", "Arial", "Verdana", "system-ui", "Tahoma", "Segoe UI", "Calibri", "Cambria", "Garamond", "Palatino Linotype", "Book Antiqua", "Courier New", "Lucida Console", "Impact", "Century Gothic"
             };
             if (!allowedFonts.Contains(request.H1FontFamily ?? string.Empty) ||
                 !allowedFonts.Contains(request.H2FontFamily ?? string.Empty) ||
-                !allowedFonts.Contains(request.H3FontFamily ?? string.Empty))
+                !allowedFonts.Contains(request.H3FontFamily ?? string.Empty) ||
+                !allowedFonts.Contains(request.PFontFamily ?? string.Empty))
                 return BadRequest(new { message = "Choose a supported heading font." });
 
             var settings = await GetOrCreateSettingsAsync(cancellationToken);
@@ -75,6 +76,11 @@ namespace webappTemplate.Controllers
             settings.H3FontFamily = request.H3FontFamily!;
             settings.H3FontSize = Math.Clamp(request.H3FontSize, 20, 64);
             settings.H3Color = request.H3Color!.ToLowerInvariant();
+            settings.ButtonColor = request.ButtonColor!;
+            settings.ButtonTextColor = request.ButtonTextColor!;
+            settings.PFontFamily = request.PFontFamily!;
+            settings.PFontSize = Math.Clamp(request.PFontSize, 10, 40);
+            settings.PColor = request.PColor!;
             settings.UpdatedUtc = DateTimeOffset.UtcNow;
             await _database.SaveChangesAsync(cancellationToken);
 
@@ -194,6 +200,11 @@ namespace webappTemplate.Controllers
                 settings.H3FontFamily,
                 settings.H3FontSize,
                 settings.H3Color,
+                settings.ButtonColor,
+                settings.ButtonTextColor,
+                settings.PFontFamily,
+                settings.PFontSize,
+                settings.PColor,
                 UseBackgroundImage = settings.UseBackgroundImage && image is not null,
                 UseAmbientBackground = settings.UseAmbientBackground &&
                     !(settings.UseBackgroundImage && image is not null),
@@ -227,7 +238,12 @@ namespace webappTemplate.Controllers
         string? H2Color,
         string? H3FontFamily,
         int H3FontSize,
-        string? H3Color);
+        string? H3Color,
+        string? ButtonColor = "#356bd6",
+        string? ButtonTextColor = "#ffffff",
+        string? PFontFamily = "Arial",
+        int PFontSize = 16,
+        string? PColor = "#514252");
 
     public sealed class BrandingImageRequest
     {

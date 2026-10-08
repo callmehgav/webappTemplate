@@ -44,12 +44,6 @@ export class AdminPanelComponent {
       component: ScheduleSettingsComponent
     },
     {
-      id: 'branding',
-      label: 'Branding',
-      description: 'Set the shared site logo and icon',
-      component: BrandingSettingsComponent
-    },
-    {
       id: 'gallery',
       label: 'Gallery',
       description: 'Upload, caption, and arrange gallery images',
@@ -72,6 +66,12 @@ export class AdminPanelComponent {
       label: 'Social Links',
       description: 'Manage public links and profiles',
       component: SocialLinksSettingsComponent
+    },
+    {
+      id: 'branding',
+      label: 'Site Styles',
+      description: 'Logo, media, backgrounds, typography, and colors',
+      component: BrandingSettingsComponent
     },
     {
       id: 'email',

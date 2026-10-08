@@ -17,12 +17,15 @@ export class ServicesShowcaseComponent implements OnInit {
 
   constructor(private readonly publicApi: PublicApiService) {}
 
+  readonly sectionText = signal({"servicesEyebrow":"What we offer","servicesHeading":"Made for memorable gatherings","servicesDescription":"Flexible spaces and thoughtful details for celebrations of every size."});
+
   ngOnInit(): void {
     combineLatest({
       settings: this.publicApi.getHomeFeatureSettings(),
       services: this.publicApi.getServices()
     }).subscribe({
       next: ({ settings, services }) => {
+        this.sectionText.set({servicesEyebrow: settings.servicesEyebrow,servicesHeading: settings.servicesHeading,servicesDescription: settings.servicesDescription});
         this.isEnabled.set(settings.servicesEnabled);
         this.services.set(services);
         this.isLoading.set(false);

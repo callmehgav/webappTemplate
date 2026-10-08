@@ -122,8 +122,8 @@ select {
 
 input:focus,
 select:focus {
-  border-color: #356bd6;
-  box-shadow: 0 0 0 3px rgba(53, 107, 214, 0.12);
+  border-color: var(--button-color, #356bd6);
+  box-shadow: 0 0 0 3px rgba(var(--button-color-rgb, 53, 107, 214), 0.12);
 }
 
 .image-section {
@@ -164,7 +164,7 @@ select:focus {
 }
 
 .file-picker:hover {
-  border-color: #356bd6;
+  border-color: var(--button-color, #356bd6);
   background: #f2f6ff;
 }
 
@@ -194,12 +194,12 @@ select:focus {
 
 .primary-button {
   border: 1px solid #285fc7;
-  background: #285fc7;
-  color: #ffffff;
+  background: var(--button-color, #356bd6);
+  color: var(--button-text-color, #ffffff);
 }
 
 .primary-button:hover:not(:disabled) {
-  background: #204fae;
+  background: var(--button-color, #356bd6);
 }
 
 .danger-button {

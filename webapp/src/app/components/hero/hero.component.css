@@ -241,3 +241,6 @@
   .hero-actions a,
   .hero-actions button { animation: none; transition-duration: 0.01ms; }
 }
+
+.hero-actions .primary-action { background: var(--button-color, #356bd6); }
+.hero-actions:hover .primary-action, .hero-actions:focus-within .primary-action { color: var(--button-text-color, #fff); }

@@ -127,7 +127,7 @@
 }
 
 .navigation-item:hover { background: rgba(255, 255, 255, 0.56); transform: translateX(2px); }
-.navigation-item.active { border-color: rgba(53, 107, 214, 0.14); background: rgba(220, 232, 255, 0.72); color: #204fae; }
+.navigation-item.active { border-color: rgba(var(--button-color-rgb, 53, 107, 214), 0.14); background: rgba(220, 232, 255, 0.72); color: #204fae; }
 .navigation-label { font-size: 0.9rem; font-weight: 750; }
 .navigation-description { color: #778295; font-size: 0.72rem; line-height: 1.35; }
 .navigation-item.active .navigation-description { color: #5573aa; }
@@ -158,3 +158,5 @@ button:focus-visible { outline: 2px solid #356bd6; outline-offset: 2px; }
   .admin-navigation { grid-template-columns: 1fr; }
   .section-content { padding: 16px; border-radius: 18px; }
 }
+
+.navigation-item.active { background: color-mix(in srgb, var(--button-color, #356bd6) 16%, white); color: var(--button-color, #356bd6); }

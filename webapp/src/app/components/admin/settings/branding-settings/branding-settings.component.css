@@ -34,6 +34,13 @@
 .type-control select { margin-top: 5px; }
 .type-control input[type="color"] { display: block; width: 100%; height: 38px; padding: 2px; border: 1px solid #cfd6e2; border-radius: 7px; background: #fff; }
 .type-sample { overflow: hidden; min-height: 130px; padding: 18px 0 0; line-height: 1; overflow-wrap: anywhere; }
+.type-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); align-items: stretch; row-gap: 20px; }
+.type-control { grid-column: span 2; }
+.paragraph-control, .button-control { grid-column: span 3; }
+.typography-preview { min-height: 90px; padding-top: 18px; margin-bottom: 0; overflow-wrap: anywhere; }
+.brand-test-button { margin-top: 12px; justify-self: start; }
+.secondary-button { min-height: 42px; padding: 10px 17px; border: 1px solid #cfd6e2; border-radius: 7px; background: white; color: #344054; font: inherit; font-weight: 700; cursor: pointer; }
+@media(max-width: 900px) { .type-grid { grid-template-columns: 1fr; } .type-control { grid-column: auto; } }
 @media (max-width: 900px) { .type-grid { grid-template-columns: 1fr; } }
 
 h3,
@@ -187,7 +194,7 @@ p {
 }
 
 .mode-picker button.selected {
-  border-color: rgba(53,107,214,.16);
+  border-color: rgba(var(--button-color-rgb, 53, 107, 214), .16);
   background: #fff;
   color: #204fae;
   box-shadow: 0 5px 14px rgba(42,53,69,.08);
@@ -289,8 +296,8 @@ p {
   padding: 0 17px;
   border: 1px solid #285fc7;
   border-radius: 7px;
-  background: #285fc7;
-  color: #ffffff;
+  background: var(--button-color, #356bd6);
+  color: var(--button-text-color, #ffffff);
   font: inherit;
   font-weight: 700;
   cursor: pointer;

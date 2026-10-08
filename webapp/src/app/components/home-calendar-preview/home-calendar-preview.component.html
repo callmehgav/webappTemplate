@@ -1,9 +1,9 @@
 @if (isEnabled()) {
   <section class="calendar-preview" aria-labelledby="calendar-preview-heading">
     <div class="calendar-copy">
-      <p class="eyebrow">Plan ahead</p>
-      <h2 id="calendar-preview-heading">Find a date that feels right</h2>
-      <p>Browse current availability, then send the details you have in mind. We’ll help with the rest.</p>
+      <p class="eyebrow">{{ sectionText().calendarEyebrow }}</p>
+      <h2 id="calendar-preview-heading">{{ sectionText().calendarHeading }}</h2>
+      <p>{{ sectionText().calendarDescription }}</p>
       <a routerLink="/book">Check availability <span aria-hidden="true">→</span></a>
     </div>
     <div class="calendar-shell">

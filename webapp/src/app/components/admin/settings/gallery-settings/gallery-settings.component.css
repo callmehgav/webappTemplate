@@ -59,13 +59,13 @@
   padding: 0 18px;
   border: 1px solid #285fc7;
   border-radius: 8px;
-  background: #285fc7;
-  color: #fff;
+  background: var(--button-color, #356bd6);
+  color: var(--button-text-color, #ffffff);
   font-weight: 700;
   cursor: pointer;
 }
 
-.upload-picker:hover { background: #204fae; }
+.upload-picker:hover { background: var(--button-color, #356bd6); }
 .upload-picker.disabled { cursor: not-allowed; opacity: 0.55; }
 .upload-picker input { display: none; }
 
@@ -215,8 +215,8 @@ textarea {
 }
 
 textarea:focus {
-  border-color: #356bd6;
-  box-shadow: 0 0 0 3px rgba(53, 107, 214, 0.12);
+  border-color: var(--button-color, #356bd6);
+  box-shadow: 0 0 0 3px rgba(var(--button-color-rgb, 53, 107, 214), 0.12);
 }
 
 .card-actions {
@@ -240,8 +240,8 @@ textarea:focus {
 
 .primary-button {
   border: 1px solid #285fc7;
-  background: #285fc7;
-  color: #fff;
+  background: var(--button-color, #356bd6);
+  color: var(--button-text-color, #ffffff);
 }
 
 .danger-button {

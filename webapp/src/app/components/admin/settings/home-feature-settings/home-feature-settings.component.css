@@ -7,12 +7,12 @@ h3 { margin: 3px 0 5px; color: #172033; font-size: 1.15rem; }
 p { margin: 0; color: #667085; font-size: .8rem; line-height: 1.45; }
 label { color: #344054; font-size: .78rem; font-weight: 700; }
 input { width: 100%; margin-top: 5px; padding: 9px 10px; border: 1px solid #cfd6e2; border-radius: 7px; background: #fff; color: #172033; font: 400 .85rem/1.4 inherit; }
-input:focus { border-color: #6f91d7; outline: 3px solid rgba(53,107,214,.12); }
+input:focus { border-color: #6f91d7; outline: 3px solid rgba(var(--button-color-rgb, 53, 107, 214), .12); }
 .switch-row { display: flex; flex: 0 0 auto; align-items: center; gap: 7px; padding: 7px 10px; border-radius: 999px; background: #f2f5fa; white-space: nowrap; }
 .switch-row input { width: 15px; height: 15px; margin: 0; }
 .two-columns { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px; }
 small { display: block; margin-top: 4px; color: #778295; font-weight: 400; line-height: 1.4; }
-button { min-height: 38px; padding: 9px 15px; border: 1px solid #1519214a; border-radius: 7px; background: #1519214a; color: #fff; font: 700 .82rem/1.2 inherit; cursor: pointer; }
+button { min-height: 38px; padding: 9px 15px; border: 1px solid #1519214a; border-radius: 7px; background: var(--button-color, #356bd6); color: var(--button-text-color, #ffffff); font: 700 .82rem/1.2 inherit; cursor: pointer; }
 button:disabled { cursor: wait; opacity: .65; }
 .section-image-preview { width: 100%; aspect-ratio: 16 / 8; object-fit: cover; border-radius: 10px; border: 1px solid #dfe4ec; }
 .media-actions { display: flex; justify-content: flex-end; gap: 9px; }
@@ -22,3 +22,8 @@ button.secondary { border-color: #cfd6e2; background: #fff; color: #475467; }
 .loading { padding: 24px; }
 @media (max-width: 900px) { .feature-grid { grid-template-columns: 1fr; } }
 @media (max-width: 560px) { .card-heading { flex-direction: column; } .two-columns { grid-template-columns: 1fr; } }
+
+.about-content-tile { grid-column: 1 / -1; }
+.location-entry { display: grid; gap: 14px; padding-bottom: 20px; border-bottom: 1px solid #dfe4ec; }
+
+.home-editors { border: 0; padding: 0; margin: 0; min-width: 0; }

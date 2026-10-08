@@ -3,14 +3,28 @@
     <section class="map-section" aria-labelledby="location-heading">
       <div class="map-card">
         <div class="location-copy">
-          <span class="eyebrow">Location</span>
+          <span class="eyebrow">{{ config.mapEyebrow }}</span>
           <h2 id="location-heading">{{ config.locationName }}</h2>
-          @if (config.locationAddress) { <p>{{ config.locationAddress }}</p> }
-          <a [href]="openMapUrl()" target="_blank" rel="noopener noreferrer">Open in Google Maps <span aria-hidden="true">↗</span></a>
+          <ol class="location-list" aria-label="Our locations">
+            @for (location of locations(config); track $index; let index = $index) {
+              <li class="location-entry">
+                <span class="location-number" aria-hidden="true">{{ (index + 1).toString().padStart(2, '0') }}</span>
+                <div class="location-details">
+                  <h3>{{ location.name || 'Location ' + (index + 1) }}</h3>
+                  @if (location.address) { <p>{{ location.address }}</p> }
+                  <div class="location-actions">
+                    <button type="button" (click)="focusLocation(location)">View on map</button>
+                    <a [href]="directions(location)" [attr.aria-label]="'Directions to ' + (location.name || 'location ' + (index + 1))" target="_blank" rel="noopener noreferrer">Directions <span aria-hidden="true">↗</span></a>
+                  </div>
+                </div>
+              </li>
+            }
+          </ol>
         </div>
 
         <div class="map-shell">
           <div class="map-canvas" [attr.aria-label]="'Interactive map showing ' + config.locationName"></div>
+          @if (locations(config).length > 1) { <button type="button" class="show-all-locations" (click)="showAllLocations()">Show all locations</button> }
         </div>
       </div>
     </section>

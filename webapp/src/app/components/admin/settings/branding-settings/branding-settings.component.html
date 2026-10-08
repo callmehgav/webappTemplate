@@ -3,7 +3,7 @@
     <div>
       <h3>Site logo</h3>
       <p>
-        Set one logo for the hero, header, browser tab, and About image.
+        Set one logo for the hero, header, and browser tab.
       </p>
     </div>
   </header>
@@ -41,7 +41,6 @@
             <li>Hero center</li>
             <li>Header home icon</li>
             <li>Browser tab favicon</li>
-            <li>About profile image</li>
           </ul>
         </div>
       </div>
@@ -70,6 +69,99 @@
     </footer>
   }
 </section>
+
+<section class="branding-settings hero-settings">
+  <header class="settings-header">
+    <div>
+      <h3>Hero media</h3>
+      <p>
+        Upload one image or video for the full-screen hero background.
+      </p>
+    </div>
+  </header>
+
+  @if (isHeroLoading()) {
+    <div class="state-panel" role="status">
+      Loading the current hero media…
+    </div>
+  } @else {
+    <div class="logo-editor">
+      <div class="logo-preview media-preview" aria-label="Hero media preview">
+        @if (displayedHeroMediaUrl; as mediaUrl) {
+          @if (displayedHeroMediaIsVideo) {
+            <video
+              [src]="mediaUrl"
+              controls
+              muted
+              loop
+              playsinline>
+            </video>
+          } @else {
+            <img [src]="mediaUrl" alt="Hero media preview" />
+          }
+        } @else {
+          <p>No custom hero image or video has been uploaded.</p>
+        }
+      </div>
+
+      <div class="logo-controls">
+        <label class="file-field">
+          <span>Hero image or video</span>
+          <input
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime,.mov"
+            [disabled]="isHeroSaving()"
+            (change)="onHeroFileSelected($event)" />
+          <small>
+            JPEG, PNG, WebP, GIF, MP4, WebM, or MOV. Maximum 50 MB.
+          </small>
+        </label>
+
+        <div class="usage-list">
+          <strong>Display behavior</strong>
+          <ul>
+            <li>Images fill the hero while preserving their proportions.</li>
+            <li>Videos autoplay muted, loop, and support seeking.</li>
+            <li>Uploading a new file replaces the previous hero media.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    @if (heroErrorMessage()) {
+      <p class="message error-message" role="alert">
+        {{ heroErrorMessage() }}
+      </p>
+    }
+
+    @if (heroSuccessMessage()) {
+      <p class="message success-message" role="status">
+        {{ heroSuccessMessage() }}
+      </p>
+    }
+
+    <footer class="form-actions">
+      @if (currentHeroMedia()) {
+        <button
+          type="button"
+          class="danger-button"
+          [disabled]="isHeroSaving()"
+          (click)="removeHeroMedia()">
+          Remove hero media
+        </button>
+      }
+      <button
+        type="button"
+        class="primary-button"
+        [disabled]="!selectedHeroFile() || isHeroSaving()"
+        (click)="saveHeroMedia()">
+        {{ isHeroSaving() ? 'Saving…' : 'Save hero media' }}
+      </button>
+    </footer>
+  }
+</section>
+
+
 
 <section class="branding-settings background-settings">
   <header class="settings-header">
@@ -174,8 +266,8 @@
 <section class="branding-settings typography-settings">
   <header class="settings-header">
     <div>
-      <h3>Heading typography</h3>
-      <p>Set the shared font, size, and color for public H1, H2, and H3 headings.</p>
+      <h3>Typography and buttons</h3>
+      <p>Style headings, paragraphs, section labels, and buttons. Reset restores your last saved settings.</p>
     </div>
   </header>
 
@@ -220,102 +312,26 @@
       <label>Color <input type="color" [value]="h3Color()" (input)="h3Color.set($any($event.target).value)" /></label>
       <div class="type-sample" [style.font-family]="h3FontFamily()" [style.font-size.px]="h3FontSize()" [style.color]="h3Color()">{{ typographySample() }}</div>
     </section>
+    <section class="type-control paragraph-control">
+ <span class="eyebrow">Paragraphs &amp; section labels</span>
+ <label>Font <select [value]="pFontFamily()" (change)="pFontFamily.set($any($event.target).value)">@for (font of fontOptions; track font) { <option [value]="font">{{ font }}</option> }</select></label>
+ <label>Size <input type="number" min="10" max="40" [value]="pFontSize()" (input)="pFontSize.set(+$any($event.target).value)" /></label>
+ <label>Color <input type="color" [value]="pColor()" (input)="pColor.set($any($event.target).value)" /></label>
+ <p class="typography-preview" [style.font-family]="pFontFamily()" [style.font-size.px]="pFontSize()" [style.color]="pColor()">{{ typographySample() }}</p>
+</section>
+<section class="type-control button-control">
+ <span class="eyebrow">Button colors</span>
+ <label>Background <input type="color" [value]="buttonColor()" (input)="buttonColor.set($any($event.target).value)" /></label>
+ <label>Text <input type="color" [value]="buttonTextColor()" (input)="buttonTextColor.set($any($event.target).value)" /></label>
+ <button type="button" class="brand-test-button" [style.background]="buttonColor()" [style.color]="buttonTextColor()">Test button</button>
+</section>
   </div>
-
+  @if (backgroundErrorMessage()) { <p class="message error-message" role="alert">{{ backgroundErrorMessage() }}</p> }
+  @if (backgroundSuccessMessage()) { <p class="message success-message" role="status">{{ backgroundSuccessMessage() }}</p> }
   <footer class="form-actions">
+    <button type="button" class="secondary-button" [disabled]="isBackgroundLoading() || isBackgroundSaving()" (click)="resetTypography()">Reset typography</button>
     <button type="button" class="primary-button" [disabled]="isBackgroundSaving()" (click)="saveTypography()">
-      {{ isBackgroundSaving() ? 'Saving…' : 'Save typography' }}
+      {{ isBackgroundSaving() ? 'Saving…' : 'Save typography and button colors' }}
     </button>
   </footer>
-</section>
-
-<section class="branding-settings hero-settings">
-  <header class="settings-header">
-    <div>
-      <h3>Hero media</h3>
-      <p>
-        Upload one image or video for the full-screen hero background.
-      </p>
-    </div>
-  </header>
-
-  @if (isHeroLoading()) {
-    <div class="state-panel" role="status">
-      Loading the current hero media…
-    </div>
-  } @else {
-    <div class="logo-editor">
-      <div class="logo-preview media-preview" aria-label="Hero media preview">
-        @if (displayedHeroMediaUrl; as mediaUrl) {
-          @if (displayedHeroMediaIsVideo) {
-            <video
-              [src]="mediaUrl"
-              controls
-              muted
-              loop
-              playsinline>
-            </video>
-          } @else {
-            <img [src]="mediaUrl" alt="Hero media preview" />
-          }
-        } @else {
-          <p>No custom hero image or video has been uploaded.</p>
-        }
-      </div>
-
-      <div class="logo-controls">
-        <label class="file-field">
-          <span>Hero image or video</span>
-          <input
-            type="file"
-            accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm"
-            [disabled]="isHeroSaving()"
-            (change)="onHeroFileSelected($event)" />
-          <small>
-            JPEG, PNG, WebP, GIF, MP4, or WebM. Maximum 50 MB.
-          </small>
-        </label>
-
-        <div class="usage-list">
-          <strong>Display behavior</strong>
-          <ul>
-            <li>Images fill the hero while preserving their proportions.</li>
-            <li>Videos autoplay muted, loop, and support seeking.</li>
-            <li>Uploading a new file replaces the previous hero media.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    @if (heroErrorMessage()) {
-      <p class="message error-message" role="alert">
-        {{ heroErrorMessage() }}
-      </p>
-    }
-
-    @if (heroSuccessMessage()) {
-      <p class="message success-message" role="status">
-        {{ heroSuccessMessage() }}
-      </p>
-    }
-
-    <footer class="form-actions">
-      @if (currentHeroMedia()) {
-        <button
-          type="button"
-          class="danger-button"
-          [disabled]="isHeroSaving()"
-          (click)="removeHeroMedia()">
-          Remove hero media
-        </button>
-      }
-      <button
-        type="button"
-        class="primary-button"
-        [disabled]="!selectedHeroFile() || isHeroSaving()"
-        (click)="saveHeroMedia()">
-        {{ isHeroSaving() ? 'Saving…' : 'Save hero media' }}
-      </button>
-    </footer>
-  }
 </section>

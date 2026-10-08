@@ -167,18 +167,26 @@ namespace webappTemplate.Controllers
                 .Trim()
                 .ToLowerInvariant();
 
+            // Some browsers upload MOV files without a specific MIME type.
+            if (Path.GetExtension(request.File.FileName).Equals(".mov", StringComparison.OrdinalIgnoreCase)
+                && contentType is "" or "application/octet-stream")
+            {
+                contentType = "video/quicktime";
+            }
+
             if (contentType is not (
                 "image/jpeg" or
                 "image/png" or
                 "image/webp" or
                 "image/gif" or
                 "video/mp4" or
-                "video/webm"))
+                "video/webm" or
+                "video/quicktime"))
             {
                 return BadRequest(new
                 {
                     success = false,
-                    message = "Use a JPEG, PNG, WebP, GIF, MP4, or WebM file."
+                    message = "Use a JPEG, PNG, WebP, GIF, MP4, WebM, or MOV file."
                 });
             }
 

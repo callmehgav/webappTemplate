@@ -101,9 +101,10 @@
 }
 
 .service-copy p {
+  --p-color: #fff;
   max-width: 46rem;
   margin: 10px 0 0;
-  color: rgba(255, 255, 255, 0.82);
+  color: #fff;
   line-height: 1.55;
 }
 

@@ -9,8 +9,8 @@
 
     <span
       class="status-badge"
-      [class.configured]="hasAppPassword()">
-      {{ hasAppPassword() ? 'Configured' : 'Setup required' }}
+      [class.configured]="hasAppPassword() && !!senderEmail">
+      {{ hasAppPassword() && senderEmail ? 'Sender configured' : 'Sender setup optional' }}
     </span>
   </header>
 
@@ -19,7 +19,7 @@
       Loading email settings…
     </div>
   } @else {
-    <form class="settings-form" (ngSubmit)="saveSettings()">
+    <div class="settings-form">
       <section class="form-section">
         <div class="form-section-heading">
           <span class="step-number">1</span>
@@ -39,7 +39,7 @@
               maxlength="150"
               autocomplete="organization"
               placeholder="Website Contact"
-              required />
+              />
           </label>
 
           <label>
@@ -51,58 +51,9 @@
               maxlength="254"
               autocomplete="email"
               placeholder="website@example.com"
-              required />
+              />
           </label>
         </div>
-      </section>
-
-      <section class="form-section">
-        <div class="form-section-heading">
-          <span class="step-number">2</span>
-          <div>
-            <h4>Delivery destination</h4>
-            <p>New contact submissions will be delivered to this inbox.</p>
-          </div>
-        </div>
-
-        <div class="form-grid">
-          <label>
-            <span>Recipient email</span>
-            <input
-              type="email"
-              name="recipientEmail"
-              [(ngModel)]="recipientEmail"
-              maxlength="254"
-              autocomplete="email"
-              placeholder="owner@example.com"
-              required />
-          </label>
-
-          <label>
-            <span>Public phone number</span>
-            <input
-              type="tel"
-              name="publicPhoneNumber"
-              [(ngModel)]="publicPhoneNumber"
-              maxlength="50"
-              autocomplete="tel"
-              placeholder="(555) 555-0123" />
-            <small>Displayed as a call link in the Contact Us section.</small>
-          </label>
-        </div>
-      </section>
-
-      <section class="form-section">
-        <div class="form-section-heading">
-          <span class="step-number">3</span>
-          <div>
-            <h4>Google app password</h4>
-            <p>
-              Use a 16-character app password, not the account's normal password.
-            </p>
-          </div>
-        </div>
-
         <label>
           <span>
             {{ hasAppPassword() ? 'Replace app password' : 'App password' }}
@@ -117,6 +68,46 @@
             The password is encrypted before it is stored and is never returned to the browser.
           </small>
         </label>
+
+
+        <button type="button" class="primary-button" [disabled]="isSaving()" (click)="saveSettings('sender')">Save sender account</button>
+      </section>
+
+      <section class="form-section">
+        <div class="form-section-heading">
+          <span class="step-number">2</span>
+          <div>
+            <h4>Delivery destination</h4>
+            <p>Public contact details can be saved before setting up a sender. Contact submissions use this inbox when delivery is configured.</p>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <label>
+            <span>Direct / recipient email</span>
+            <input
+              type="email"
+              name="recipientEmail"
+              [(ngModel)]="recipientEmail"
+              maxlength="254"
+              autocomplete="email"
+              placeholder="owner@example.com"
+              />
+          </label>
+
+          <label>
+            <span>Public phone number</span>
+            <input
+              type="tel"
+              name="publicPhoneNumber"
+              [(ngModel)]="publicPhoneNumber"
+              maxlength="50"
+              autocomplete="tel"
+              placeholder="(555) 555-0123" />
+            <small>Displayed as a call link in the Contact Us section.</small>
+          </label>
+        </div>
+<button type="button" class="primary-button" [disabled]="isSaving()" (click)="saveSettings('destination')">Save delivery destination</button>
       </section>
 
       @if (errorMessage()) {
@@ -140,13 +131,8 @@
           Reset
         </button>
 
-        <button
-          type="submit"
-          class="primary-button"
-          [disabled]="isSaving()">
-          {{ isSaving() ? 'Saving…' : 'Save email settings' }}
-        </button>
+
       </footer>
-    </form>
+    </div>
   }
 </section>

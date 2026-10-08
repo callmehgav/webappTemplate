@@ -1,3 +1,5 @@
+import { inject } from '@angular/core';
+import { ConfirmationService } from '../../../../services/confirmation.service';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -30,6 +32,8 @@ interface AdminMediaItem {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BrandingSettingsComponent implements OnInit, OnDestroy {
+  private savedTypography?: SiteBrandingSettings;
+  private readonly confirmation = inject(ConfirmationService);
   readonly isLoading = signal(true);
   readonly isSaving = signal(false);
   readonly currentLogo = signal<AdminMediaItem | null>(null);
@@ -54,6 +58,11 @@ export class BrandingSettingsComponent implements OnInit, OnDestroy {
   readonly backgroundPreviewUrl = signal<string | null>(null);
   readonly backgroundErrorMessage = signal('');
   readonly backgroundSuccessMessage = signal('');
+  readonly buttonColor = signal("#356bd6");
+  readonly buttonTextColor = signal("#ffffff");
+  readonly pFontFamily = signal("Arial");
+  readonly pFontSize = signal(16);
+  readonly pColor = signal("#514252");
   readonly h1FontFamily = signal('Georgia');
   readonly h1FontSize = signal(88);
   readonly h1Color = signal('#2b2430');
@@ -63,8 +72,8 @@ export class BrandingSettingsComponent implements OnInit, OnDestroy {
   readonly h3FontFamily = signal('Georgia');
   readonly h3FontSize = signal(30);
   readonly h3Color = signal('#514252');
-  readonly typographySample = signal('Celebrate beautifully');
-  readonly fontOptions = ['Georgia', 'Times New Roman', 'Trebuchet MS', 'Arial', 'Verdana', 'system-ui'];
+  readonly typographySample = signal('Test Text');
+  readonly fontOptions = ["Georgia","Times New Roman","Trebuchet MS","Arial","Verdana","system-ui","Tahoma","Segoe UI","Calibri","Cambria","Garamond","Palatino Linotype","Book Antiqua","Courier New","Lucida Console","Impact","Century Gothic"];
 
   constructor(
     private readonly adminApi: AdminApiService,
@@ -113,8 +122,11 @@ export class BrandingSettingsComponent implements OnInit, OnDestroy {
   }
 
   get displayedHeroMediaIsVideo(): boolean {
+    const selectedFile = this.selectedHeroFile();
+    if (selectedFile) {
+      return selectedFile.type.startsWith('video/') || /\.mov$/i.test(selectedFile.name);
+    }
     const contentType =
-      this.selectedHeroFile()?.type ||
       this.currentHeroMedia()?.contentType ||
       '';
 
@@ -242,9 +254,9 @@ export class BrandingSettingsComponent implements OnInit, OnDestroy {
     });
   }
 
-  removeHeroMedia(): void {
+  async removeHeroMedia(): Promise<void> {
     if (!this.currentHeroMedia() ||
-        !window.confirm('Remove the current hero image or video?')) {
+        !await this.confirmation.confirm('Remove the current hero image or video?')) {
       return;
     }
 
@@ -324,9 +336,9 @@ export class BrandingSettingsComponent implements OnInit, OnDestroy {
     });
   }
 
-  removeBackgroundImage(): void {
+  async removeBackgroundImage(): Promise<void> {
     if (!this.currentBackgroundImage() ||
-        !window.confirm('Remove the uploaded site background image?')) {
+        !await this.confirmation.confirm('Remove the uploaded site background image?')) {
       return;
     }
 
@@ -421,7 +433,7 @@ export class BrandingSettingsComponent implements OnInit, OnDestroy {
     });
   }
 
-  private saveBackgroundRequest(path: string, body: unknown): void {
+  private saveBackgroundRequest(path: string, body: unknown, message = 'Site background updated everywhere.'): void {
     this.isBackgroundSaving.set(true);
     this.backgroundErrorMessage.set('');
     this.backgroundSuccessMessage.set('');
@@ -430,7 +442,7 @@ export class BrandingSettingsComponent implements OnInit, OnDestroy {
       next: settings => {
         this.applyBackgroundSettings(settings);
         this.isBackgroundSaving.set(false);
-        this.backgroundSuccessMessage.set('Site background updated everywhere.');
+        this.backgroundSuccessMessage.set(message);
       },
       error: (error: HttpErrorResponse) => {
         this.isBackgroundSaving.set(false);
@@ -476,11 +488,24 @@ export class BrandingSettingsComponent implements OnInit, OnDestroy {
       useBackgroundImage: this.useBackgroundImage(),
       useAmbientBackground: this.useAmbientBackground(),
       ...this.typographyPayload()
-    });
+    }, 'Typography and button colors saved.');
+  }
+
+  resetTypography(): void {
+    if (!this.savedTypography) return;
+    this.applyTypographySignals(this.savedTypography);
+    this.typographySample.set('Test Text');
+    this.backgroundErrorMessage.set('');
+    this.backgroundSuccessMessage.set('Typography and button colors restored to the last saved settings.');
   }
 
   private typographyPayload() {
     return {
+      buttonColor: this.buttonColor(),
+      buttonTextColor: this.buttonTextColor(),
+      pFontFamily: this.pFontFamily(),
+      pFontSize: this.pFontSize(),
+      pColor: this.pColor(),
       h1FontFamily: this.h1FontFamily(), h1FontSize: this.h1FontSize(), h1Color: this.h1Color(),
       h2FontFamily: this.h2FontFamily(), h2FontSize: this.h2FontSize(), h2Color: this.h2Color(),
       h3FontFamily: this.h3FontFamily(), h3FontSize: this.h3FontSize(), h3Color: this.h3Color()
@@ -488,6 +513,12 @@ export class BrandingSettingsComponent implements OnInit, OnDestroy {
   }
 
   private applyTypographySignals(settings: SiteBrandingSettings): void {
+    this.savedTypography = structuredClone(settings);
+    this.buttonColor.set(settings.buttonColor);
+    this.buttonTextColor.set(settings.buttonTextColor);
+    this.pFontFamily.set(settings.pFontFamily);
+    this.pFontSize.set(settings.pFontSize);
+    this.pColor.set(settings.pColor);
     this.h1FontFamily.set(settings.h1FontFamily);
     this.h1FontSize.set(settings.h1FontSize);
     this.h1Color.set(settings.h1Color);

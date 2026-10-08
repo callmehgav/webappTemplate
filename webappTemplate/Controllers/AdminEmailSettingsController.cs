@@ -53,13 +53,14 @@ namespace webappTemplate.Controllers
             [FromBody] UpdateEmailSettingsRequest request,
             CancellationToken cancellationToken)
         {
+            if (request.Scope is not (null or "sender" or "destination"))
+                return BadRequest(new { message = "Choose a valid email settings section." });
             var senderName = request.SenderName?.Trim();
             var senderEmail = request.SenderEmail?.Trim();
             var recipientEmail = request.RecipientEmail?.Trim();
 
-            if (string.IsNullOrWhiteSpace(senderName) ||
-                !IsValidEmail(senderEmail) ||
-                !IsValidEmail(recipientEmail))
+            if ((request.Scope != "destination" && !string.IsNullOrWhiteSpace(senderEmail) && !IsValidEmail(senderEmail)) ||
+                (request.Scope != "sender" && !string.IsNullOrWhiteSpace(recipientEmail) && !IsValidEmail(recipientEmail)))
             {
                 return BadRequest(new
                 {
@@ -74,7 +75,8 @@ namespace webappTemplate.Controllers
             var hasNewPassword =
                 !string.IsNullOrWhiteSpace(request.AppPassword);
 
-            if (settings is null && !hasNewPassword)
+            if (request.Scope != "destination" && !string.IsNullOrWhiteSpace(senderEmail) &&
+                (string.IsNullOrWhiteSpace(senderName) || (!hasNewPassword && string.IsNullOrWhiteSpace(settings?.EncryptedPassword))))
             {
                 return BadRequest(new
                 {
@@ -90,14 +92,17 @@ namespace webappTemplate.Controllers
                 _database.EmailSettings.Add(settings);
             }
 
-            settings.SenderName = senderName;
-            settings.SenderEmail = senderEmail!;
-            settings.RecipientEmail = recipientEmail!;
-            settings.PublicPhoneNumber =
-                request.PublicPhoneNumber?.Trim() ?? string.Empty;
+            if (request.Scope != "destination") {
+                settings.SenderName = senderName ?? "Website Contact";
+                settings.SenderEmail = senderEmail ?? string.Empty;
+            }
+            if (request.Scope != "sender") {
+                settings.RecipientEmail = recipientEmail ?? string.Empty;
+                settings.PublicPhoneNumber = request.PublicPhoneNumber?.Trim() ?? string.Empty;
+            }
             settings.UpdatedUtc = DateTimeOffset.UtcNow;
 
-            if (hasNewPassword)
+            if (hasNewPassword && request.Scope != "destination")
             {
                 settings.EncryptedPassword =
                     _encryption.Encrypt(
@@ -110,7 +115,7 @@ namespace webappTemplate.Controllers
             return Ok(new
             {
                 success = true,
-                hasAppPassword = true,
+                hasAppPassword = !string.IsNullOrWhiteSpace(settings.EncryptedPassword),
                 email = settings.RecipientEmail,
                 phone = settings.PublicPhoneNumber
             });
@@ -137,6 +142,7 @@ namespace webappTemplate.Controllers
 
     public sealed class UpdateEmailSettingsRequest
     {
+        public string? Scope { get; set; }
         public string? SenderName { get; set; }
         public string? SenderEmail { get; set; }
         public string? RecipientEmail { get; set; }

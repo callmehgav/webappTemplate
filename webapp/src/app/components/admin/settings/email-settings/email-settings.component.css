@@ -111,8 +111,8 @@ input {
 }
 
 input:focus {
-  border-color: #356bd6;
-  box-shadow: 0 0 0 3px rgba(53, 107, 214, 0.12);
+  border-color: var(--button-color, #356bd6);
+  box-shadow: 0 0 0 3px rgba(var(--button-color-rgb, 53, 107, 214), 0.12);
 }
 
 small {
@@ -138,8 +138,8 @@ small {
 
 .primary-button {
   border: 1px solid #285fc7;
-  background: #285fc7;
-  color: #ffffff;
+  background: var(--button-color, #356bd6);
+  color: var(--button-text-color, #ffffff);
 }
 
 .secondary-button {

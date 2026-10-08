@@ -95,7 +95,22 @@ export interface PublicContactSettings {
   phone: string;
 }
 
+export interface MapLocation { name: string; address: string; latitude: number; longitude: number; }
+
 export interface HomeFeatureSettings {
+  contactHeading: string;
+  mapEyebrow: string;
+  servicesEyebrow: string;
+  servicesHeading: string;
+  servicesDescription: string;
+  galleryEyebrow: string;
+  galleryHeading: string;
+  calendarEyebrow: string;
+  calendarHeading: string;
+  calendarDescription: string;
+  socialEyebrow: string;
+  socialHeading: string;
+  locations: MapLocation[];
   youTubeEnabled: boolean;
   youTubeUrl: string;
   youTubeHeading: string;
@@ -111,6 +126,11 @@ export interface HomeFeatureSettings {
 }
 
 export interface SiteBrandingSettings {
+  buttonColor: string;
+  buttonTextColor: string;
+  pFontFamily: string;
+  pFontSize: number;
+  pColor: string;
   backgroundColor: string;
   useBackgroundImage: boolean;
   useAmbientBackground: boolean;

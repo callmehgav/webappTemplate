@@ -1,5 +1,5 @@
-<div class="login-slide-panel open">
-  <input type="text" placeholder="Username" [(ngModel)]="username" />
-  <input type="password" placeholder="Password" [(ngModel)]="password" />
-  <button class="login-button" (click)="login()">Login</button>
-</div>
+<form class="login-slide-panel open" (ngSubmit)="login()">
+  <input type="text" placeholder="Username" name="username" autocomplete="username" [(ngModel)]="username" />
+  <input type="password" placeholder="Password" name="password" autocomplete="current-password" [(ngModel)]="password" />
+  <button class="login-button" type="submit" [disabled]="isSubmitting">Login</button>
+</form>

@@ -91,8 +91,8 @@
   margin-top: 11px;
   border: 0;
   border-radius: 999px;
-  background: #342832;
-  color: #fff;
+  background: var(--button-color, #356bd6);
+  color: var(--button-text-color, #ffffff);
   font-weight: 800;
   cursor: pointer;
   transition: box-shadow 180ms ease, opacity 180ms ease, transform 180ms ease;

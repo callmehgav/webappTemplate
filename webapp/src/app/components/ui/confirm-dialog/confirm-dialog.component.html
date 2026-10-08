@@ -1,10 +1,10 @@
-<div class="backdrop" role="presentation" (click)="cancelled.emit()">
+<dialog #modal class="backdrop" (cancel)="$event.preventDefault(); cancelled.emit()" (click)="cancelled.emit()">
   <section class="dialog" role="alertdialog" aria-modal="true" [attr.aria-label]="title()" (click)="$event.stopPropagation()">
     <h2>{{ title() }}</h2>
     <p>{{ message() }}</p>
     <div class="actions">
-      <button type="button" (click)="cancelled.emit()">{{ cancelLabel() }}</button>
+      <button type="button" autofocus (click)="cancelled.emit()">{{ cancelLabel() }}</button>
       <button type="button" class="danger" (click)="confirmed.emit()">{{ confirmLabel() }}</button>
     </div>
   </section>
-</div>
+</dialog>

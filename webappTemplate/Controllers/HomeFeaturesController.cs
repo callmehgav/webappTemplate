@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,8 @@ namespace webappTemplate.Controllers
             [FromBody] HomeFeatureSettingsRequest request,
             CancellationToken cancellationToken)
         {
+            if (request.MapEnabled && request.Locations is { Count: 0 })
+                return BadRequest(new { message = "Add a location before enabling the map." });
             var youtubeUrl = request.YouTubeUrl?.Trim() ?? string.Empty;
             if (request.YouTubeEnabled && !IsValidYouTubeUrl(youtubeUrl))
             {
@@ -42,7 +45,23 @@ namespace webappTemplate.Controllers
                 return BadRequest(new { message = "Enter valid latitude and longitude coordinates." });
             }
 
+            if (request.Locations is { Count: > 20 } || request.Locations?.Any(l => !double.IsFinite(l.Latitude) || !double.IsFinite(l.Longitude) || l.Latitude is < -90 or > 90 || l.Longitude is < -180 or > 180) == true)
+                return BadRequest(new { message = "Use up to 20 locations with valid coordinates." });
             var settings = await GetOrCreateSettingsAsync(cancellationToken);
+            settings.ContactHeading = Limit(request.ContactHeading?.Trim() ?? settings.ContactHeading, 1000);
+            settings.MapEyebrow = Limit(request.MapEyebrow?.Trim() ?? settings.MapEyebrow, 1000);
+            settings.ServicesEyebrow = Limit(request.ServicesEyebrow?.Trim() ?? "What we offer", 1000);
+            settings.ServicesHeading = Limit(request.ServicesHeading?.Trim() ?? "Made for memorable gatherings", 1000);
+            settings.ServicesDescription = Limit(request.ServicesDescription?.Trim() ?? "Flexible spaces and thoughtful details for celebrations of every size.", 1000);
+            settings.GalleryEyebrow = Limit(request.GalleryEyebrow?.Trim() ?? "A glimpse of the venue", 1000);
+            settings.GalleryHeading = Limit(request.GalleryHeading?.Trim() ?? "Picture your day here", 1000);
+            settings.CalendarEyebrow = Limit(request.CalendarEyebrow?.Trim() ?? "Plan ahead", 1000);
+            settings.CalendarHeading = Limit(request.CalendarHeading?.Trim() ?? "Find a date that feels right", 1000);
+            settings.CalendarDescription = Limit(request.CalendarDescription?.Trim() ?? "Browse current availability, then send the details you have in mind. We’ll help with the rest.", 1000);
+            settings.SocialEyebrow = Limit(request.SocialEyebrow?.Trim() ?? "Stay connected", 1000);
+            settings.SocialHeading = Limit(request.SocialHeading?.Trim() ?? "Follow along", 1000);
+            if (request.Locations is not null)
+                settings.LocationsJson = JsonSerializer.Serialize(request.Locations.Select(l => new HomeMapLocation(Limit(l.Name?.Trim() ?? "", 150), Limit(l.Address?.Trim() ?? "", 500), l.Latitude, l.Longitude)));
             settings.YouTubeEnabled = request.YouTubeEnabled;
             settings.YouTubeUrl = Limit(youtubeUrl, 500);
             settings.YouTubeHeading = Limit(Clean(request.YouTubeHeading, "Latest on YouTube"), 150);
@@ -85,7 +104,20 @@ namespace webappTemplate.Controllers
             settings.LocationAddress,
             settings.Latitude,
             settings.Longitude,
-            settings.MapZoom
+            settings.MapZoom,
+            settings.ContactHeading,
+            settings.MapEyebrow,
+            settings.ServicesEyebrow,
+            settings.ServicesHeading,
+            settings.ServicesDescription,
+            settings.GalleryEyebrow,
+            settings.GalleryHeading,
+            settings.CalendarEyebrow,
+            settings.CalendarHeading,
+            settings.CalendarDescription,
+            settings.SocialEyebrow,
+            settings.SocialHeading,
+            Locations = JsonSerializer.Deserialize<List<HomeMapLocation>>(settings.LocationsJson)
         };
 
         private static bool IsValidYouTubeUrl(string value)
@@ -121,5 +153,20 @@ namespace webappTemplate.Controllers
         string? LocationAddress,
         double Latitude,
         double Longitude,
-        int MapZoom);
+        int MapZoom,
+        string? ContactHeading = null,
+        string? MapEyebrow = null,
+        string? ServicesEyebrow = null,
+        string? ServicesHeading = null,
+        string? ServicesDescription = null,
+        string? GalleryEyebrow = null,
+        string? GalleryHeading = null,
+        string? CalendarEyebrow = null,
+        string? CalendarHeading = null,
+        string? CalendarDescription = null,
+        string? SocialEyebrow = null,
+        string? SocialHeading = null,
+        List<HomeMapLocation>? Locations = null);
+
+    public sealed record HomeMapLocation(string? Name, string? Address, double Latitude, double Longitude);
 }

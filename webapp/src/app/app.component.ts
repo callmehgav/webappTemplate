@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AdminAuthService } from './services/admin-auth.service';
 import { PublicApiService } from './services/public-api.service';
 import { SiteBrandingService } from './services/site-branding.service';
+import { ContactScrollService } from './services/contact-scroll.service';
 import { HeaderComponent } from './components/header/header.component';
 import { AdminPanelComponent } from './components/admin/admin-panel/admin-panel.component';
 import { FooterComponent } from './footer/footer.component';
@@ -30,7 +31,8 @@ export class AppComponent implements OnInit {
     private readonly router: Router,
     private readonly adminAuth: AdminAuthService,
     private readonly publicApi: PublicApiService,
-    private readonly siteBranding: SiteBrandingService
+    private readonly siteBranding: SiteBrandingService,
+    private readonly contactScroll: ContactScrollService
   ) {}
 
   ngOnInit(): void {
@@ -81,12 +83,15 @@ export class AppComponent implements OnInit {
         )
       )
       .subscribe(event => {
+        this.contactScroll.cancel();
         const fragment = this.router.parseUrl(event.urlAfterRedirects).fragment;
         if (fragment) {
           window.setTimeout(() => {
+            if (this.router.parseUrl(this.router.url).fragment !== fragment) return;
+            if (fragment === 'contact') { this.contactScroll.center(); return; }
             document.getElementById(fragment)?.scrollIntoView({
               behavior: 'smooth',
-              block: 'start'
+              block: fragment === 'contact' ? 'center' : 'start'
             });
           });
           this.trackPageView(event.urlAfterRedirects);
@@ -101,6 +106,17 @@ export class AppComponent implements OnInit {
 
         this.trackPageView(event.urlAfterRedirects);
       });
+  }
+
+  @HostListener('document:click', ['$event'])
+  onContactLink(event: MouseEvent): void {
+    const anchor = (event.target as Element)?.closest?.('a');
+    if (!anchor || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || event.button !== 0) return;
+    const destination = new URL(anchor.href, window.location.href);
+    if (destination.origin !== window.location.origin || destination.hash !== '#contact') return;
+    if (destination.pathname === window.location.pathname) {
+      window.setTimeout(() => this.contactScroll.center());
+    }
   }
 
   openAdminPanel(): void {

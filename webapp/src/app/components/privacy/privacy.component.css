@@ -1,10 +1,10 @@
 .legal-page {
   min-height: 100vh;
   padding: clamp(110px, 13vw, 160px) 20px 70px;
-  background:
-    radial-gradient(circle at 15% 8%, rgba(104, 147, 198, 0.15), transparent 30%),
-    radial-gradient(circle at 86% 70%, rgba(133, 103, 171, 0.11), transparent 34%),
-    var(--page);
+  background-color: var(--site-background-color);
+  background-image: radial-gradient(circle at 8% 36%, var(--site-ambient-first), transparent 52%), radial-gradient(circle at 92% 78%, var(--site-ambient-second), transparent 56%), var(--site-background-image);
+  background-size: auto, auto, cover;
+  background-attachment: fixed;
   color: var(--text);
 }
 
@@ -39,7 +39,7 @@
   transition: color 180ms ease, transform 180ms ease;
 }
 
-.back-link:hover { color: #fff; transform: translateX(-4px); }
+.back-link:hover { color: var(--text); transform: translateX(-4px); }
 
 .legal-eyebrow {
   margin: 0 0 12px;
@@ -80,7 +80,7 @@
 
 .legal-document h3 {
   margin: 28px 0 10px;
-  color: rgba(255, 255, 255, 0.88);
+  color: var(--h3-color);
   font-size: 1rem;
   letter-spacing: -0.015em;
 }
@@ -105,7 +105,7 @@
   text-underline-offset: 4px;
 }
 
-.legal-document a:hover { color: #d6e9ff; }
+.legal-document a:hover { color: var(--text); }
 
 .legal-footer {
   display: flex;

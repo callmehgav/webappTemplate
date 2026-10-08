@@ -46,11 +46,20 @@ export class SiteBrandingService {
   }
 
   applyTypography(settings: {
+    buttonColor?: string; buttonTextColor?: string; pFontFamily?: string; pFontSize?: number; pColor?: string;
     h1FontFamily: string; h1FontSize: number; h1Color: string;
     h2FontFamily: string; h2FontSize: number; h2Color: string;
     h3FontFamily: string; h3FontSize: number; h3Color: string;
   }): void {
     const root = document.documentElement;
+    root.style.setProperty('--button-color', settings.buttonColor ?? '#356bd6');
+    root.style.setProperty('--button-text-color', settings.buttonTextColor ?? '#ffffff');
+    root.style.setProperty('--accent', settings.buttonColor ?? '#356bd6');
+    root.style.setProperty('--accent-strong', settings.buttonColor ?? '#356bd6');
+    root.style.setProperty('--p-font-family', this.fontStack(settings.pFontFamily ?? 'Arial'));
+    root.style.setProperty('--p-font-size', (settings.pFontSize ?? 16) + 'px');
+    root.style.setProperty('--p-color', settings.pColor ?? '#514252');
+    root.style.setProperty('--button-color-rgb', [1,3,5].map(i => parseInt((settings.buttonColor ?? '#356bd6').slice(i,i+2),16)).join(', '));
     root.style.setProperty('--h1-font-family', this.fontStack(settings.h1FontFamily));
     root.style.setProperty('--h1-font-size', `${settings.h1FontSize}px`);
     root.style.setProperty('--h1-color', settings.h1Color);
@@ -63,6 +72,7 @@ export class SiteBrandingService {
   }
 
   private fontStack(font: string): string {
+    if (font === 'system-ui') return 'system-ui, sans-serif';
     const safe = font.replace(/["'\\]/g, '');
     return `"${safe}", Georgia, serif`;
   }

@@ -1,3 +1,5 @@
+import { inject } from '@angular/core';
+import { ConfirmationService } from '../../../../services/confirmation.service';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -74,6 +76,7 @@ interface DeleteResponse {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SocialLinksSettingsComponent implements OnInit, OnDestroy {
+  private readonly confirmation = inject(ConfirmationService);
   readonly SocialLinkDisplayStyle = SocialLinkDisplayStyle;
 
   readonly platformOptions = [
@@ -265,10 +268,10 @@ export class SocialLinksSettingsComponent implements OnInit, OnDestroy {
     });
   }
 
-  deleteLink(): void {
+  async deleteLink(): Promise<void> {
     const link = this.selectedLink;
 
-    if (!link || !window.confirm(`Delete "${link.label}"?`)) {
+    if (!link || !await this.confirmation.confirm(`Delete "${link.label}"?`)) {
       return;
     }
 

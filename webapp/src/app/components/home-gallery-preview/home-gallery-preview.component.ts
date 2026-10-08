@@ -17,14 +17,17 @@ export class HomeGalleryPreviewComponent implements OnInit {
 
   constructor(private readonly publicApi: PublicApiService) {}
 
+  readonly sectionText = signal({"galleryEyebrow":"A glimpse of the venue","galleryHeading":"Picture your day here"});
+
   ngOnInit(): void {
     combineLatest({
       settings: this.publicApi.getHomeFeatureSettings(),
       images: this.publicApi.getMedia(MediaUsage.Gallery)
     }).subscribe({
       next: ({ settings, images }) => {
+        this.sectionText.set({galleryEyebrow: settings.galleryEyebrow,galleryHeading: settings.galleryHeading});
         this.isEnabled.set(settings.galleryPreviewEnabled);
-        this.images.set(images.slice(0, 5));
+        this.images.set(images.slice(0, 6));
       }
     });
   }

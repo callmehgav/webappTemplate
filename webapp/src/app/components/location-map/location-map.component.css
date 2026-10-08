@@ -4,7 +4,18 @@ app-location-map .map-card { display: grid; grid-template-columns: minmax(240px,
 app-location-map .eyebrow { color:  #1519214a; font-size: .74rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
 app-location-map h2 { margin: 9px 0 14px; line-height: .96; }
 app-location-map p { margin-bottom: 24px; font-size: 1rem; line-height: 1.65; }
-app-location-map .location-copy a { display: inline-flex; gap: 9px; align-items: center; padding: 11px 17px; border-radius: 999px; background:#1519214a; color: #fff; font-size: .84rem; font-weight: 750; box-shadow: 0 10px 24px rgba(40,89,188,.2); }
+app-location-map .location-copy a { display: inline-flex; gap: 9px; align-items: center; padding: 11px 17px; border-radius: 999px; background:var(--button-color, #356bd6); color: #fff; font-size: .84rem; font-weight: 750; box-shadow: 0 10px 24px rgba(40,89,188,.2); }
+app-location-map .map-card { grid-template-columns: minmax(280px, .9fr) minmax(0, 1.3fr); align-items: start; gap: 28px; }
+app-location-map .location-list { display: grid; gap: 14px; padding: 0; margin: 24px 0 0; list-style: none; }
+app-location-map .location-entry { display: flex; align-items: start; gap: 14px; padding: 20px; border: 1px solid var(--stroke); border-radius: 18px; background: rgba(255,255,255,.32); }
+app-location-map .location-number { display: grid; flex: 0 0 34px; height: 34px; place-items: center; border-radius: 50%; background: color-mix(in srgb, var(--button-color) 12%, white); color: var(--button-color); font: 750 .75rem/1 var(--font-sans); }
+app-location-map .location-details { min-width: 0; }
+app-location-map .location-details h3 { margin: 3px 0 8px; font-family: var(--h3-font-family); font-size: min(var(--h3-font-size), 1.4rem); line-height: 1.2; }
+app-location-map .location-details p { margin: 0 0 16px; line-height: 1.5; }
+app-location-map .location-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+app-location-map .location-actions button { padding: 8px 12px; border: 0; border-radius: 999px; background: var(--button-color, #356bd6); color: var(--button-text-color, white); font-size: .78rem; font-weight: 750; cursor: pointer; }
+app-location-map .location-actions a { padding: 6px 0; border-radius: 0; background: none; box-shadow: none; color: var(--text); font-size: .78rem; }
+app-location-map .show-all-locations { position: absolute; z-index: 500; bottom: 26px; left: 14px; padding: 9px 14px; border: 1px solid #dfe4ec; border-radius: 999px; background: white; color: #172033; font-size: .78rem; font-weight: 750; box-shadow: 0 4px 16px #17203322; cursor: pointer; }
 app-location-map .map-shell { position: relative; height: 420px; overflow: hidden; border: 1px solid var(--stroke); border-radius: var(--radius-md); background: #dce5ed; box-shadow: 0 20px 50px rgba(38,49,66,.18); }
 app-location-map .map-canvas { width: 100%; height: 100%; filter: saturate(.75) contrast(.94); }
 app-location-map .brand-map-marker { overflow: visible; border: 0; background: transparent; }

@@ -79,18 +79,17 @@ export class EmailSettingsComponent implements OnInit {
       });
   }
 
-  saveSettings(): void {
+  saveSettings(scope: 'sender' | 'destination' = 'sender'): void {
     this.errorMessage.set(null);
     this.successMessage.set(null);
 
     if (
-      !this.senderName.trim() ||
+      scope === 'sender' && ( !this.senderName.trim() ||
       !this.senderEmail.trim() ||
-      !this.recipientEmail.trim() ||
-      (!this.hasAppPassword() && !this.appPassword.trim())
+      (!this.hasAppPassword() && !this.appPassword.trim()))
     ) {
       this.errorMessage.set(
-        'Complete all fields and provide an app password for the first setup.'
+        'Enter the sender name, email, and an app password for the first setup.'
       );
       return;
     }
@@ -101,11 +100,12 @@ export class EmailSettingsComponent implements OnInit {
       .put<UpdateEmailSettingsResponse>(
         '/admin/email-settings',
         {
+          scope,
           senderName: this.senderName.trim(),
           senderEmail: this.senderEmail.trim(),
           recipientEmail: this.recipientEmail.trim(),
           publicPhoneNumber: this.publicPhoneNumber.trim(),
-          appPassword: this.appPassword.trim() || null
+          appPassword: scope === 'sender' ? this.appPassword.trim() || null : null
         }
       )
       .subscribe({
@@ -115,9 +115,9 @@ export class EmailSettingsComponent implements OnInit {
             phone: response.phone
           });
           this.hasAppPassword.set(response.hasAppPassword);
-          this.appPassword = '';
+          if (scope === 'sender') this.appPassword = '';
           this.isSaving.set(false);
-          this.successMessage.set('Email settings saved.');
+          this.successMessage.set(scope === 'sender' ? 'Sender account saved.' : 'Delivery destination saved.');
         },
         error: error => {
           this.isSaving.set(false);

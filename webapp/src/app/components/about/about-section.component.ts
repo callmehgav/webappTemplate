@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, computed, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, signal } from '@angular/core';
+import { ContentViewerComponent } from '../ui/content-viewer/content-viewer.component';
 import { RouterModule } from '@angular/router';
 import { MediaUsage, PublicApiService, SiteContent } from '../../services/public-api.service';
 
 @Component({
   selector: 'app-about-section',
-  imports: [RouterModule],
+  imports: [RouterModule, ContentViewerComponent],
   templateUrl: './about-section.component.html',
   styleUrls: ['./about-section.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -14,19 +15,6 @@ export class AboutSectionComponent implements OnInit {
   readonly profileImageUrl = signal('/assets/Images/me.jpg');
   readonly isLoading = signal(true);
   readonly loadError = signal(false);
-
-  readonly paragraphs = computed(() => {
-    const content = this.aboutContent()?.content;
-
-    if (!content) {
-      return [];
-    }
-
-    return content
-      .split(/\r?\n\s*\r?\n/)
-      .map(paragraph => paragraph.trim())
-      .filter(paragraph => paragraph.length > 0);
-  });
 
   constructor(private readonly publicApi: PublicApiService) {}
 

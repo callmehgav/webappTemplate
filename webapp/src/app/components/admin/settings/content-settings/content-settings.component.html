@@ -1,8 +1,8 @@
 <section class="content-settings">
   <header class="content-toolbar">
     <div>
-      <h3>Site Content</h3>
-      <p>Edit the reusable text content displayed across the website.</p>
+      <h3>About content</h3>
+      <p>Edit the About text displayed on the home page.</p>
     </div>
 
     <button
@@ -32,31 +32,6 @@
     </div>
   } @else {
     <div class="content-layout">
-      <nav class="content-list" aria-label="Editable site content">
-        @for (item of contentItems(); track item.id) {
-          <button
-            type="button"
-            class="content-list-item"
-            [class.active]="selectedContent()?.id === item.id"
-            [attr.aria-current]="selectedContent()?.id === item.id ? 'page' : null"
-            (click)="selectContent(item)">
-            <span class="content-list-title">
-              {{ item.title || item.contentKey }}
-            </span>
-
-            <span class="content-list-key">
-              {{ item.contentKey }}
-            </span>
-
-            <span
-              class="visibility-status"
-              [class.hidden-content]="!item.isVisible">
-              {{ item.isVisible ? 'Visible' : 'Hidden' }}
-            </span>
-          </button>
-        }
-      </nav>
-
       @if (selectedContent(); as selected) {
         <form
           class="content-editor"
@@ -64,8 +39,8 @@
           (ngSubmit)="saveContent()">
           <header class="editor-header">
             <div>
-              <p class="content-key">{{ selected.contentKey }}</p>
-              <h3>{{ selected.title || 'Untitled content' }}</h3>
+
+              <h3>About text</h3>
             </div>
 
             <p class="updated-time">
@@ -99,12 +74,24 @@
             </label>
           </div>
 
+          <div class="format-toolbar" role="group" aria-label="About text formatting">
+            <button type="button" class="secondary-button" [disabled]="isSaving()" (mousedown)="$event.preventDefault()" (click)="formatSelection('bold')"><strong>Bold</strong></button>
+            <label>Text style
+              <select aria-label="Text style" (change)="formatSelection($any($event.target).value); $any($event.target).value = ''">
+                <option value="" disabled selected>Choose style</option>
+                <option value="h1">Heading 1</option><option value="h2">Heading 2</option><option value="h3">Heading 3</option><option value="paragraph">Paragraph</option>
+              </select>
+            </label>
+            <button type="button" class="secondary-button preview-toggle" [attr.aria-expanded]="showPreview()" (click)="showPreview.set(!showPreview())">{{ showPreview() ? 'Hide preview' : 'Show preview' }}</button>
+          </div>
+          <div class="writing-layout" [class.with-preview]="showPreview()">
           <label class="field content-field">
             <span>Content</span>
 
             <textarea
+              #contentInput
               formControlName="content"
-              rows="16"
+              rows="8"
               placeholder="Enter the content displayed on the website">
             </textarea>
 
@@ -117,6 +104,14 @@
               </small>
             }
           </label>
+          @if (showPreview()) {
+            <section class="content-preview" aria-label="About content preview">
+              <span class="preview-label">Live preview</span>
+              @if (contentForm.controls.title.value) { <h2>{{ contentForm.controls.title.value }}</h2> }
+              <app-content-viewer [content]="contentForm.controls.content.value" [format]="contentForm.controls.format.value"></app-content-viewer>
+            </section>
+          }
+          </div>
 
           <label class="visibility-control">
             <input

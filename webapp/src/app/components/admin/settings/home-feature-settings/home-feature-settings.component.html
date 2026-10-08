@@ -1,10 +1,15 @@
 @if (settings(); as config) {
+  <fieldset class="home-editors" [disabled]="savingEverything()">
   <div class="feature-grid">
     <section class="settings-card">
       <div class="card-heading">
         <div><span class="eyebrow">Offerings</span><h3>Services</h3><p>Show editable service cards on the home page.</p></div>
         <label class="switch-row"><input type="checkbox" [(ngModel)]="config.servicesEnabled" /><span>Show on home page</span></label>
       </div>
+      <label>Section label<input [(ngModel)]="config.servicesEyebrow" maxlength="1000" /></label>
+      <label>Heading<input [(ngModel)]="config.servicesHeading" maxlength="1000" /></label>
+      <label>Description<input [(ngModel)]="config.servicesDescription" maxlength="1000" /></label>
+      <button type="button" [disabled]="saving()" (click)="saveTile(['servicesEnabled','servicesEyebrow','servicesHeading','servicesDescription'])">Save services</button>
     </section>
 
     <section class="settings-card">
@@ -12,6 +17,9 @@
         <div><span class="eyebrow">Preview</span><h3>Gallery</h3><p>Show a compact selection from the full gallery.</p></div>
         <label class="switch-row"><input type="checkbox" [(ngModel)]="config.galleryPreviewEnabled" /><span>Show on home page</span></label>
       </div>
+      <label>Section label<input [(ngModel)]="config.galleryEyebrow" maxlength="1000" /></label>
+      <label>Heading<input [(ngModel)]="config.galleryHeading" maxlength="1000" /></label>
+      <button type="button" [disabled]="saving()" (click)="saveTile(['galleryPreviewEnabled','galleryEyebrow','galleryHeading'])">Save gallery</button>
     </section>
 
     <section class="settings-card">
@@ -19,6 +27,10 @@
         <div><span class="eyebrow">Availability</span><h3>Calendar</h3><p>Show the public schedule calendar on the home page.</p></div>
         <label class="switch-row"><input type="checkbox" [(ngModel)]="config.calendarPreviewEnabled" /><span>Show on home page</span></label>
       </div>
+      <label>Section label<input [(ngModel)]="config.calendarEyebrow" maxlength="1000" /></label>
+      <label>Heading<input [(ngModel)]="config.calendarHeading" maxlength="1000" /></label>
+      <label>Description<input [(ngModel)]="config.calendarDescription" maxlength="1000" /></label>
+      <button type="button" [disabled]="saving()" (click)="saveTile(['calendarPreviewEnabled','calendarEyebrow','calendarHeading','calendarDescription'])">Save calendar</button>
     </section>
 
     <section class="settings-card">
@@ -38,6 +50,8 @@
         <input type="url" [(ngModel)]="config.youTubeUrl" maxlength="500" placeholder="https://www.youtube.com/watch?v=..." />
         <small>Video, Short, Live, channel, and youtu.be links are supported.</small>
       </label>
+      <label>Heading<input [(ngModel)]="config.youTubeHeading" maxlength="1000" /></label>
+      <button type="button" [disabled]="saving()" (click)="saveTile(['youTubeEnabled','youTubeUrl','youTubeHeading'])">Save YouTube</button>
     </section>
 
     <section class="settings-card">
@@ -45,7 +59,7 @@
         <div>
           <span class="eyebrow">Visit</span>
           <h3>Location map</h3>
-          <p>The current logo from Branding is automatically used as the map pin.</p>
+          <p>The current logo from Site Styles is automatically used as the map pin.</p>
         </div>
         <label class="switch-row">
           <input type="checkbox" [(ngModel)]="config.mapEnabled" />
@@ -53,23 +67,25 @@
         </label>
       </div>
 
-      <div class="two-columns">
-        <label>Location name
-          <input [(ngModel)]="config.locationName" maxlength="150" placeholder="Find us" />
-        </label>
-        <label>Display address
-          <input [(ngModel)]="config.locationAddress" maxlength="500" placeholder="123 Main Street, City, State" />
-        </label>
-        <label>Latitude
-          <input type="number" [(ngModel)]="config.latitude" min="-90" max="90" step="0.000001" />
-        </label>
-        <label>Longitude
-          <input type="number" [(ngModel)]="config.longitude" min="-180" max="180" step="0.000001" />
-        </label>
-        <label>Map zoom
-          <input type="number" [(ngModel)]="config.mapZoom" min="1" max="19" />
-          <small>1 shows the world; 19 shows street-level detail.</small>
-        </label>
+      <label>Section label<input [(ngModel)]="config.mapEyebrow" maxlength="1000" /></label>
+      <label>Map heading<input [(ngModel)]="config.locationName" maxlength="150" /></label>
+      @for (location of config.locations; track $index; let index = $index) {
+        <div class="location-entry">
+          <div class="two-columns">
+            <label>Location name<input [(ngModel)]="location.name" maxlength="150" /></label>
+            <label>Address<input [(ngModel)]="location.address" maxlength="500" /></label>
+            <label>Latitude<input type="number" [(ngModel)]="location.latitude" min="-90" max="90" step="0.000001" /></label>
+            <label>Longitude<input type="number" [(ngModel)]="location.longitude" min="-180" max="180" step="0.000001" /></label>
+          </div>
+          <app-location-picker [latitude]="location.latitude" [longitude]="location.longitude" [resetVersion]="mapResetVersion()" (coordinates)="location.latitude = $event.latitude; location.longitude = $event.longitude"></app-location-picker>
+          <button type="button" class="secondary" (click)="removeLocation(index)">Remove location</button>
+        </div>
+      }
+      <button type="button" class="secondary" [disabled]="config.locations.length >= 20" (click)="addLocation()">Add location</button>
+      <label>Maximum map zoom<input type="number" [(ngModel)]="config.mapZoom" min="1" max="19" /><small>Multiple locations automatically zoom out to fit all pins.</small></label>
+      <div class="media-actions">
+        <button type="button" class="secondary" [disabled]="saving()" (click)="resetLocations()">Reset location map</button>
+        <button type="button" [disabled]="saving()" (click)="saveTile(['mapEyebrow','mapEnabled','locationName','locationAddress','latitude','longitude','mapZoom','locations'])">Save location map</button>
       </div>
     </section>
 
@@ -79,28 +95,29 @@
       <label>Choose image<input type="file" accept="image/jpeg,image/png,image/webp,image/gif" (change)="chooseImage($event, 'about')" /></label>
       <div class="media-actions">
         @if (aboutImage()) { <button type="button" class="secondary" [disabled]="imageSaving()" (click)="removeSectionImage(3)">Remove</button> }
-        <button type="button" [disabled]="!aboutFile() || imageSaving()" (click)="saveSectionImage(3)">Save About photo</button>
+        <button type="button" [disabled]="!aboutFile() || imageSaving()" (click)="saveMedia(3)">Save About photo</button>
       </div>
     </section>
 
     <section class="settings-card media-card">
       <div class="card-heading"><div><span class="eyebrow">Contact</span><h3>Contact background</h3><p>Add atmosphere behind the contact form while retaining readability.</p></div></div>
+      <label>Heading<input [(ngModel)]="config.contactHeading" maxlength="1000" /></label>
       @if (imageUrl(contactImage()); as url) { <img class="section-image-preview" [src]="url" alt="Current Contact background" /> }
       <label>Choose image<input type="file" accept="image/jpeg,image/png,image/webp,image/gif" (change)="chooseImage($event, 'contact')" /></label>
       <div class="media-actions">
         @if (contactImage()) { <button type="button" class="secondary" [disabled]="imageSaving()" (click)="removeSectionImage(4)">Remove</button> }
-        <button type="button" [disabled]="!contactFile() || imageSaving()" (click)="saveSectionImage(4)">Save contact image</button>
+        <button type="button" [disabled]="saving() || imageSaving()" (click)="saveContactTile()">Save contact section</button>
       </div>
     </section>
+    <section class="settings-card">
+      <div class="card-heading"><div><span class="eyebrow">Social</span><h3>Stay connected</h3></div></div>
+      <label>Section label<input [(ngModel)]="config.socialEyebrow" maxlength="1000" /></label>
+      <label>Heading<input [(ngModel)]="config.socialHeading" maxlength="1000" /></label>
+      <button type="button" [disabled]="saving()" (click)="saveTile(['socialEyebrow','socialHeading'])">Save social section</button>
+    </section>
+    <section class="settings-card about-content-tile"><app-content-settings #aboutContent></app-content-settings></section>
   </div>
 
-  <button class="primary save" type="button" [disabled]="saving()" (click)="save()">
-    {{ saving() ? 'Saving…' : 'Save home features' }}
-  </button>
-
-  <div class="about-content-settings">
-    <app-content-settings></app-content-settings>
-  </div>
-} @else {
-  <p class="loading">Loading home features…</p>
-}
+  </fieldset>
+  <button class="primary save" type="button" [disabled]="savingEverything() || saving() || imageSaving() || aboutContent.isSaving()" (click)="saveEverything()">{{ savingEverything() || saving() || imageSaving() || aboutContent.isSaving() ? 'Saving…' : 'Save everything in Home Features' }}</button>
+} @else { <p class="loading">Loading home features…</p> }

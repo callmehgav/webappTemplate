@@ -22,6 +22,8 @@ export class HomeCalendarPreviewComponent implements OnInit {
     private readonly scheduleApi: ScheduleApiService
   ) {}
 
+  readonly sectionText = signal({"calendarEyebrow":"Plan ahead","calendarHeading":"Find a date that feels right","calendarDescription":"Browse current availability, then send the details you have in mind. We’ll help with the rest."});
+
   ngOnInit(): void {
     const from = new Date();
     from.setMonth(from.getMonth() - 1, 1);
@@ -34,6 +36,7 @@ export class HomeCalendarPreviewComponent implements OnInit {
       events: this.scheduleApi.getEvents(from, to)
     }).subscribe({
       next: ({ home, schedule, events }) => {
+        this.sectionText.set({calendarEyebrow: home.calendarEyebrow,calendarHeading: home.calendarHeading,calendarDescription: home.calendarDescription});
         this.isEnabled.set(home.calendarPreviewEnabled && schedule.calendarEnabled);
         this.events.set(events);
       }

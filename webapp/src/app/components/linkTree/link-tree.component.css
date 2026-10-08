@@ -246,3 +246,6 @@
   .featured-link { padding: 14px; }
   .featured-badge { max-width: calc(100% - 52px); }
 }
+
+.icon-link:nth-child(n) { --brand: var(--button-color, #356bd6); }
+.icon-link.instagram:hover { background: var(--button-color, #356bd6); }

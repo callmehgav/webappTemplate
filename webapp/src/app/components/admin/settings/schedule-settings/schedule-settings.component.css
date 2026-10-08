@@ -18,7 +18,7 @@ input[type="checkbox"] { width: 15px; height: 15px; margin: 0; }
 .all-day-option { display: flex; align-items: center; gap: 7px; }
 .actions { display: flex; flex-wrap: wrap; gap: 8px; }
 button { min-height: 36px; padding: 8px 13px; border: 1px solid #cfd6e2; border-radius: 6px; background: #fff; color: #344054; font: 700 .8rem/1.2 inherit; cursor: pointer; }
-button.primary { border-color: #1519214a; background: #1519214a; color: #fff; }
+button.primary { border-color: var(--button-color, #356bd6); background: var(--button-color, #356bd6); color: var(--button-text-color, #ffffff); }
 button.danger { border-color: #e6b6b6; color: #a52b2b; }
 .settings-card { margin-top: 28px; background: #fff; }
 .hours-list { display: flex; flex-direction: column; gap: 7px; }

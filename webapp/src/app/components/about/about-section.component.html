@@ -16,9 +16,7 @@
       } @else if (aboutContent(); as about) {
         <h2>{{ about.title || 'About Me' }}</h2>
 
-        @for (paragraph of paragraphs(); track $index) {
-          <p>{{ paragraph }}</p>
-        }
+        <app-content-viewer [content]="about.content" [format]="about.format"></app-content-viewer>
 
         <a class="contact-link" routerLink="/" fragment="contact">Contact us <span aria-hidden="true">→</span></a>
       }

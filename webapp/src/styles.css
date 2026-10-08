@@ -82,7 +82,7 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-app-home {
+app-home, app-privacy, app-terms {
   --text: #172033;
   --text-soft: rgba(39, 50, 67, 0.72);
   --text-muted: rgba(55, 68, 88, 0.52);
@@ -155,8 +155,7 @@ app-link-tree,
 app-youtube-feature,
 app-location-map,
 app-contact-me {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 720px;
+  content-visibility: visible;
 }
 
 h1,
@@ -257,4 +256,19 @@ p {
     --glass: rgba(22, 26, 32, 0.94);
     --glass-strong: rgba(18, 22, 28, 0.98);
   }
+}
+
+/* Shared branding applies to copy even where component styles set local fonts. */
+:is(app-home, app-admin-panel, app-privacy, app-terms, app-gallery) p:not(.typography-preview),
+:is(app-home, app-admin-panel) .eyebrow {
+ font-family: var(--p-font-family, Arial, sans-serif) !important;
+ font-size: var(--p-font-size, 16px) !important;
+ color: var(--p-color, #514252) !important;
+}
+.brand-test-button { padding: 12px 24px; border: 0; border-radius: 999px; cursor: pointer; }
+
+:is(app-home, app-admin-panel, app-admin-login) :is(.primary, .primary-button, .submit-button, .login-button, .upload-picker, .contact-link, .contact-button, .save):not(.secondary) {
+ background: var(--button-color, #356bd6);
+ border-color: var(--button-color, #356bd6);
+ color: var(--button-text-color, #ffffff);
 }
