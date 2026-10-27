@@ -1,53 +1,35 @@
-# syntax=docker/dockerfile:1.7
+# Stage 1: Build Angular app
+FROM node:22.23.2 AS node_builder
+WORKDIR /app/webapp
 
-# Build the Angular application with the locked dependency graph.
-FROM node:22-bookworm-slim AS frontend-build
-WORKDIR /src/webapp
+COPY webapp/package*.json ./
+RUN npm ci
 
-COPY webapp/package.json webapp/package-lock.json ./
-RUN --mount=type=cache,id=webapp-template-npm,target=/root/.npm \
-    npm ci --no-audit --no-fund
-
-COPY webapp/ ./
+COPY webapp/ .
 RUN npm run build -- --configuration production
 
-
-# Restore and publish the ASP.NET Core application.
-FROM mcr.microsoft.com/dotnet/sdk:8.0-bookworm-slim AS backend-build
-WORKDIR /src
-
-COPY webappTemplate/webappTemplate.csproj webappTemplate/
-RUN --mount=type=cache,id=webapp-template-nuget,target=/root/.nuget/packages \
-    dotnet restore webappTemplate/webappTemplate.csproj
-
-COPY webappTemplate/ webappTemplate/
-COPY --from=frontend-build /src/webapp/dist/webapp/browser/ \
-    webappTemplate/wwwroot/
-
-RUN --mount=type=cache,id=webapp-template-nuget,target=/root/.nuget/packages \
-    dotnet publish webappTemplate/webappTemplate.csproj \
-    --configuration Release \
-    --output /app/publish \
-    --no-restore \
-    /p:UseAppHost=false
-
-
-# Run only the published application in the smaller ASP.NET image.
-FROM mcr.microsoft.com/dotnet/aspnet:8.0-bookworm-slim AS runtime
+# Stage 2: Build .NET app
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
-ENV ASPNETCORE_ENVIRONMENT=Production \
-    DATABASE_PATH=/data/data.db \
-    DOTNET_EnableDiagnostics=0
+COPY *.sln .
+COPY webappTemplate/*.csproj ./webappTemplate/
+RUN dotnet restore
 
-COPY --from=backend-build --chown=$APP_UID:$APP_UID /app/publish/ ./
+COPY webappTemplate/ ./webappTemplate/
+COPY --from=node_builder /app/webapp/dist/webapp/browser ./webappTemplate/wwwroot/
+RUN dotnet publish -c Release -o out --no-restore
 
-# Mount a Railway volume at /data to persist the SQLite database.
-USER root
-RUN mkdir -p /data && chown "$APP_UID:$APP_UID" /data
-USER $APP_UID
+# Stage 3: Run the app
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+WORKDIR /app
+
+COPY --from=build /app/out .
+RUN mkdir -p /data
+
+ENV ASPNETCORE_URLS=http://+:8080
+ENV ASPNETCORE_ENVIRONMENT=Production
+ENV DATABASE_PATH=/data/data.db
 
 EXPOSE 8080
-
-# Railway injects PORT at runtime. The fallback also makes the image easy to run locally.
-CMD ["sh", "-c", "exec dotnet webappTemplate.dll --urls http://0.0.0.0:${PORT:-8080}"]
+ENTRYPOINT ["dotnet", "webappTemplate.dll"]
