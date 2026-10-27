@@ -5,7 +5,7 @@ FROM node:22-bookworm-slim AS frontend-build
 WORKDIR /src/webapp
 
 COPY webapp/package.json webapp/package-lock.json ./
-RUN --mount=type=cache,target=/root/.npm \
+RUN --mount=type=cache,id=webapp-template-npm,target=/root/.npm \
     npm ci --no-audit --no-fund
 
 COPY webapp/ ./
@@ -17,14 +17,15 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0-bookworm-slim AS backend-build
 WORKDIR /src
 
 COPY webappTemplate/webappTemplate.csproj webappTemplate/
-RUN --mount=type=cache,target=/root/.nuget/packages \
+RUN --mount=type=cache,id=webapp-template-nuget,target=/root/.nuget/packages \
     dotnet restore webappTemplate/webappTemplate.csproj
 
 COPY webappTemplate/ webappTemplate/
 COPY --from=frontend-build /src/webapp/dist/webapp/browser/ \
     webappTemplate/wwwroot/
 
-RUN dotnet publish webappTemplate/webappTemplate.csproj \
+RUN --mount=type=cache,id=webapp-template-nuget,target=/root/.nuget/packages \
+    dotnet publish webappTemplate/webappTemplate.csproj \
     --configuration Release \
     --output /app/publish \
     --no-restore \
